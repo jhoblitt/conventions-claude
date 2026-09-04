@@ -1,7 +1,7 @@
 {
   "name": "go-conventions",
   "displayName": "Go Conventions",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Go house canon — Go 1.27, gopls via LSP, cobra/viper, log/slog to stderr, Ginkgo and Gomega, the golangci-lint house tier, go fix as a gate, ReadBuildInfo versioning, goreleaser with ko — plus skills to converge an existing repo, review a Go diff, and scaffold a new project",
   "author": {
     "name": "Joshua Hoblitt",
