@@ -130,13 +130,13 @@ func dependabotActionsRow(text string) Row {
 
 func commitlintRows(dir string, workflows []workflow) ([]Row, error) {
 	const (
-		canonConfig  = ".commitlintrc.yml exists at the repository root"
-		canonAction  = "a workflow runs wagoid/commitlint-github-action on pull requests"
-		canonFooter  = ".github/scripts/check-breaking-footer.sh exists"
-		fixConfig    = "copy templates/.commitlintrc.yml"
-		fixAction    = "copy templates/commitlint.yml to .github/workflows/"
-		fixFooter    = "copy templates/check-breaking-footer.sh to .github/scripts/"
-		footerScript = ".github/scripts/check-breaking-footer.sh"
+		canonConfig   = ".commitlintrc.yml exists at the repository root"
+		canonAction   = "a workflow runs wagoid/commitlint-github-action on pull requests"
+		canonFooter   = ".github/tools/breaking-footer/main.go exists"
+		fixConfig     = "copy templates/.commitlintrc.yml"
+		fixAction     = "copy templates/commitlint.yml to .github/workflows/"
+		fixFooter     = "copy templates/breaking-footer/main.go to .github/tools/breaking-footer/"
+		footerProgram = ".github/tools/breaking-footer/main.go"
 	)
 
 	rows := make([]Row, 0, 3)
@@ -153,14 +153,17 @@ func commitlintRows(dir string, workflows []workflow) ([]Row, error) {
 
 	rows = append(rows, actionRow("commitlint", "workflow", "wagoid/commitlint-github-action", canonAction, fixAction, workflows))
 
-	footer, err := exists(filepath.Join(dir, footerScript))
+	// The canon no longer ships the shell predecessor, so a repository still
+	// carrying .github/scripts/check-breaking-footer.sh is a gap: its fix names
+	// the Go program, which is the only form the templates can supply.
+	footer, err := exists(filepath.Join(dir, footerProgram))
 	if err != nil {
 		return nil, err
 	}
 	if footer {
-		rows = append(rows, okRow("commitlint", "breaking-footer", footerScript, canonFooter))
+		rows = append(rows, okRow("commitlint", "breaking-footer", footerProgram, canonFooter))
 	} else {
-		rows = append(rows, gapRow("commitlint", "breaking-footer", "no "+footerScript, canonFooter, fixFooter))
+		rows = append(rows, gapRow("commitlint", "breaking-footer", "no "+footerProgram, canonFooter, fixFooter))
 	}
 
 	return rows, nil

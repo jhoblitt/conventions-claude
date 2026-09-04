@@ -53,7 +53,7 @@ never default it.
 | `templates/scorecard.yml` | `.github/workflows/scorecard.yml` |
 | `templates/commitlint.yml` | `.github/workflows/commitlint.yml` |
 | `templates/.commitlintrc.yml` | `.commitlintrc.yml` |
-| `templates/check-breaking-footer.sh` | `.github/scripts/check-breaking-footer.sh`, executable |
+| `templates/breaking-footer/main.go` | `.github/tools/breaking-footer/main.go` |
 | `templates/ruleset.json` | the repository's rulesets, via `gh api` (step 2) — never the tree |
 
 Placeholders are filled on copy (`references/workflows.md`, "Template

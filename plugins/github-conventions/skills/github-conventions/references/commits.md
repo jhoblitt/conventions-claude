@@ -16,8 +16,9 @@ routing. The PR description is a different artifact with its own shape:
   why). Where each lands: `references/new-repo.md`, "What lands where".
 - A `BREAKING CHANGE:` or `BREAKING-CHANGE:` footer requires `!` in the
   subject (`feat!:`, `fix(api)!:`). The commitlint workflow runs
-  `templates/check-breaking-footer.sh` to reject a footer the subject
-  never declared; the script's header says why commitlint cannot.
+  `templates/breaking-footer/main.go` with `go run` to reject a footer the
+  subject never declared; the program's package doc says why commitlint
+  cannot.
 
 ## Branch history
 

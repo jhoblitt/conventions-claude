@@ -188,9 +188,9 @@
       "area": "commitlint",
       "check": "breaking-footer",
       "status": "gap",
-      "current": "no .github/scripts/check-breaking-footer.sh",
-      "canon": ".github/scripts/check-breaking-footer.sh exists",
-      "fix": "copy templates/check-breaking-footer.sh to .github/scripts/"
+      "current": "no .github/tools/breaking-footer/main.go",
+      "canon": ".github/tools/breaking-footer/main.go exists",
+      "fix": "copy templates/breaking-footer/main.go to .github/tools/breaking-footer/"
     },
     {
       "area": "ruleset",

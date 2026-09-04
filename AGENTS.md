@@ -26,6 +26,11 @@ Every rule has exactly one normative statement.
 - A file under a skill's `templates/` is the enforced form of a rule. Its
   header comment names the reference that owns the rule; the template
   carries no rule of its own.
+- A procedural skill may carry its own `references/` for material one of its
+  runs needs only sometimes — the audit tools' output contracts are the case,
+  `goconv-audit.md` under `go-converge` and `ghconv-audit.md` under
+  `github-converge`. The rule still has one home: the `SKILL.md` points at the
+  file and states none of what it holds.
 - `agents/*.md` carry no rules. Each names the skill file it runs under and
   nothing else; prose there that explains a rule is a finding.
 
@@ -47,7 +52,7 @@ rule, bounded by this table: a rendering carries only what its row says.
 | `plugins/*/skills/*/SKILL.md`, frontmatter `description` | triggering conditions only — never the procedure |
 | `plugins/*/agents/*.md`, frontmatter `description` | the agent's job in a line and how it is dispatched |
 | the SessionStart hook's `additionalContext` | the module path, the go directive, and the instruction to load the canon skill |
-| a `templates/*.go` file's doc comments | what the rendered file does and the contract it keeps, for a reader in the target repository who has no plugin installed |
+| a `templates/**/*.go` file's doc comments | what the rendered file does and the contract it keeps, for a reader in the target repository who has no plugin installed |
 | `templates/CLAUDE-pointer.md` | the install line and repo facts the plugin cannot know (module path, binary name, env prefix); no rule |
 | `templates/README.md`, Development section | the commit convention, the pin/actionlint reminder, and where the linter pin lives, stated as instructions to a contributor |
 | `plugins/*/evals/README.md`, Guards column | one line per case naming the rule it guards and the failure it catches |
@@ -136,7 +141,8 @@ npx --yes @mermaid-js/mermaid-cli@11 -i README.md -o /tmp/readme-check.md
 
 This is the normative statement of the launcher contract; a skill's own
 `## Scripts` section lists only which tools that skill uses, each with its
-invocation line and the fail-loud sentence.
+invocation line, the fail-loud sentence, and — where the skill owns the tool's
+output contract — a pointer to the reference that carries it.
 
 Every tool is a Go binary under `${CLAUDE_PLUGIN_ROOT}/tools/cmd/`, invoked
 through the launcher, which builds it on first use:
@@ -148,6 +154,10 @@ bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" <tool> [args...]
 The launcher fails loud — a non-zero exit is a real failure, never an empty
 result. A hook launcher (`hooks/*.sh`) is the one exception and fails open:
 a broken build must never brick the tool call or session it wraps.
+
+Those launchers are the only shell a plugin ships to be run: a `.sh` file
+under a skill's directory is forbidden, so a program a skill carries —
+including a `templates/` file a target repository vendors — is Go.
 
 Binaries live in the per-plugin data directory, never in
 `CLAUDE_PLUGIN_ROOT`. `CLAUDE_PLUGIN_DATA` selects the cache when its

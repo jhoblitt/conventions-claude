@@ -36,4 +36,5 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: .github/scripts/check-breaking-footer.sh "$BASE_SHA" "$HEAD_SHA"
+        # GitHub runners ship Go, so no setup-go step is needed.
+        run: go run ./.github/tools/breaking-footer/main.go "$BASE_SHA" "$HEAD_SHA"

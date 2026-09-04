@@ -38,7 +38,7 @@
 | workflow-lint | pin-check | ok | workflow-lint.yml | a workflow fails any uses: not pinned to a 40-hex SHA |  |
 | commitlint | config | ok | .commitlintrc.yml | .commitlintrc.yml exists at the repository root |  |
 | commitlint | workflow | ok | commitlint.yml | a workflow runs wagoid/commitlint-github-action on pull requests |  |
-| commitlint | breaking-footer | ok | .github/scripts/check-breaking-footer.sh | .github/scripts/check-breaking-footer.sh exists |  |
+| commitlint | breaking-footer | ok | .github/tools/breaking-footer/main.go | .github/tools/breaking-footer/main.go exists |  |
 | ruleset | default-branch | skipped | not checked (--remote not given) | an active branch ruleset on ~DEFAULT_BRANCH with deletion and non_fast_forward rules |  |
 
 0 gaps, 39 ok, 1 skipped

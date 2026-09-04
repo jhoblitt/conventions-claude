@@ -308,8 +308,8 @@
       "area": "commitlint",
       "check": "breaking-footer",
       "status": "ok",
-      "current": ".github/scripts/check-breaking-footer.sh",
-      "canon": ".github/scripts/check-breaking-footer.sh exists",
+      "current": ".github/tools/breaking-footer/main.go",
+      "canon": ".github/tools/breaking-footer/main.go exists",
       "fix": ""
     },
     {

@@ -51,7 +51,7 @@ for w in workflow-lint codeql dependency-review scorecard commitlint; do
   check "$GH/$w.yml" ".github/workflows/$w.yml"
 done
 check "$GH/.commitlintrc.yml" .commitlintrc.yml
-check "$GH/check-breaking-footer.sh" .github/scripts/check-breaking-footer.sh
+check "$GH/breaking-footer/main.go" .github/tools/breaking-footer/main.go
 check "$GH/LICENSE" LICENSE
 check "$GO/.golangci.yml" .golangci.yml
 check "$GO/Makefile" Makefile
