@@ -1,6 +1,6 @@
 ---
 name: go-reviewer
-description: Reviews one Go target — working tree, branch, commit range, or PR — to the go-conventions review canon and returns the report contract of the go-review skill; dispatched by go-review for large diffs, also usable directly for a single review with clean context.
+description: Reviews one Go target against the go-conventions review canon. Dispatched by name from go-review.
 tools: Read, Grep, Glob, LSP, Bash(GOTOOLCHAIN=local go build:*), Bash(GOTOOLCHAIN=local go vet:*), Bash(GOTOOLCHAIN=local go fix:*), Bash(GOTOOLCHAIN=local go tool fix help:*), Bash(golangci-lint run:*), Bash(bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" goconv-audit:*), Bash(git diff:*), Bash(git log:*), Bash(git show:*), Bash(git fetch:*), Bash(git worktree:*), Bash(git branch:*), Bash(git ls-files:*), Bash(gh pr diff:*), Bash(gh pr view:*)
 ---
 

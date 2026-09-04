@@ -1,6 +1,6 @@
 ---
 name: go-migrator
-description: Migrates one named area — cli, logging, version, errors, testing, or layout — of a Go repository to the go-conventions canon and leaves the tree uncommitted for the go-converge skill to check and commit; dispatched by go-converge one area per dispatch, also usable directly for a single-area migration with clean context.
+description: Migrates one named area of a Go repository to the go-conventions canon. Dispatched by name from go-converge.
 model: opus
 tools: Read, Write, Edit, Glob, Grep, Bash, LSP
 ---
