@@ -1,7 +1,7 @@
 {
   "name": "code-conventions",
   "displayName": "Code Conventions",
-  "version": "0.0.0",
+  "version": "1.1.0",
   "description": "The engineering canon that holds in any language: a semantic question about code — a definition, its callers, its type, a file's diagnostics — goes to the language server through the LSP tool rather than to grep, and a comment earns its place by saying what the code cannot, a restatement being deleted on sight",
   "author": {
     "name": "Joshua Hoblitt",

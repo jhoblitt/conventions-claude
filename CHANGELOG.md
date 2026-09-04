@@ -1,3 +1,13 @@
+## [1.1.0](https://github.com/jhoblitt/conventions-claude/compare/v1.0.0...v1.1.0) (2026-09-04)
+
+### Features
+
+* **code-conventions:** add a canon for the language-agnostic rules ([bb067fd](https://github.com/jhoblitt/conventions-claude/commit/bb067fdc27324f23fb487ba6b93f0900168bcbfe))
+
+
+## What's Changed
+* feat: add the code-conventions plugin by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/4
+
 ## 1.0.0 (2026-09-04)
 
 ### Features
