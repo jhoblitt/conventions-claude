@@ -1,0 +1,9 @@
+  # The Go entry, from go-conventions (references/ci.md, Dependabot), which
+  # owns how it lands in .github/dependabot.yml.
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      go-dependencies:
+        patterns: ["*"]

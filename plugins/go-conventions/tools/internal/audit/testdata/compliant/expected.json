@@ -1,0 +1,279 @@
+{
+  "rows": [
+    {
+      "area": "toolchain",
+      "check": "go-directive",
+      "status": "ok",
+      "phase": "none",
+      "current": "go 1.27",
+      "canon": "go 1.27, the minor only, and no toolchain line",
+      "fix": ""
+    },
+    {
+      "area": "lint",
+      "check": "config",
+      "status": "ok",
+      "phase": "none",
+      "current": ".golangci.yml, version: 2",
+      "canon": "a .golangci.yml at the root, golangci-lint v2 (version: \"2\")",
+      "fix": ""
+    },
+    {
+      "area": "lint",
+      "check": "linters",
+      "status": "ok",
+      "phase": "none",
+      "current": "enabled: govet, staticcheck, errcheck, errorlint, nilerr, nilnesserr, bodyclose, noctx, fatcontext, copyloopvar, recvcheck, ineffassign, unused, unparam, modernize, exptostd, intrange, perfsprint, usetesting, depguard, gomoddirectives, gocritic, revive, misspell, unconvert, gosec, ginkgolinter, sloglint",
+      "canon": "every linter templates/.golangci.yml enables",
+      "fix": ""
+    },
+    {
+      "area": "lint",
+      "check": "formatters",
+      "status": "ok",
+      "phase": "none",
+      "current": "enabled: gofmt, gofumpt, goimports",
+      "canon": "the formatters templates/.golangci.yml enables",
+      "fix": ""
+    },
+    {
+      "area": "lint",
+      "check": "max-issues",
+      "status": "ok",
+      "phase": "none",
+      "current": "max-issues-per-linter: 0, max-same-issues: 0",
+      "canon": "issues.max-issues-per-linter and max-same-issues are both 0",
+      "fix": ""
+    },
+    {
+      "area": "makefile",
+      "check": "present",
+      "status": "ok",
+      "phase": "none",
+      "current": "Makefile",
+      "canon": "a Makefile at the repository root",
+      "fix": ""
+    },
+    {
+      "area": "makefile",
+      "check": "targets",
+      "status": "ok",
+      "phase": "none",
+      "current": "defined: help, print-golangci-version, tools, build, generate, generate-check, fmt, fmt-check, vet, lint, fix, fix-check, tidy, tidy-check, test, check",
+      "canon": "every target templates/Makefile defines",
+      "fix": ""
+    },
+    {
+      "area": "makefile",
+      "check": "golangci-version",
+      "status": "ok",
+      "phase": "none",
+      "current": "GOLANGCI_LINT_VERSION defined",
+      "canon": "GOLANGCI_LINT_VERSION is defined in the Makefile",
+      "fix": ""
+    },
+    {
+      "area": "ci",
+      "check": "setup-go",
+      "status": "ok",
+      "phase": "none",
+      "current": ".github/workflows/ci.yml, .github/workflows/release.yml",
+      "canon": "a workflow sets Go up with go-version-file: go.mod",
+      "fix": ""
+    },
+    {
+      "area": "ci",
+      "check": "race",
+      "status": "ok",
+      "phase": "none",
+      "current": ".github/workflows/ci.yml",
+      "canon": "a workflow runs the suite with the race detector",
+      "fix": ""
+    },
+    {
+      "area": "ci",
+      "check": "lint",
+      "status": "ok",
+      "phase": "none",
+      "current": ".github/workflows/ci.yml",
+      "canon": "a workflow runs golangci/golangci-lint-action",
+      "fix": ""
+    },
+    {
+      "area": "ci",
+      "check": "checks",
+      "status": "ok",
+      "phase": "none",
+      "current": ".github/workflows/ci.yml",
+      "canon": "a workflow runs the go fix and go mod tidy checks",
+      "fix": ""
+    },
+    {
+      "area": "ci",
+      "check": "govulncheck",
+      "status": "ok",
+      "phase": "none",
+      "current": ".github/workflows/ci.yml",
+      "canon": "a workflow runs govulncheck over ./...",
+      "fix": ""
+    },
+    {
+      "area": "release",
+      "check": "goreleaser",
+      "status": "ok",
+      "phase": "none",
+      "current": ".goreleaser.yaml, version: 2",
+      "canon": ".goreleaser.yaml at the root, version: 2",
+      "fix": ""
+    },
+    {
+      "area": "release",
+      "check": "kos",
+      "status": "ok",
+      "phase": "none",
+      "current": "present: kos",
+      "canon": "a kos block builds the image from the same checkout",
+      "fix": ""
+    },
+    {
+      "area": "release",
+      "check": "sign-sbom",
+      "status": "ok",
+      "phase": "none",
+      "current": "present: signs, sboms",
+      "canon": "signs and sboms blocks: cosign over the checksums, syft over the archives",
+      "fix": ""
+    },
+    {
+      "area": "release",
+      "check": "workflow",
+      "status": "ok",
+      "phase": "none",
+      "current": ".github/workflows/release.yml",
+      "canon": "a workflow on v* tags runs goreleaser/goreleaser-action",
+      "fix": ""
+    },
+    {
+      "area": "release",
+      "check": "no-ldflags-x",
+      "status": "ok",
+      "phase": "none",
+      "current": "no -X ldflags",
+      "canon": "no -X ldflags anywhere; the version is the build stamp",
+      "fix": ""
+    },
+    {
+      "area": "dependabot",
+      "check": "gomod",
+      "status": "ok",
+      "phase": "none",
+      "current": "ecosystems: github-actions, gomod",
+      "canon": ".github/dependabot.yml carries a gomod updates entry",
+      "fix": ""
+    },
+    {
+      "area": "gitignore",
+      "check": "present",
+      "status": "ok",
+      "phase": "none",
+      "current": ".gitignore",
+      "canon": ".gitignore at the repository root",
+      "fix": ""
+    },
+    {
+      "area": "claude",
+      "check": "pointer",
+      "status": "ok",
+      "phase": "none",
+      "current": "pointer block present",
+      "canon": "CLAUDE.md carries the go-conventions pointer block",
+      "fix": ""
+    },
+    {
+      "area": "version",
+      "check": "package",
+      "status": "ok",
+      "phase": "none",
+      "current": "internal/version",
+      "canon": "internal/version reads debug.ReadBuildInfo",
+      "fix": ""
+    },
+    {
+      "area": "layout",
+      "check": "cmd",
+      "status": "ok",
+      "phase": "none",
+      "current": "every main package is under cmd/\u003cname\u003e",
+      "canon": "every package main lives in cmd/\u003cname\u003e",
+      "fix": ""
+    },
+    {
+      "area": "layout",
+      "check": "pkg-dir",
+      "status": "ok",
+      "phase": "none",
+      "current": "no pkg/",
+      "canon": "no pkg/ in a module that ships a binary",
+      "fix": ""
+    },
+    {
+      "area": "deps",
+      "check": "cli",
+      "status": "ok",
+      "phase": "none",
+      "current": "github.com/spf13/cobra",
+      "canon": "cobra builds every command tree",
+      "fix": ""
+    },
+    {
+      "area": "deps",
+      "check": "config",
+      "status": "ok",
+      "phase": "none",
+      "current": "github.com/spf13/viper",
+      "canon": "viper resolves flags, environment, and config file",
+      "fix": ""
+    },
+    {
+      "area": "deps",
+      "check": "testing",
+      "status": "ok",
+      "phase": "none",
+      "current": "ginkgo/v2, gomega",
+      "canon": "Ginkgo v2 and Gomega in every _test.go",
+      "fix": ""
+    },
+    {
+      "area": "deps",
+      "check": "fakes",
+      "status": "ok",
+      "phase": "none",
+      "current": "tool github.com/maxbrunsfeld/counterfeiter/v6",
+      "canon": "a tool directive for counterfeiter generates the fakes",
+      "fix": ""
+    },
+    {
+      "area": "deps",
+      "check": "logging",
+      "status": "ok",
+      "phase": "none",
+      "current": "log/slog",
+      "canon": "log/slog only, in every non-test file that logs",
+      "fix": ""
+    },
+    {
+      "area": "logging",
+      "check": "stderr-json",
+      "status": "ok",
+      "phase": "none",
+      "current": "slog.NewJSONHandler, never over os.Stdout",
+      "canon": "the JSON handler writes to stderr; stdout is program output",
+      "fix": ""
+    }
+  ],
+  "gaps": 0,
+  "tooling": 0,
+  "migration": 0,
+  "ok": 30,
+  "skipped": 0
+}

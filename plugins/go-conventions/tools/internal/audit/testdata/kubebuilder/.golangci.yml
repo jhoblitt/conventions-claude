@@ -1,0 +1,18 @@
+run:
+  deadline: 5m
+  allow-parallel-runners: true
+
+linters:
+  disable-all: true
+  enable:
+    - dupl
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - dupl

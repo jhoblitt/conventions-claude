@@ -1,0 +1,25 @@
+{
+  "name": "github-conventions",
+  "displayName": "GitHub Conventions",
+  "version": "0.0.0",
+  "description": "GitHub repository canon: new-repo creation (empty repo, protective ruleset, PR-populated), workflow hygiene (SHA-pinned actions, actionlint, least privilege), dependabot, CodeQL, dependency review, Scorecard, commitlint, and the commit, pull-request, CI-watching, and comment rules — with converge and new-repo skills",
+  "author": {
+    "name": "Joshua Hoblitt",
+    "email": "josh@hoblitt.com",
+    "url": "https://github.com/jhoblitt"
+  },
+  "homepage": "https://github.com/jhoblitt/conventions-claude",
+  "repository": "https://github.com/jhoblitt/conventions-claude",
+  "license": "Apache-2.0",
+  "keywords": [
+    "github",
+    "github-actions",
+    "repository-hygiene",
+    "dependabot",
+    "codeql",
+    "scorecard",
+    "commitlint",
+    "conventional-commits",
+    "pull-requests"
+  ]
+}

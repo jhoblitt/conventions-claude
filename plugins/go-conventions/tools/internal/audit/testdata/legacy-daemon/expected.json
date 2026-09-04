@@ -1,0 +1,297 @@
+{
+  "rows": [
+    {
+      "area": "toolchain",
+      "check": "go-directive",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "go 1.25.0",
+      "canon": "go 1.27, the minor only, and no toolchain line",
+      "fix": "set go 1.27 in go.mod and drop any toolchain line"
+    },
+    {
+      "area": "lint",
+      "check": "config",
+      "status": "ok",
+      "phase": "none",
+      "current": ".golangci.yml, version: 2",
+      "canon": "a .golangci.yml at the root, golangci-lint v2 (version: \"2\")",
+      "fix": ""
+    },
+    {
+      "area": "lint",
+      "check": "linters",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "missing: staticcheck, errorlint, nilerr, nilnesserr, bodyclose, noctx, fatcontext, copyloopvar, recvcheck, ineffassign, unused, unparam, modernize, exptostd, intrange, perfsprint, usetesting, depguard, gomoddirectives, gocritic, revive, misspell, unconvert, gosec, ginkgolinter, sloglint",
+      "canon": "every linter templates/.golangci.yml enables",
+      "fix": "regenerate: goconv-audit --emit-golangci"
+    },
+    {
+      "area": "lint",
+      "check": "formatters",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "missing: gofmt, gofumpt, goimports",
+      "canon": "the formatters templates/.golangci.yml enables",
+      "fix": "regenerate: goconv-audit --emit-golangci"
+    },
+    {
+      "area": "lint",
+      "check": "max-issues",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "max-issues-per-linter: unset, max-same-issues: unset",
+      "canon": "issues.max-issues-per-linter and max-same-issues are both 0",
+      "fix": "regenerate: goconv-audit --emit-golangci"
+    },
+    {
+      "area": "makefile",
+      "check": "present",
+      "status": "ok",
+      "phase": "none",
+      "current": "Makefile",
+      "canon": "a Makefile at the repository root",
+      "fix": ""
+    },
+    {
+      "area": "makefile",
+      "check": "targets",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "missing: help, print-golangci-version, tools, generate, generate-check, fmt, fmt-check, vet, lint, fix, fix-check, tidy, tidy-check, check",
+      "canon": "every target templates/Makefile defines",
+      "fix": "copy templates/Makefile"
+    },
+    {
+      "area": "makefile",
+      "check": "golangci-version",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "GOLANGCI_LINT_VERSION is not defined",
+      "canon": "GOLANGCI_LINT_VERSION is defined in the Makefile",
+      "fix": "copy templates/Makefile"
+    },
+    {
+      "area": "ci",
+      "check": "setup-go",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no workflow sets go-version-file: go.mod",
+      "canon": "a workflow sets Go up with go-version-file: go.mod",
+      "fix": "copy templates/ci.yml to .github/workflows/"
+    },
+    {
+      "area": "ci",
+      "check": "race",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no run: block runs go test -race or make test",
+      "canon": "a workflow runs the suite with the race detector",
+      "fix": "copy templates/ci.yml to .github/workflows/"
+    },
+    {
+      "area": "ci",
+      "check": "lint",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no step uses golangci/golangci-lint-action",
+      "canon": "a workflow runs golangci/golangci-lint-action",
+      "fix": "copy templates/ci.yml to .github/workflows/"
+    },
+    {
+      "area": "ci",
+      "check": "checks",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no run: block runs fix-check and tidy-check",
+      "canon": "a workflow runs the go fix and go mod tidy checks",
+      "fix": "copy templates/ci.yml to .github/workflows/"
+    },
+    {
+      "area": "ci",
+      "check": "govulncheck",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no step or run: block runs govulncheck",
+      "canon": "a workflow runs govulncheck over ./...",
+      "fix": "copy templates/ci.yml to .github/workflows/"
+    },
+    {
+      "area": "release",
+      "check": "goreleaser",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no .goreleaser.yaml",
+      "canon": ".goreleaser.yaml at the root, version: 2",
+      "fix": "copy templates/.goreleaser.yaml"
+    },
+    {
+      "area": "release",
+      "check": "kos",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no readable .goreleaser.yaml",
+      "canon": "a kos block builds the image from the same checkout",
+      "fix": "copy templates/.goreleaser.yaml"
+    },
+    {
+      "area": "release",
+      "check": "sign-sbom",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no readable .goreleaser.yaml",
+      "canon": "signs and sboms blocks: cosign over the checksums, syft over the archives",
+      "fix": "copy templates/.goreleaser.yaml"
+    },
+    {
+      "area": "release",
+      "check": "workflow",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no workflow runs goreleaser on a v* tag",
+      "canon": "a workflow on v* tags runs goreleaser/goreleaser-action",
+      "fix": "copy templates/release.yml to .github/workflows/"
+    },
+    {
+      "area": "release",
+      "check": "no-ldflags-x",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "-X in: .github/workflows/release.yml, Makefile",
+      "canon": "no -X ldflags anywhere; the version is the build stamp",
+      "fix": "drop the -X ldflags; internal/version reads debug.ReadBuildInfo"
+    },
+    {
+      "area": "dependabot",
+      "check": "gomod",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no .github/dependabot.yml",
+      "canon": ".github/dependabot.yml carries a gomod updates entry",
+      "fix": "append templates/dependabot-gomod.yml under the existing updates: list"
+    },
+    {
+      "area": "gitignore",
+      "check": "present",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no .gitignore",
+      "canon": ".gitignore at the repository root",
+      "fix": "merge templates/.gitignore into the repository's"
+    },
+    {
+      "area": "claude",
+      "check": "pointer",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no CLAUDE.md",
+      "canon": "CLAUDE.md carries the go-conventions pointer block",
+      "fix": "insert templates/CLAUDE-pointer.md between its markers"
+    },
+    {
+      "area": "version",
+      "check": "package",
+      "status": "gap",
+      "phase": "tooling",
+      "current": "no internal/version",
+      "canon": "internal/version reads debug.ReadBuildInfo",
+      "fix": "copy templates/version.go to internal/version/"
+    },
+    {
+      "area": "layout",
+      "check": "cmd",
+      "status": "gap",
+      "phase": "migration",
+      "current": "main packages outside cmd/\u003cname\u003e: .",
+      "canon": "every package main lives in cmd/\u003cname\u003e",
+      "fix": "migrate area: layout"
+    },
+    {
+      "area": "layout",
+      "check": "pkg-dir",
+      "status": "ok",
+      "phase": "none",
+      "current": "no pkg/",
+      "canon": "no pkg/ in a module that ships a binary",
+      "fix": ""
+    },
+    {
+      "area": "deps",
+      "check": "cli",
+      "status": "gap",
+      "phase": "migration",
+      "current": "not imported",
+      "canon": "cobra builds every command tree",
+      "fix": "migrate area: cli"
+    },
+    {
+      "area": "deps",
+      "check": "config",
+      "status": "gap",
+      "phase": "migration",
+      "current": "not imported",
+      "canon": "viper resolves flags, environment, and config file",
+      "fix": "migrate area: cli"
+    },
+    {
+      "area": "deps",
+      "check": "testing",
+      "status": "ok",
+      "phase": "none",
+      "current": "ginkgo/v2, gomega",
+      "canon": "Ginkgo v2 and Gomega in every _test.go",
+      "fix": ""
+    },
+    {
+      "area": "deps",
+      "check": "fakes",
+      "status": "gap",
+      "phase": "migration",
+      "current": "no tool directive",
+      "canon": "a tool directive for counterfeiter generates the fakes",
+      "fix": "migrate area: testing"
+    },
+    {
+      "area": "deps",
+      "check": "logging",
+      "status": "gap",
+      "phase": "migration",
+      "current": "imports: log",
+      "canon": "log/slog only, in every non-test file that logs",
+      "fix": "migrate area: logging"
+    },
+    {
+      "area": "logging",
+      "check": "stderr-json",
+      "status": "gap",
+      "phase": "migration",
+      "current": "handler over os.Stdout in: main.go",
+      "canon": "the JSON handler writes to stderr; stdout is program output",
+      "fix": "migrate area: logging"
+    },
+    {
+      "area": "deps",
+      "check": "flag",
+      "status": "gap",
+      "phase": "migration",
+      "current": "imported by: main.go",
+      "canon": "cobra, never the stdlib flag package",
+      "fix": "migrate area: cli"
+    },
+    {
+      "area": "deps",
+      "check": "github.com/pkg/errors",
+      "status": "gap",
+      "phase": "migration",
+      "current": "imported by: main.go, store/store.go",
+      "canon": "errors and fmt.Errorf with %w",
+      "fix": "migrate area: errors"
+    }
+  ],
+  "gaps": 28,
+  "tooling": 20,
+  "migration": 8,
+  "ok": 4,
+  "skipped": 0
+}

@@ -1,0 +1,26 @@
+{
+  "name": "conventions-claude",
+  "description": "Claude Code plugins that stop convention drift: a Go house canon (Go 1.27, cobra/viper, log/slog, Ginkgo, golangci-lint, goreleaser) with converge, review, and scaffold skills, and a GitHub repository canon (rulesets, pinned actions, dependabot, CodeQL, Scorecard, commitlint, PR and commit practice) with its own converge and new-repo skills",
+  "owner": {
+    "name": "Joshua Hoblitt",
+    "url": "https://github.com/jhoblitt"
+  },
+  "plugins": [
+    {
+      "name": "github-conventions",
+      "source": "./plugins/github-conventions",
+      "description": "How a GitHub repository is created and kept hygienic — rulesets, SHA-pinned actions, dependabot, CodeQL, Scorecard, dependency review, commitlint — and how commits, pull requests, CI watching, and GitHub comments are handled; audits and converges an existing repo, scaffolds a new one",
+      "author": {
+        "name": "Joshua Hoblitt"
+      }
+    },
+    {
+      "name": "go-conventions",
+      "source": "./plugins/go-conventions",
+      "description": "How Go code is written, tested, logged, linted, built, and released — Go 1.27, cobra/viper, log/slog, Ginkgo, the golangci-lint house tier, goreleaser with ko — plus skills to converge an existing repo, review a Go diff, and scaffold a new project; depends on github-conventions",
+      "author": {
+        "name": "Joshua Hoblitt"
+      }
+    }
+  ]
+}
