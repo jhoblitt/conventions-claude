@@ -1,0 +1,127 @@
+{
+  "rows": [
+    {
+      "area": "license",
+      "check": "present",
+      "status": "gap",
+      "current": "no LICENSE file",
+      "canon": "LICENSE exists at the repository root",
+      "fix": "copy templates/LICENSE"
+    },
+    {
+      "area": "license",
+      "check": "apache-2.0",
+      "status": "gap",
+      "current": "no LICENSE file",
+      "canon": "Apache-2.0, or the license the repository already carries",
+      "fix": "copy templates/LICENSE"
+    },
+    {
+      "area": "readme",
+      "check": "present",
+      "status": "gap",
+      "current": "no README.md",
+      "canon": "README.md exists at the repository root",
+      "fix": "copy templates/README.md"
+    },
+    {
+      "area": "readme",
+      "check": "scorecard-badge",
+      "status": "gap",
+      "current": "no README.md",
+      "canon": "README.md carries the OpenSSF Scorecard badge",
+      "fix": "copy templates/README.md"
+    },
+    {
+      "area": "dependabot",
+      "check": "present",
+      "status": "gap",
+      "current": "no .github/dependabot.yml",
+      "canon": ".github/dependabot.yml exists",
+      "fix": "copy templates/dependabot.yml to .github/"
+    },
+    {
+      "area": "dependabot",
+      "check": "github-actions",
+      "status": "gap",
+      "current": "no .github/dependabot.yml",
+      "canon": "an updates[] entry sets package-ecosystem: github-actions",
+      "fix": "copy templates/dependabot.yml to .github/"
+    },
+    {
+      "area": "security",
+      "check": "codeql",
+      "status": "gap",
+      "current": "no step uses github/codeql-action/init",
+      "canon": "a workflow runs github/codeql-action/init",
+      "fix": "copy templates/codeql.yml to .github/workflows/"
+    },
+    {
+      "area": "security",
+      "check": "dependency-review",
+      "status": "gap",
+      "current": "no step uses actions/dependency-review-action",
+      "canon": "a workflow runs actions/dependency-review-action",
+      "fix": "copy templates/dependency-review.yml to .github/workflows/"
+    },
+    {
+      "area": "security",
+      "check": "scorecard",
+      "status": "gap",
+      "current": "no step uses ossf/scorecard-action",
+      "canon": "a workflow runs ossf/scorecard-action",
+      "fix": "copy templates/scorecard.yml to .github/workflows/"
+    },
+    {
+      "area": "workflow-lint",
+      "check": "actionlint",
+      "status": "gap",
+      "current": "no run: block invokes actionlint",
+      "canon": "a workflow runs actionlint over .github/workflows",
+      "fix": "copy templates/workflow-lint.yml to .github/workflows/"
+    },
+    {
+      "area": "workflow-lint",
+      "check": "pin-check",
+      "status": "gap",
+      "current": "no run: block greps for [0-9a-f]{40}",
+      "canon": "a workflow fails any uses: not pinned to a 40-hex SHA",
+      "fix": "copy templates/workflow-lint.yml to .github/workflows/"
+    },
+    {
+      "area": "commitlint",
+      "check": "config",
+      "status": "gap",
+      "current": "no .commitlintrc.yml",
+      "canon": ".commitlintrc.yml exists at the repository root",
+      "fix": "copy templates/.commitlintrc.yml"
+    },
+    {
+      "area": "commitlint",
+      "check": "workflow",
+      "status": "gap",
+      "current": "no step uses wagoid/commitlint-github-action",
+      "canon": "a workflow runs wagoid/commitlint-github-action on pull requests",
+      "fix": "copy templates/commitlint.yml to .github/workflows/"
+    },
+    {
+      "area": "commitlint",
+      "check": "breaking-footer",
+      "status": "gap",
+      "current": "no .github/scripts/check-breaking-footer.sh",
+      "canon": ".github/scripts/check-breaking-footer.sh exists",
+      "fix": "copy templates/check-breaking-footer.sh to .github/scripts/"
+    },
+    {
+      "area": "ruleset",
+      "check": "default-branch",
+      "status": "skipped",
+      "current": "not checked (--remote not given)",
+      "canon": "an active branch ruleset on ~DEFAULT_BRANCH with deletion and non_fast_forward rules",
+      "fix": ""
+    }
+  ],
+  "gaps": 14,
+  "ok": 0,
+  "skipped": 1
+}

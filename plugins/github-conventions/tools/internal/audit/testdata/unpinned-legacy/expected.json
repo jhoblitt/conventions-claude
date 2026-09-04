@@ -1,0 +1,207 @@
+{
+  "rows": [
+    {
+      "area": "license",
+      "check": "present",
+      "status": "ok",
+      "current": "LICENSE",
+      "canon": "LICENSE exists at the repository root",
+      "fix": ""
+    },
+    {
+      "area": "license",
+      "check": "apache-2.0",
+      "status": "ok",
+      "current": "MIT",
+      "canon": "Apache-2.0, or the license the repository already carries",
+      "fix": ""
+    },
+    {
+      "area": "readme",
+      "check": "present",
+      "status": "ok",
+      "current": "README.md",
+      "canon": "README.md exists at the repository root",
+      "fix": ""
+    },
+    {
+      "area": "readme",
+      "check": "scorecard-badge",
+      "status": "gap",
+      "current": "no scorecard badge",
+      "canon": "README.md carries the OpenSSF Scorecard badge",
+      "fix": "add the badge line from templates/README.md"
+    },
+    {
+      "area": "dependabot",
+      "check": "present",
+      "status": "gap",
+      "current": "no .github/dependabot.yml",
+      "canon": ".github/dependabot.yml exists",
+      "fix": "copy templates/dependabot.yml to .github/"
+    },
+    {
+      "area": "dependabot",
+      "check": "github-actions",
+      "status": "gap",
+      "current": "no .github/dependabot.yml",
+      "canon": "an updates[] entry sets package-ecosystem: github-actions",
+      "fix": "copy templates/dependabot.yml to .github/"
+    },
+    {
+      "area": "workflows",
+      "check": "pinned:ci.yaml",
+      "status": "gap",
+      "current": "unpinned: actions/checkout@v3, actions/setup-go@v4, actions/checkout@v3",
+      "canon": "every uses: ends in a 40-hex commit SHA with a # v… comment",
+      "fix": "run pinact run over .github/workflows"
+    },
+    {
+      "area": "workflows",
+      "check": "permissions:ci.yaml",
+      "status": "gap",
+      "current": "no top-level permissions key",
+      "canon": "a top-level permissions key, with no write scope",
+      "fix": "add a top-level permissions: contents: read"
+    },
+    {
+      "area": "workflows",
+      "check": "timeout:ci.yaml",
+      "status": "gap",
+      "current": "no timeout-minutes on: build, test",
+      "canon": "every job sets timeout-minutes",
+      "fix": "add timeout-minutes to each job"
+    },
+    {
+      "area": "workflows",
+      "check": "concurrency:ci.yaml",
+      "status": "gap",
+      "current": "no top-level concurrency key",
+      "canon": "a top-level concurrency key",
+      "fix": "add a top-level concurrency group keyed on the workflow and the ref"
+    },
+    {
+      "area": "workflows",
+      "check": "checkout-credentials:ci.yaml",
+      "status": "gap",
+      "current": "persist-credentials not false on 2 of 2",
+      "canon": "every actions/checkout step sets with.persist-credentials: false",
+      "fix": "add with.persist-credentials: false to every actions/checkout step"
+    },
+    {
+      "area": "workflows",
+      "check": "pinned:stale.yml",
+      "status": "gap",
+      "current": "unpinned: actions/stale@v9",
+      "canon": "every uses: ends in a 40-hex commit SHA with a # v… comment",
+      "fix": "run pinact run over .github/workflows"
+    },
+    {
+      "area": "workflows",
+      "check": "permissions:stale.yml",
+      "status": "gap",
+      "current": "permissions: write-all",
+      "canon": "a top-level permissions key, with no write scope",
+      "fix": "move the write scopes onto the jobs that need them"
+    },
+    {
+      "area": "workflows",
+      "check": "timeout:stale.yml",
+      "status": "gap",
+      "current": "no timeout-minutes on: stale",
+      "canon": "every job sets timeout-minutes",
+      "fix": "add timeout-minutes to each job"
+    },
+    {
+      "area": "workflows",
+      "check": "concurrency:stale.yml",
+      "status": "gap",
+      "current": "no top-level concurrency key",
+      "canon": "a top-level concurrency key",
+      "fix": "add a top-level concurrency group keyed on the workflow and the ref"
+    },
+    {
+      "area": "workflows",
+      "check": "checkout-credentials:stale.yml",
+      "status": "ok",
+      "current": "no actions/checkout steps",
+      "canon": "every actions/checkout step sets with.persist-credentials: false",
+      "fix": ""
+    },
+    {
+      "area": "security",
+      "check": "codeql",
+      "status": "gap",
+      "current": "no step uses github/codeql-action/init",
+      "canon": "a workflow runs github/codeql-action/init",
+      "fix": "copy templates/codeql.yml to .github/workflows/"
+    },
+    {
+      "area": "security",
+      "check": "dependency-review",
+      "status": "gap",
+      "current": "no step uses actions/dependency-review-action",
+      "canon": "a workflow runs actions/dependency-review-action",
+      "fix": "copy templates/dependency-review.yml to .github/workflows/"
+    },
+    {
+      "area": "security",
+      "check": "scorecard",
+      "status": "gap",
+      "current": "no step uses ossf/scorecard-action",
+      "canon": "a workflow runs ossf/scorecard-action",
+      "fix": "copy templates/scorecard.yml to .github/workflows/"
+    },
+    {
+      "area": "workflow-lint",
+      "check": "actionlint",
+      "status": "gap",
+      "current": "no run: block invokes actionlint",
+      "canon": "a workflow runs actionlint over .github/workflows",
+      "fix": "copy templates/workflow-lint.yml to .github/workflows/"
+    },
+    {
+      "area": "workflow-lint",
+      "check": "pin-check",
+      "status": "gap",
+      "current": "no run: block greps for [0-9a-f]{40}",
+      "canon": "a workflow fails any uses: not pinned to a 40-hex SHA",
+      "fix": "copy templates/workflow-lint.yml to .github/workflows/"
+    },
+    {
+      "area": "commitlint",
+      "check": "config",
+      "status": "gap",
+      "current": "no .commitlintrc.yml",
+      "canon": ".commitlintrc.yml exists at the repository root",
+      "fix": "copy templates/.commitlintrc.yml"
+    },
+    {
+      "area": "commitlint",
+      "check": "workflow",
+      "status": "gap",
+      "current": "no step uses wagoid/commitlint-github-action",
+      "canon": "a workflow runs wagoid/commitlint-github-action on pull requests",
+      "fix": "copy templates/commitlint.yml to .github/workflows/"
+    },
+    {
+      "area": "commitlint",
+      "check": "breaking-footer",
+      "status": "gap",
+      "current": "no .github/scripts/check-breaking-footer.sh",
+      "canon": ".github/scripts/check-breaking-footer.sh exists",
+      "fix": "copy templates/check-breaking-footer.sh to .github/scripts/"
+    },
+    {
+      "area": "ruleset",
+      "check": "default-branch",
+      "status": "skipped",
+      "current": "not checked (--remote not given)",
+      "canon": "an active branch ruleset on ~DEFAULT_BRANCH with deletion and non_fast_forward rules",
+      "fix": ""
+    }
+  ],
+  "gaps": 20,
+  "ok": 4,
+  "skipped": 1
+}

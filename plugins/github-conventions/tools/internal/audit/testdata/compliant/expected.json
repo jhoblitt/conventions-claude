@@ -1,0 +1,327 @@
+{
+  "rows": [
+    {
+      "area": "license",
+      "check": "present",
+      "status": "ok",
+      "current": "LICENSE",
+      "canon": "LICENSE exists at the repository root",
+      "fix": ""
+    },
+    {
+      "area": "license",
+      "check": "apache-2.0",
+      "status": "ok",
+      "current": "Apache-2.0",
+      "canon": "Apache-2.0, or the license the repository already carries",
+      "fix": ""
+    },
+    {
+      "area": "readme",
+      "check": "present",
+      "status": "ok",
+      "current": "README.md",
+      "canon": "README.md exists at the repository root",
+      "fix": ""
+    },
+    {
+      "area": "readme",
+      "check": "scorecard-badge",
+      "status": "ok",
+      "current": "scorecard badge present",
+      "canon": "README.md carries the OpenSSF Scorecard badge",
+      "fix": ""
+    },
+    {
+      "area": "dependabot",
+      "check": "present",
+      "status": "ok",
+      "current": ".github/dependabot.yml",
+      "canon": ".github/dependabot.yml exists",
+      "fix": ""
+    },
+    {
+      "area": "dependabot",
+      "check": "github-actions",
+      "status": "ok",
+      "current": "ecosystems: github-actions",
+      "canon": "an updates[] entry sets package-ecosystem: github-actions",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "pinned:codeql.yml",
+      "status": "ok",
+      "current": "every uses: is SHA-pinned",
+      "canon": "every uses: ends in a 40-hex commit SHA with a # v… comment",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "permissions:codeql.yml",
+      "status": "ok",
+      "current": "contents: read",
+      "canon": "a top-level permissions key, with no write scope",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "timeout:codeql.yml",
+      "status": "ok",
+      "current": "1 job(s), all with timeout-minutes",
+      "canon": "every job sets timeout-minutes",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "concurrency:codeql.yml",
+      "status": "ok",
+      "current": "concurrency group set",
+      "canon": "a top-level concurrency key",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "checkout-credentials:codeql.yml",
+      "status": "ok",
+      "current": "persist-credentials: false on all 1",
+      "canon": "every actions/checkout step sets with.persist-credentials: false",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "pinned:commitlint.yml",
+      "status": "ok",
+      "current": "every uses: is SHA-pinned",
+      "canon": "every uses: ends in a 40-hex commit SHA with a # v… comment",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "permissions:commitlint.yml",
+      "status": "ok",
+      "current": "contents: read",
+      "canon": "a top-level permissions key, with no write scope",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "timeout:commitlint.yml",
+      "status": "ok",
+      "current": "1 job(s), all with timeout-minutes",
+      "canon": "every job sets timeout-minutes",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "concurrency:commitlint.yml",
+      "status": "ok",
+      "current": "concurrency group set",
+      "canon": "a top-level concurrency key",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "checkout-credentials:commitlint.yml",
+      "status": "ok",
+      "current": "persist-credentials: false on all 1",
+      "canon": "every actions/checkout step sets with.persist-credentials: false",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "pinned:dependency-review.yml",
+      "status": "ok",
+      "current": "every uses: is SHA-pinned",
+      "canon": "every uses: ends in a 40-hex commit SHA with a # v… comment",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "permissions:dependency-review.yml",
+      "status": "ok",
+      "current": "contents: read",
+      "canon": "a top-level permissions key, with no write scope",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "timeout:dependency-review.yml",
+      "status": "ok",
+      "current": "1 job(s), all with timeout-minutes",
+      "canon": "every job sets timeout-minutes",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "concurrency:dependency-review.yml",
+      "status": "ok",
+      "current": "concurrency group set",
+      "canon": "a top-level concurrency key",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "checkout-credentials:dependency-review.yml",
+      "status": "ok",
+      "current": "persist-credentials: false on all 1",
+      "canon": "every actions/checkout step sets with.persist-credentials: false",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "pinned:scorecard.yml",
+      "status": "ok",
+      "current": "every uses: is SHA-pinned",
+      "canon": "every uses: ends in a 40-hex commit SHA with a # v… comment",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "permissions:scorecard.yml",
+      "status": "ok",
+      "current": "contents: read",
+      "canon": "a top-level permissions key, with no write scope",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "timeout:scorecard.yml",
+      "status": "ok",
+      "current": "1 job(s), all with timeout-minutes",
+      "canon": "every job sets timeout-minutes",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "concurrency:scorecard.yml",
+      "status": "ok",
+      "current": "concurrency group set",
+      "canon": "a top-level concurrency key",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "checkout-credentials:scorecard.yml",
+      "status": "ok",
+      "current": "persist-credentials: false on all 1",
+      "canon": "every actions/checkout step sets with.persist-credentials: false",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "pinned:workflow-lint.yml",
+      "status": "ok",
+      "current": "every uses: is SHA-pinned",
+      "canon": "every uses: ends in a 40-hex commit SHA with a # v… comment",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "permissions:workflow-lint.yml",
+      "status": "ok",
+      "current": "contents: read",
+      "canon": "a top-level permissions key, with no write scope",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "timeout:workflow-lint.yml",
+      "status": "ok",
+      "current": "2 job(s), all with timeout-minutes",
+      "canon": "every job sets timeout-minutes",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "concurrency:workflow-lint.yml",
+      "status": "ok",
+      "current": "concurrency group set",
+      "canon": "a top-level concurrency key",
+      "fix": ""
+    },
+    {
+      "area": "workflows",
+      "check": "checkout-credentials:workflow-lint.yml",
+      "status": "ok",
+      "current": "persist-credentials: false on all 2",
+      "canon": "every actions/checkout step sets with.persist-credentials: false",
+      "fix": ""
+    },
+    {
+      "area": "security",
+      "check": "codeql",
+      "status": "ok",
+      "current": "codeql.yml",
+      "canon": "a workflow runs github/codeql-action/init",
+      "fix": ""
+    },
+    {
+      "area": "security",
+      "check": "dependency-review",
+      "status": "ok",
+      "current": "dependency-review.yml",
+      "canon": "a workflow runs actions/dependency-review-action",
+      "fix": ""
+    },
+    {
+      "area": "security",
+      "check": "scorecard",
+      "status": "ok",
+      "current": "scorecard.yml",
+      "canon": "a workflow runs ossf/scorecard-action",
+      "fix": ""
+    },
+    {
+      "area": "workflow-lint",
+      "check": "actionlint",
+      "status": "ok",
+      "current": "workflow-lint.yml",
+      "canon": "a workflow runs actionlint over .github/workflows",
+      "fix": ""
+    },
+    {
+      "area": "workflow-lint",
+      "check": "pin-check",
+      "status": "ok",
+      "current": "workflow-lint.yml",
+      "canon": "a workflow fails any uses: not pinned to a 40-hex SHA",
+      "fix": ""
+    },
+    {
+      "area": "commitlint",
+      "check": "config",
+      "status": "ok",
+      "current": ".commitlintrc.yml",
+      "canon": ".commitlintrc.yml exists at the repository root",
+      "fix": ""
+    },
+    {
+      "area": "commitlint",
+      "check": "workflow",
+      "status": "ok",
+      "current": "commitlint.yml",
+      "canon": "a workflow runs wagoid/commitlint-github-action on pull requests",
+      "fix": ""
+    },
+    {
+      "area": "commitlint",
+      "check": "breaking-footer",
+      "status": "ok",
+      "current": ".github/scripts/check-breaking-footer.sh",
+      "canon": ".github/scripts/check-breaking-footer.sh exists",
+      "fix": ""
+    },
+    {
+      "area": "ruleset",
+      "check": "default-branch",
+      "status": "skipped",
+      "current": "not checked (--remote not given)",
+      "canon": "an active branch ruleset on ~DEFAULT_BRANCH with deletion and non_fast_forward rules",
+      "fix": ""
+    }
+  ],
+  "gaps": 0,
+  "ok": 39,
+  "skipped": 1
+}
