@@ -1,0 +1,7 @@
+# `go build .` without -o drops the binary here, named for the module's last
+# path element. The sources are a flat package, so allowlist what belongs
+# rather than chase a name that changes with the directory.
+/*
+!/.gitignore
+!/*.go
+!/go.mod

@@ -1,0 +1,12 @@
+{
+  "description": "Formats a written .go file and, in a Go module, points the session at the go-conventions canon. Silent and free everywhere else.",
+  "hooks": {
+    "PostToolUse": [
+      {"matcher": "Write|Edit",
+       "hooks": [{"type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/goconv-hook.sh\" format", "timeout": 30}]}
+    ],
+    "SessionStart": [
+      {"hooks": [{"type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/goconv-hook.sh\" session-start", "timeout": 30}]}
+    ]
+  }
+}
