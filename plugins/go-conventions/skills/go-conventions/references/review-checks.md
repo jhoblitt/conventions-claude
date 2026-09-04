@@ -162,7 +162,7 @@ Godoc — the form is `references/errors-and-style.md`'s and its absence revive
 error semantics, ownership) and its truth: named parameters exist; claimed
 defaults, units, and error behavior match the implementation.
 
-Comments — accuracy before concision; the rule is `references/errors-and-style.md`'s.
+Comments — accuracy before concision; the rule is code-conventions' `references/comments.md`.
 
 - A comment that has drifted from the code it describes is a `comment` finding
   at changes-requested: the diff changed behavior and left the old description,

@@ -48,14 +48,14 @@ plugins:
     - changelogFile: CHANGELOG.md
   # semantic-release joins every plugin's generateNotes output in plugin
   # order, so exec's stdout lands after the commit-derived notes above.
-  # Both plugins share the marketplace version: one release bumps both
-  # manifests, which is the accepted cost of one marketplace, two plugins.
+  # Every plugin shares the marketplace version: one release bumps all the
+  # manifests, which is the accepted cost of one marketplace, three plugins.
   - - "@semantic-release/exec"
     - generateNotesCmd: >-
         .github/scripts/release-notes.sh
         "${nextRelease.gitTag}" "${lastRelease.gitTag || ''}"
       prepareCmd: >-
-        for p in go-conventions github-conventions; do
+        for p in go-conventions github-conventions code-conventions; do
         jq --arg v "${nextRelease.version}" '.version = $v'
         "plugins/$p/.claude-plugin/plugin.json" > plugin.json.tmp &&
         mv plugin.json.tmp "plugins/$p/.claude-plugin/plugin.json" || exit 1;
@@ -65,6 +65,7 @@ plugins:
         - CHANGELOG.md
         - plugins/go-conventions/.claude-plugin/plugin.json
         - plugins/github-conventions/.claude-plugin/plugin.json
+        - plugins/code-conventions/.claude-plugin/plugin.json
       message: "chore(release): ${nextRelease.version} [skip ci]"
   - - "@semantic-release/github"
     - successComment: false

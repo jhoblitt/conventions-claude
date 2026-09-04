@@ -1,10 +1,10 @@
 # AGENTS.md
 
 Notes for agents and humans changing this repository. This repo is a Claude
-Code plugin marketplace; the shipped product is two plugins,
-`plugins/go-conventions` and `plugins/github-conventions`, whose "code" is
-mostly instruction prose that steers a model. A prose defect here is a real
-defect.
+Code plugin marketplace; the shipped product is three plugins,
+`plugins/go-conventions`, `plugins/github-conventions` and
+`plugins/code-conventions`, whose "code" is mostly instruction prose that
+steers a model. A prose defect here is a real defect.
 
 The contribution mechanics — Conventional Commits, never bumping a plugin
 version by hand, and the checks CI runs — live in `README.md` under
@@ -15,14 +15,19 @@ version by hand, and the checks CI runs — live in `README.md` under
 Every rule has exactly one normative statement.
 
 - `plugins/github-conventions/skills/github-conventions/SKILL.md` owns the
-  precedence ladder both plugins share and its own routing table; each file
-  under its `references/` owns the rules of one area (new repos, workflows,
-  security, commits, pull requests).
+  precedence ladder all three plugins share and its own routing table; each
+  file under its `references/` owns the rules of one area (new repos,
+  workflows, security, commits, pull requests).
+- `plugins/code-conventions/skills/code-conventions/SKILL.md` owns that it
+  sits at the ladder's bottom, and its own routing table; the two files
+  under its `references/` own the rules that hold whatever the language is —
+  code navigation and comments.
 - `plugins/go-conventions/skills/go-conventions/SKILL.md` owns the one rung
   the Go canon adds to that ladder and its routing table; each file under
   its `references/` owns one area. Where a Go rule touches repository
-  hygiene, the Go reference points at the github-conventions reference and
-  states nothing of its own.
+  hygiene or a rule that holds in any language, the Go reference points at
+  the github-conventions or code-conventions reference and states nothing of
+  its own beyond Go's instance of it.
 - A file under a skill's `templates/` is the enforced form of a rule. Its
   header comment names the reference that owns the rule; the template
   carries no rule of its own.
@@ -46,9 +51,10 @@ rule, bounded by this table: a rendering carries only what its row says.
 | --- | --- |
 | `README.md`, intro and skills tables | each skill's name, one line on what it does, and when it triggers; the install commands; the scope of each plugin |
 | `README.md`, workflow diagrams | the phases, modes, gates, and fan-out of each procedural skill, drawn from its `SKILL.md` |
-| `README.md`, interaction map | which skill hands off to which, and the go → github dependency |
+| `README.md`, interaction map | which skill hands off to which, and the go → github and go → code dependencies |
 | `.claude-plugin/marketplace.json`, every `description` | the plugin names and the areas each covers |
 | `plugins/*/.claude-plugin/plugin.json`, `description` | the areas covered and the skill names |
+| `plugins/code-conventions/skills/code-conventions/SKILL.md`, "Precedence" | that this canon is the ladder's lowest rung, and that a more specific rule wins — so the plugin is correct when installed alone; the rungs themselves stay enumerated in github-conventions |
 | `plugins/*/skills/*/SKILL.md`, frontmatter `description` | triggering conditions only — never the procedure |
 | `plugins/*/agents/*.md`, frontmatter `description` | the agent's job in a line and how it is dispatched |
 | the SessionStart hook's `additionalContext` | the module path, the go directive, and the instruction to load the canon skill |
@@ -98,10 +104,10 @@ Adding a skill adds its diagram in the same PR. Removing one removes it.
 ### Reference skills are exempt
 
 A skill with no entry point, no ordered steps, and no output contract — one
-other skills consult rather than run — gets no workflow diagram. `go-conventions`
-and `github-conventions` (the canon skills) are the exempt case: references
-are read by trigger and skipped otherwise, and a report lands in the caller's
-output contract, not theirs.
+other skills consult rather than run — gets no workflow diagram.
+`go-conventions`, `github-conventions`, and `code-conventions` (the canon
+skills) are the exempt case: references are read by trigger and skipped
+otherwise, and a report lands in the caller's output contract, not theirs.
 
 An exemption claimed for a skill that in fact has phases or modes is a review
 blocker.

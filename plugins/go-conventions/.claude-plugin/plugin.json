@@ -24,6 +24,7 @@
     "code-review"
   ],
   "dependencies": [
-    "github-conventions"
+    "github-conventions",
+    "code-conventions"
   ]
 }

@@ -4,12 +4,13 @@
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/jhoblitt/conventions-claude/badge)](https://scorecard.dev/viewer/?uri=github.com/jhoblitt/conventions-claude)
 
 A [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces)
-with two plugins that stop convention drift: **go-conventions**, the house
+with three plugins that stop convention drift: **go-conventions**, the house
 canon for how Go code is written, tested, logged, linted, built, and
-released, and **github-conventions**, the canon for how a GitHub repository
-is created, kept hygienic, and worked on through commits and pull requests.
-go-conventions depends on github-conventions; installing the first installs
-both.
+released, **github-conventions**, the canon for how a GitHub repository is
+created, kept hygienic, and worked on through commits and pull requests, and
+**code-conventions**, the rules that hold whatever the language is — code
+navigation and comments. go-conventions depends on the other two; installing
+it installs all three.
 
 ## Install
 
@@ -28,7 +29,7 @@ claude plugin install go-conventions@conventions-claude
 ```
 
 A repository with no Go in it installs `github-conventions@conventions-claude`
-on its own.
+or `code-conventions@conventions-claude` on its own.
 
 To pick up updates later:
 
@@ -51,11 +52,17 @@ index; it does not update the installed plugin.
 
 ## What's inside
 
+### code-conventions
+
+| Skill | What it does |
+| --- | --- |
+| `code-conventions` | The canon for any language. Loads when you navigate unfamiliar code — a definition, its callers, a type, a file's diagnostics — or write, review, or delete a comment. |
+
 ### github-conventions
 
 | Skill | What it does |
 | --- | --- |
-| `github-conventions` | The canon. Loads when you create a repository, edit a workflow or `dependabot.yml`, commit, rebase, open or update a pull request, watch CI, or post a GitHub comment. Owns the precedence ladder both plugins share. |
+| `github-conventions` | The canon. Loads when you create a repository, edit a workflow or `dependabot.yml`, commit, rebase, open or update a pull request, watch CI, or post a GitHub comment. Owns the precedence ladder all three plugins share. |
 | `/github-conventions:github-converge` | Audits an existing repository against the canon and applies the file half on a branch. |
 | `/github-conventions:github-new-repo` | Creates a repository the house way: empty, ruleset-protected, populated by a draft pull request. |
 
@@ -171,7 +178,9 @@ flowchart TD
 flowchart TD
   GOC["go-conventions<br/>the Go canon"]
   GHC["github-conventions<br/>the repository canon"]
+  CC["code-conventions<br/>the any-language canon"]
   GOC -.->|precedence ladder, workflow hygiene, commits, pull requests| GHC
+  GOC -.->|code navigation, comments| CC
   NP["/go-conventions:go-new-project"] --> GOC
   NP -.->|hands off| NR["/github-conventions:github-new-repo"]
   NR --> GHC
@@ -213,7 +222,7 @@ enforces this on every PR — and releasing is automated: on each merge to
 `main`, [semantic-release](https://github.com/semantic-release/semantic-release)
 derives the next version from the commit types in the changeset (`fix:`,
 `docs:`, `refactor:`, `perf:` → patch; `feat:` → minor; a breaking change →
-major; other types cut no release), writes it into both plugin manifests and
+major; other types cut no release), writes it into every plugin manifest and
 `CHANGELOG.md`, tags, and publishes a GitHub release. Never bump a plugin
 version in a PR — the release commit owns that field.
 
