@@ -1,7 +1,7 @@
 // Command ghconv-audit reports where a repository diverges from the
 // github-conventions canon, as a markdown table or as JSON.
 //
-// Spec: skills/github-converge/SKILL.md
+// Spec: skills/github-converge/references/ghconv-audit.md
 // Callers: skills/github-converge/SKILL.md, skills/github-conventions/SKILL.md
 package main
 

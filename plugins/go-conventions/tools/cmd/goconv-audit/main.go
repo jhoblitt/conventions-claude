@@ -2,7 +2,7 @@
 // go-conventions canon, emits the house lint config for its current imports,
 // and lists the files an area's migration touches.
 //
-// Spec: skills/go-converge/SKILL.md
+// Spec: skills/go-converge/references/goconv-audit.md
 // Callers: skills/go-converge/SKILL.md, skills/go-review/SKILL.md,
 // skills/go-conventions/SKILL.md
 package main

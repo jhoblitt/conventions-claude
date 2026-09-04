@@ -65,4 +65,5 @@ bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" ghconv-audit [--json|--markdown] [--re
 Audits a repository against this canon and prints the gap table. The
 launcher fails loud: a non-zero exit is a real failure, never an empty
 result. The output contract — rows, statuses, the summary line — is owned
-by `github-converge` (`skills/github-converge/SKILL.md`), not defined here.
+by `github-converge` (`skills/github-converge/references/ghconv-audit.md`),
+not defined here.

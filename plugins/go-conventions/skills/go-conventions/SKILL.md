@@ -69,7 +69,7 @@ bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" goconv-audit [--json|--markdown|--emit
 Audits a repository against this canon; emits the house lint config for the
 repository's imports; lists the files an area's migration touches. The
 launcher fails loud: a non-zero exit is a real failure, never an empty
-result. Its contract is `skills/go-converge/SKILL.md`'s.
+result. Its contract is `skills/go-converge/references/goconv-audit.md`.
 
 ## Ginkgo how-to
 
