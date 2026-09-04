@@ -1,11 +1,10 @@
 # Errors, context, and style
 
 Owns error handling, context, goroutine lifetimes, the modern-Go position
-and idiom inventory, comments and godoc, and the standard-library defaults
-for HTTP, JSON, and randomness. Runs under `SKILL.md`'s precedence and
-routing. The review consequences of each rule are `references/review-checks.md`;
-the linters that enforce the literal forms are `templates/.golangci.yml`
-(`references/lint.md`).
+and idiom inventory, godoc, and the standard-library defaults for HTTP, JSON,
+and randomness. Runs under `SKILL.md`'s precedence and routing. The review
+consequences of each rule are `references/review-checks.md`; the linters that
+enforce the literal forms are `templates/.golangci.yml` (`references/lint.md`).
 
 ## Errors
 
@@ -60,18 +59,8 @@ own change. The inventory:
 
 ## Comments
 
-- A comment earns its place by saying what the code cannot: a non-obvious
-  why, a constraint, a gotcha, an external reference. Code that needs
-  narration to be understood is rewritten, not annotated.
-- A comment that restates the code is deleted on sight. The signals: it
-  restates the signature or the next line; it narrates control flow
-  ("loop over the items"); it is a block comment out of proportion to the
-  package's comment density; it is process or prompt residue ("as
-  requested", "updated per review", `TODO(ai)`, "the user"). The remedy is
-  deletion, not rewording: keep any real why, cut the rest.
-- A comment orphaned by an edit — the predicate, workaround, or constraint
-  it explained is gone — is deleted in the same edit; deleting beats
-  updating.
+The rule is code-conventions' `references/comments.md`, and it holds for Go
+unchanged. Godoc, below, is what Go adds.
 
 ## Godoc
 

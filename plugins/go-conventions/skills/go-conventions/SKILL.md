@@ -12,26 +12,27 @@ It is consulted, not run: `go-converge` audits and converges an existing
 repository against it, `go-review` reviews a Go diff against it,
 `go-new-project` scaffolds a new one from it. A path of the form
 `references/<file>` or `templates/<file>` is relative to this skill's
-directory; "github-conventions' `references/<file>`" is the sibling plugin's.
-A file under `templates/` is the enforced form of a rule, never its home;
-where each lands is `skills/go-new-project/SKILL.md`'s.
+directory; one prefixed with a sibling plugin's name — "github-conventions'
+`references/<file>`", "code-conventions' `references/<file>`" — is that
+plugin's. A file under `templates/` is the enforced form of a rule, never
+its home; where each lands is `skills/go-new-project/SKILL.md`'s.
 
 ## Precedence
 
 The ladder is github-conventions' `SKILL.md`, "Precedence". This canon
-depends on that plugin: if the Skill tool lists no `github-conventions:*`
-skill, stop and say to install it. This canon adds one rung, and this
-section is its home: between the repository's own `CLAUDE.md` and this
-canon sits the surrounding package's consistent idiom. A change that
-matches that idiom is correct where this canon disagrees; a new pattern
-inconsistent with the package is the finding, not the package's deviation
-from canon. `references/review-checks.md` applies the rung; nothing
-restates it.
+depends on both sibling plugins: if the Skill tool lists no
+`github-conventions:*` or no `code-conventions:*` skill, stop and say to
+install it. This canon adds one rung, and this section is its home: between
+the repository's own `CLAUDE.md` and this canon sits the surrounding
+package's consistent idiom. A change that matches that idiom is correct
+where this canon disagrees; a new pattern inconsistent with the package is
+the finding, not the package's deviation from canon.
+`references/review-checks.md` applies the rung; nothing restates it.
 
 ## Always
 
 - Go 1.27, a minor-only `go` directive — `references/toolchain.md`, "Go version".
-- gopls through the LSP tool before grep for semantic questions — `references/toolchain.md`, "Navigation".
+- gopls through the LSP tool before grep for semantic questions — code-conventions' `references/navigation.md`.
 - cobra and viper for every binary — `references/cli.md`.
 - `log/slog`, JSON to stderr — `references/logging.md`.
 - Ginkgo v2 and Gomega for every test — `references/testing.md`.
@@ -56,7 +57,8 @@ rules above apply to every trigger.
 | package layout, `main`, `internal/`, a new package | `references/layout.md` |
 | versioning, a release, goreleaser, a container image | `references/release.md`, and `references/layout.md`, "Version" |
 | the Makefile, a CI workflow, `.github/dependabot.yml` | `references/ci.md` |
-| errors, contexts, goroutines, comments, godoc, HTTP, JSON | `references/errors-and-style.md` |
+| errors, contexts, goroutines, godoc, HTTP, JSON | `references/errors-and-style.md` |
+| a comment: writing one, judging one, deleting one | code-conventions' `references/comments.md` |
 | a module importing `k8s.io/*` or `sigs.k8s.io/controller-runtime` | `references/kubernetes.md` |
 | reviewing a Go diff | `references/review-checks.md` |
 

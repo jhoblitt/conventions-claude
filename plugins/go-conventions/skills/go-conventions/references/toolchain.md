@@ -1,10 +1,11 @@
 # Toolchain
 
 Owns the Go version and the `go` directive, what each toolchain release
-changed that this canon leans on, `go fix`, code navigation, and the
-plugin's hooks. Runs under `SKILL.md`'s precedence and routing. The gates
-`go fix` feeds are `references/ci.md`, "Gates"; a `go fix` versus
-`modernize` disagreement is `references/lint.md`, "modernize and go fix".
+changed that this canon leans on, `go fix`, gopls as the module's language
+server, and the plugin's hooks. Runs under `SKILL.md`'s precedence and
+routing. The gates `go fix` feeds are `references/ci.md`, "Gates"; a `go fix`
+versus `modernize` disagreement is `references/lint.md`, "modernize and go
+fix".
 
 ## Go version
 
@@ -49,15 +50,9 @@ review oracle built on it is `references/review-checks.md`, "Modernization".
 
 ## Navigation
 
-- A semantic question — a symbol's definition, its references, its type,
-  the diagnostics on a file — goes to gopls through the LSP tool, not to
-  grep.
-- The LSP tool is usually deferred, not absent: load it with `ToolSearch`
-  (`select:LSP`) before concluding no language server covers the file.
-  Reading its absence from the tool list as "no server" silently downgrades
-  navigation to grep; lower-tier agents get this wrong without the hint.
-- grep stays for what it is better at: string and pattern searches, and
-  non-Go files.
+The rule, and the `ToolSearch` hint that keeps it from silently degrading,
+is code-conventions' `references/navigation.md`. In a Go module the server
+is gopls; grep keeps the non-Go files.
 
 ## Hooks
 
