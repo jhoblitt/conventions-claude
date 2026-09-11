@@ -1,3 +1,26 @@
+## [1.3.0](https://github.com/jhoblitt/conventions-claude/compare/v1.2.2...v1.3.0) (2026-09-11)
+
+### Features
+
+* **code-conventions:** comments and docs describe the present ([38b9928](https://github.com/jhoblitt/conventions-claude/commit/38b992854000e56292f89c5dc71d012d8bd3b680)), closes [#9](https://github.com/jhoblitt/conventions-claude/issues/9)
+* **github-conventions:** delete a merged PR's branch on new repositories ([491aeba](https://github.com/jhoblitt/conventions-claude/commit/491aeba93056ed7fad05de7eeba79f43e0c60aca)), closes [#8](https://github.com/jhoblitt/conventions-claude/issues/8)
+* **go-conventions:** build linux only and make the image opt-in ([77580a0](https://github.com/jhoblitt/conventions-claude/commit/77580a073129ee6b9387359cc0266cd0870130b4)), closes [#5](https://github.com/jhoblitt/conventions-claude/issues/5)
+
+### Bug Fixes
+
+* **github-conventions:** let commitlint accept sentence-case subjects ([cf47bb7](https://github.com/jhoblitt/conventions-claude/commit/cf47bb78d95f5a6feea09639c957342bcbe4cdc9)), closes [#6](https://github.com/jhoblitt/conventions-claude/issues/6)
+
+
+## What's Changed
+* Resolve the four open issues: doc tense, Dependabot commitlint, delete-branch-on-merge, linux-only releases with image opt-in by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/12
+
+### Resolved issues
+
+* [#5](https://github.com/jhoblitt/conventions-claude/issues/5) go-conventions: goreleaser template should not build darwin and windows by default
+* [#6](https://github.com/jhoblitt/conventions-claude/issues/6) github-conventions: commitlint template rejects Dependabot's sentence-case subjects
+* [#8](https://github.com/jhoblitt/conventions-claude/issues/8) github-conventions: new repositories are not set to delete branches on merge
+* [#9](https://github.com/jhoblitt/conventions-claude/issues/9) code-conventions: comments and docs describe the present, not the change
+
 ## [1.2.2](https://github.com/jhoblitt/conventions-claude/compare/v1.2.1...v1.2.2) (2026-09-11)
 
 ### Bug Fixes
