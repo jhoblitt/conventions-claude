@@ -1,3 +1,13 @@
+## [1.2.0](https://github.com/jhoblitt/conventions-claude/compare/v1.1.0...v1.2.0) (2026-09-11)
+
+### Features
+
+* **code-conventions:** add the chat-links reference ([7385c80](https://github.com/jhoblitt/conventions-claude/commit/7385c8036de74a8f3a43836fff4f7c2f1d948547))
+
+
+## What's Changed
+* feat(code-conventions): add the chat-links reference by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/10
+
 ## [1.1.0](https://github.com/jhoblitt/conventions-claude/compare/v1.0.0...v1.1.0) (2026-09-04)
 
 ### Features
