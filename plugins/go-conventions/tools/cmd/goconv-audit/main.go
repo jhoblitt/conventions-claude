@@ -1,10 +1,11 @@
 // Command goconv-audit reports where a Go repository diverges from the
-// go-conventions canon, emits the house lint config for its current imports,
-// and lists the files an area's migration touches.
+// go-conventions canon, emits the house lint config for its current imports
+// and the two release files rendered for it, and lists the files an area's
+// migration touches.
 //
 // Spec: skills/go-converge/references/goconv-audit.md
 // Callers: skills/go-converge/SKILL.md, skills/go-review/SKILL.md,
-// skills/go-conventions/SKILL.md
+// skills/go-conventions/SKILL.md, skills/go-new-project/SKILL.md
 package main
 
 import (

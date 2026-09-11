@@ -1,6 +1,6 @@
 ---
 name: github-converge
-description: Use when bringing an existing GitHub repository up to the github-conventions canon; auditing a repository's workflow hygiene, Dependabot, security workflows, commitlint, license, or branch ruleset; or asked what a repository is missing to match our conventions.
+description: Use when bringing an existing GitHub repository up to the github-conventions canon; auditing a repository's workflow hygiene, Dependabot, security workflows, commitlint, license, branch ruleset, or delete-branch-on-merge setting; or asked what a repository is missing to match our conventions.
 ---
 
 # Converge a repository on the github-conventions canon
@@ -45,12 +45,13 @@ output contract. Except where named as this skill's, `references/<file>` and
      "actionlint"). A `pinned:<file>` gap on a workflow this run would not
      otherwise touch is an existing-file edit like any other: pin, then gate.
    - One commit per audit area, message per `references/commits.md`.
-4. **GitHub-side changes.** The `ruleset` row, and any other fix that is
-   a `gh` write, never runs on this skill's authority. Show the exact
-   command — for the ruleset, the `gh api` line of
-   `references/new-repo.md`, "Creation", step 2, with `--input` at
-   `${CLAUDE_PLUGIN_ROOT}/skills/github-conventions/templates/ruleset.json`.
-   **Gate — the command is approved.** Run it only once that exact command
+4. **GitHub-side changes.** The `ruleset` and `repository` rows, and any
+   other fix that is a `gh` write, never run on this skill's authority.
+   Show the exact commands, in one message — for the ruleset, the `gh api`
+   line of `references/new-repo.md`, "Creation", step 2, with `--input` at
+   `${CLAUDE_PLUGIN_ROOT}/skills/github-conventions/templates/ruleset.json`;
+   for `delete-branch-on-merge`, the `gh repo edit` line of that same step.
+   **Gate — each command is approved.** Run one only once that exact command
    line, as shown, is approved in this session; a general go-ahead, a
    different command's approval, or an earlier session's is not that. The
    branch stays local: the user pushes it, or invokes the PR step —

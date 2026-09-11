@@ -47,8 +47,8 @@ type Options struct {
 	Dir string
 	// Remote enables the checks that need the GitHub API.
 	Remote bool
-	// Lookup fetches rulesets; nil means the gh CLI.
-	Lookup RulesetLookup
+	// Lookup answers the remote checks; nil means the gh CLI.
+	Lookup RemoteLookup
 	// Logger receives operational warnings; nil discards them.
 	Logger *slog.Logger
 }
@@ -77,7 +77,7 @@ func Run(ctx context.Context, opts Options) (Report, error) {
 	if err != nil {
 		return Report{}, err
 	}
-	rows = append(rows, rulesetRow(ctx, opts))
+	rows = append(rows, rulesetRow(ctx, opts), repositoryRow(ctx, opts))
 
 	report := Report{Rows: rows}
 	for _, row := range rows {

@@ -169,9 +169,8 @@ Comments — accuracy before concision; the rule is code-conventions' `reference
   or removed what the comment explained and kept the comment. One restating an
   invariant the change just broke is evidence for a code finding — check which
   is right first.
-- A restatement, process narration ("as requested" — commit-message material,
-  github-conventions' `references/commits.md`), or prompt residue (`TODO(ai)`)
-  is the deletion the rule mandates: nit each, changes-requested when pervasive.
+- Every other deletion the rule mandates is a `comment` finding at nit,
+  changes-requested when pervasive.
 - Proofread every changed comment word by word; misspell knows only its dictionary.
 
 ## Verification before reporting

@@ -294,6 +294,40 @@ var _ = Describe("Run", func() {
 	})
 
 	Describe("the release rows", func() {
+		// The image is an opt-in read as a pair; the fixtures reach only the
+		// missing-file skip and the compliant ok, so the rest are built here.
+		DescribeTable("reads the image opt-in as kos paired with docker_signs",
+			func(goreleaser string, want audit.Row) {
+				dir := GinkgoT().TempDir()
+				Expect(os.WriteFile(filepath.Join(dir, "go.mod"), []byte("module example.com/x\n\ngo 1.27\n"), 0o600)).To(Succeed())
+				if goreleaser != "" {
+					Expect(os.WriteFile(filepath.Join(dir, ".goreleaser.yaml"), []byte(goreleaser), 0o600)).To(Succeed())
+				}
+
+				report, err := audit.Run(audit.Options{Dir: dir, PluginRoot: pluginRoot})
+				Expect(err).NotTo(HaveOccurred())
+				Expect(rowFor(report, "release", "image")).To(SatisfyAll(
+					HaveField("Status", want.Status), HaveField("Phase", want.Phase),
+					HaveField("Current", want.Current), HaveField("Fix", want.Fix)))
+			},
+			Entry("no goreleaser config at all", "",
+				audit.Row{Status: audit.StatusSkipped, Phase: audit.PhaseNone, Current: "no readable .goreleaser.yaml"}),
+			Entry("a config with neither block", "version: 2\n",
+				audit.Row{Status: audit.StatusSkipped, Phase: audit.PhaseNone, Current: "no kos block: no image"}),
+			Entry("both blocks", "version: 2\nkos: [{id: x}]\ndocker_signs: [{cmd: cosign}]\n",
+				audit.Row{Status: audit.StatusOK, Phase: audit.PhaseNone, Current: "present: kos, docker_signs"}),
+			Entry("kos without docker_signs", "version: 2\nkos: [{id: x}]\n",
+				audit.Row{
+					Status: audit.StatusGap, Phase: audit.PhaseTooling, Current: "missing: docker_signs",
+					Fix: "regenerate: goconv-audit --emit-goreleaser",
+				}),
+			Entry("docker_signs without kos", "version: 2\ndocker_signs: [{cmd: cosign}]\n",
+				audit.Row{
+					Status: audit.StatusGap, Phase: audit.PhaseTooling, Current: "missing: kos",
+					Fix: "regenerate: goconv-audit --emit-goreleaser",
+				}),
+		)
+
 		It("finds -X in the Makefile and in a workflow run block", func() {
 			row := rowFor(run("legacy-daemon"), "release", "no-ldflags-x")
 			Expect(row.Status).To(Equal(audit.StatusGap))
@@ -327,7 +361,8 @@ var _ = Describe("Run", func() {
 
 // placeholders are the values testdata/compliant was rendered with; the spec
 // below re-renders every templated file and diffs it, so a template edit fails
-// here instead of leaving the fixture quietly stale.
+// here instead of leaving the fixture quietly stale. The two release templates
+// are the tool's to render, and release_test.go diffs those.
 var unfilled = regexp.MustCompile(`\{\{[A-Z][A-Z_]*\}\}`)
 
 var placeholders = map[string]string{
@@ -335,8 +370,6 @@ var placeholders = map[string]string{
 	"{{MODULES}}":       ".",
 	"{{BINARY}}":        "hello",
 	"{{ENV_PREFIX}}":    "HELLO",
-	"{{OWNER}}":         "example",
-	"{{REPO}}":          "hello",
 	"{{DESCRIPTION}}":   "greet the world",
 	"{{PACKAGE}}":       "cli",
 	"{{PACKAGE_TITLE}}": "CLI",
@@ -352,8 +385,7 @@ func canonTemplate(name string) string {
 	for token, value := range placeholders {
 		rendered = strings.ReplaceAll(rendered, token, value)
 	}
-	// Only a {{NAME}} token is filled at copy time; goreleaser's {{ .Version }}
-	// and a workflow's ${{ … }} survive rendering verbatim
+	// Only a {{NAME}} token is filled at copy time
 	// (references/layout.md, "Template placeholders").
 	Expect(unfilled.FindString(rendered)).To(BeEmpty(), "template %s has an unfilled placeholder", name)
 
@@ -371,8 +403,6 @@ var _ = Describe("the compliant fixture", func() {
 		Entry("the lint config", ".golangci.yml", ".golangci.yml"),
 		Entry("the Makefile", "Makefile", "Makefile"),
 		Entry("the CI workflow", "ci.yml", ".github/workflows/ci.yml"),
-		Entry("the release workflow", "release.yml", ".github/workflows/release.yml"),
-		Entry("the goreleaser config", ".goreleaser.yaml", ".goreleaser.yaml"),
 		Entry("the gitignore", ".gitignore", ".gitignore"),
 		Entry("the CLAUDE.md pointer", "CLAUDE-pointer.md", "CLAUDE.md"),
 		Entry("main", "main.go", "cmd/hello/main.go"),

@@ -21,10 +21,13 @@ Ask for each of these that was not given; never assume one:
 - **One-line description** of what the binary does.
 - **Environment prefix** — defaulted from the binary name.
 
-`{{OWNER}}` and `{{REPO}}` are the module path's last two elements for a
-`github.com/…` path and asked for otherwise. What each placeholder is filled
-with is `references/layout.md`, "Template placeholders"; this file owns only
-which template takes which, and where each lands.
+`{{OWNER}}` and `{{REPO}}` are derived from the module path by the tool that
+renders the release files, and asked for when it cannot (go-converge's
+`references/goconv-audit.md`). A container image is not an input: one is
+published only when the user asked for it, so `--image` is passed to that
+tool only then (`references/release.md`, "Images"). What each placeholder is
+filled with is `references/layout.md`, "Template placeholders"; this file
+owns only which template takes which, and where each lands.
 
 Scaffold into a directory whose `main` carries no commits. `github-new-repo`
 covers a tree that starts from `git init` and hands back one whose `main`
@@ -51,15 +54,20 @@ already has history rather than rewriting it (github-conventions'
    | `suite_test.go` | `internal/cli/cli_suite_test.go` | `{{PACKAGE}}`, `{{PACKAGE_TITLE}}` |
    | `.golangci.yml` | `.golangci.yml` | `{{MODULE}}` |
    | `Makefile` | `Makefile` | `{{MODULES}}` |
-   | `.goreleaser.yaml` | `.goreleaser.yaml` | `{{BINARY}}`, `{{OWNER}}`, `{{REPO}}` |
+   | `.goreleaser.yaml` | `.goreleaser.yaml` | filled by the tool |
    | `ci.yml` | `.github/workflows/ci.yml` | none |
-   | `release.yml` | `.github/workflows/release.yml` | `{{BINARY}}`, `{{OWNER}}`, `{{REPO}}` |
+   | `release.yml` | `.github/workflows/release.yml` | filled by the tool |
    | `.gitignore` | `.gitignore` | none |
    | `CLAUDE-pointer.md` | `CLAUDE.md` | `{{MODULE}}`, `{{BINARY}}`, `{{ENV_PREFIX}}` |
    | `dependabot-gomod.yml` | `.github/dependabot.yml` | none |
 
-   What each placeholder is filled with, and which `{{ … }}` token is not a
-   placeholder at all, is `references/layout.md`, "Template placeholders".
+   `.goreleaser.yaml` and `release.yml` are rendered by the tool, not copied:
+   `goconv-audit --emit-goreleaser --binary <binary> [--image]` and
+   `goconv-audit --emit-release-workflow --binary <binary> [--image]`, each
+   written to its destination, with `--owner <owner> --repo <repo>` added when
+   the tool asks for them. What each placeholder is filled with, and which
+   `{{ … }}` token is not a placeholder at all, is `references/layout.md`,
+   "Template placeholders".
    `CLAUDE.md` is a new file here; where one exists already the block goes at
    its end (`references/layout.md`, "Tree", owns its markers).
    `dependabot-gomod.yml` is one entry, not a file: how it lands with or
@@ -95,12 +103,25 @@ already has history rather than rewriting it (github-conventions'
    It lands every row of github-conventions' `references/new-repo.md`, "What
    lands where" — except the dependabot file step 2 already wrote, which gets
    its `github-actions` entry appended instead (github-conventions'
-   `references/workflows.md`, "Dependabot") — then creates the empty
-   repository, applies the ruleset, and opens the draft PR. Leave everything
-   rendered above uncommitted: that skill's step 1 commits the whole tree, this
-   scaffold's files included, on `init`. The canon depends on that plugin (`SKILL.md`, "Precedence"): if the
-   Skill tool lists no `github-conventions:*` skill, stop and say to install it.
+   `references/workflows.md`, "Dependabot") — then runs its own steps 2–4.
+   Leave everything rendered above uncommitted: that skill's step 1 commits
+   the whole tree, this scaffold's files included, on `init`. The canon
+   depends on that plugin (`SKILL.md`, "Precedence"): if the Skill tool lists
+   no `github-conventions:*` skill, stop and say to install it.
 
 7. **Report** the module path and the tree as scaffolded, then pass through
    what step 6 reported — repository, PR, CI watcher, skips — rather than
    restating it (github-conventions' `skills/github-new-repo/SKILL.md`, step 4).
+
+## Scripts
+
+```sh
+bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" goconv-audit --emit-goreleaser|--emit-release-workflow --binary <binary> [--owner <owner> --repo <repo>] [--image] [dir]
+```
+
+The launcher fails loud: a non-zero exit is a real failure, never an empty result.
+The tool's contract — what each rendering fills, what it derives from the tree,
+and what it rejects — is go-converge's `references/goconv-audit.md`, under that
+skill (`${CLAUDE_PLUGIN_ROOT}/skills/go-converge/references/goconv-audit.md`);
+what each placeholder is filled with stays `references/layout.md`, "Template
+placeholders".

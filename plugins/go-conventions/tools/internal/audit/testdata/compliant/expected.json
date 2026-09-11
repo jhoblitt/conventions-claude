@@ -128,11 +128,11 @@
     },
     {
       "area": "release",
-      "check": "kos",
+      "check": "image",
       "status": "ok",
       "phase": "none",
-      "current": "present: kos",
-      "canon": "a kos block builds the image from the same checkout",
+      "current": "present: kos, docker_signs",
+      "canon": "an image, when published, is a kos block paired with docker_signs",
       "fix": ""
     },
     {

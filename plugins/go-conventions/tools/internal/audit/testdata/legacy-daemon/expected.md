@@ -13,10 +13,10 @@
 | ci | lint | gap | tooling | no step uses golangci/golangci-lint-action | a workflow runs golangci/golangci-lint-action | copy templates/ci.yml to .github/workflows/ |
 | ci | checks | gap | tooling | no run: block runs fix-check and tidy-check | a workflow runs the go fix and go mod tidy checks | copy templates/ci.yml to .github/workflows/ |
 | ci | govulncheck | gap | tooling | no step or run: block runs govulncheck | a workflow runs govulncheck over ./... | copy templates/ci.yml to .github/workflows/ |
-| release | goreleaser | gap | tooling | no .goreleaser.yaml | .goreleaser.yaml at the root, version: 2 | copy templates/.goreleaser.yaml |
-| release | kos | gap | tooling | no readable .goreleaser.yaml | a kos block builds the image from the same checkout | copy templates/.goreleaser.yaml |
-| release | sign-sbom | gap | tooling | no readable .goreleaser.yaml | signs and sboms blocks: cosign over the checksums, syft over the archives | copy templates/.goreleaser.yaml |
-| release | workflow | gap | tooling | no workflow runs goreleaser on a v* tag | a workflow on v* tags runs goreleaser/goreleaser-action | copy templates/release.yml to .github/workflows/ |
+| release | goreleaser | gap | tooling | no .goreleaser.yaml | .goreleaser.yaml at the root, version: 2 | regenerate: goconv-audit --emit-goreleaser |
+| release | image | skipped | none | no readable .goreleaser.yaml | an image, when published, is a kos block paired with docker_signs |  |
+| release | sign-sbom | gap | tooling | no readable .goreleaser.yaml | signs and sboms blocks: cosign over the checksums, syft over the archives | regenerate: goconv-audit --emit-goreleaser |
+| release | workflow | gap | tooling | no workflow runs goreleaser on a v* tag | a workflow on v* tags runs goreleaser/goreleaser-action | regenerate: goconv-audit --emit-release-workflow |
 | release | no-ldflags-x | gap | tooling | -X in: .github/workflows/release.yml, Makefile | no -X ldflags anywhere; the version is the build stamp | drop the -X ldflags; internal/version reads debug.ReadBuildInfo |
 | dependabot | gomod | gap | tooling | no .github/dependabot.yml | .github/dependabot.yml carries a gomod updates entry | append templates/dependabot-gomod.yml under the existing updates: list |
 | gitignore | present | gap | tooling | no .gitignore | .gitignore at the repository root | merge templates/.gitignore into the repository's |
@@ -33,4 +33,4 @@
 | deps | flag | gap | migration | imported by: main.go | cobra, never the stdlib flag package | migrate area: cli |
 | deps | github.com/pkg/errors | gap | migration | imported by: main.go, store/store.go | errors and fmt.Errorf with %w | migrate area: errors |
 
-28 gaps (20 tooling, 8 migration), 4 ok, 0 skipped
+27 gaps (19 tooling, 8 migration), 4 ok, 1 skipped

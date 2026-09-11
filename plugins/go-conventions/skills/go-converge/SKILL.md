@@ -27,8 +27,12 @@ audit tool's output contract. Except where named as this skill's,
    in the table's order:
    - `toolchain` — the `go` directive and any `toolchain` line in `go.mod`.
      `lint` — `goconv-audit --emit-golangci <dir>` written to the config path.
-   - `makefile`, `ci`, `release`, `gitignore` — from `templates/`, placeholders
-     filled per `references/layout.md`, "Template placeholders".
+     `release` — `goconv-audit --emit-goreleaser <dir>` and
+     `goconv-audit --emit-release-workflow <dir>`, each captured and then
+     written where `skills/go-new-project/SKILL.md`, step 2, lands it, with
+     `--binary`, `--owner` or `--repo` added when the tool asks for one.
+   - `makefile`, `ci`, `gitignore` — from `templates/`, placeholders filled per
+     `references/layout.md`, "Template placeholders".
    - `dependabot` — `templates/dependabot-gomod.yml` appended under the existing
      `updates:` list (`references/ci.md`, "Dependabot"). `version` —
      `templates/version.go` into `internal/version/`. `claude` —
@@ -73,11 +77,12 @@ audit tool's output contract. Except where named as this skill's,
 ## Scripts
 
 ```sh
-bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" goconv-audit [--json|--markdown|--emit-golangci|--files <area>] [dir]
+bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" goconv-audit [--json|--markdown|--emit-golangci|--emit-goreleaser|--emit-release-workflow|--files <area>] [--binary <name>] [--owner <owner>] [--repo <repo>] [--image] [dir]
 ```
 
 The launcher fails loud: a non-zero exit is a real failure, never an empty result.
 `references/goconv-audit.md`, under this skill, is the tool's output contract —
 usage, exit codes, row fields, the check inventory, both renderings, and the
-`--emit-golangci` and `--files` flags. Read it when a row's meaning, or the canon
-a check measures, is not obvious from the table the tool printed.
+`--emit-golangci`, `--emit-goreleaser`, `--emit-release-workflow` and `--files`
+flags. Read it when a row's meaning, or the canon a check measures, is not
+obvious from the table the tool printed.

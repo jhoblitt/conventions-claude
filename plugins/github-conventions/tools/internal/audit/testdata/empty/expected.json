@@ -119,9 +119,17 @@
       "current": "not checked (--remote not given)",
       "canon": "an active branch ruleset on ~DEFAULT_BRANCH with deletion and non_fast_forward rules",
       "fix": ""
+    },
+    {
+      "area": "repository",
+      "check": "delete-branch-on-merge",
+      "status": "skipped",
+      "current": "not checked (--remote not given)",
+      "canon": "delete_branch_on_merge is on: a merged PR's branch is deleted",
+      "fix": ""
     }
   ],
   "gaps": 14,
   "ok": 0,
-  "skipped": 1
+  "skipped": 2
 }

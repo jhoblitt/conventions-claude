@@ -1,10 +1,10 @@
 # ghconv-audit output contract
 
 Owns what `ghconv-audit` prints and how it is read: the usage and exit
-codes, the row fields, the markdown and JSON renderings, the remote
-ruleset lookup, and the check inventory with the canon each check
-measures. Runs under `SKILL.md`'s procedure, and under its reading of
-`references/<file>` and `templates/<file>`.
+codes, the row fields, the markdown and JSON renderings, the `--remote`
+lookups, and the check inventory with the canon each check measures. Runs
+under `SKILL.md`'s procedure, and under its reading of `references/<file>`
+and `templates/<file>`.
 
 `tools/cmd/ghconv-audit/` implements this specification of its output.
 
@@ -20,20 +20,25 @@ measures. Runs under `SKILL.md`'s procedure, and under its reading of
   order below, a blank line, then `N gaps, M ok, K skipped`; in a cell `|` is
   escaped as `\|` and a newline becomes a space. JSON:
   `{"rows":[…],"gaps":N,"ok":M,"skipped":K}`, the cell text as written.
-- Every check but the last reads the tree; nothing is executed. The five
+- Every check but the last two reads the tree; nothing is executed. The five
   `workflows` checks repeat per `.yml`/`.yaml` under `.github/workflows/` by
   file name (`timeout` skips a job that calls a reusable workflow); a file that
   does not parse as YAML gets all five as gaps against "the workflow parses as YAML".
-- `--remote` reads `owner/repo` from `git remote get-url origin`, lists rulesets
-  with `gh api --paginate repos/<owner>/<repo>/rulesets`, and fetches each by id
-  (the list carries neither conditions nor rules); a ruleset whose fetch fails
-  keeps its list entry and can only report a gap, never a false pass. A lookup
-  that fails outright (no `origin`, no `gh`, an API error) is a `gap` whose
-  `current` begins `gh api failed:`; without `--remote` the row is `skipped`.
-  The row's `fix` is the tool's rendering of the ruleset command, valid in a
-  checkout with an `origin`: `{owner}/{repo}` is a placeholder `gh api` fills
-  from that remote, and `--method` is `-X` spelled long; a repository with no
-  remote yet uses the form in `references/new-repo.md`, "Creation", step 2.
+- `--remote` reads `owner/repo` from `git remote get-url origin` and answers
+  the last two rows through `gh api`. The `ruleset` row lists rulesets with
+  `--paginate repos/<owner>/<repo>/rulesets` and fetches each by id (the list
+  carries neither conditions nor rules); a ruleset whose fetch fails keeps its
+  list entry and can only report a gap, never a false pass. The `repository`
+  row reads `delete_branch_on_merge` from one `repos/<owner>/<repo>` call. For
+  either row, a lookup that fails outright (no `origin`, no `gh`, an API error)
+  is a `gap` whose `current` begins `gh api failed:`; without `--remote` the
+  row is `skipped`. Each row's `fix` is the tool's rendering of its command,
+  valid in a checkout with an `origin`: in the ruleset's, `{owner}/{repo}` is
+  a placeholder `gh api` fills from that remote, and `--method` is `-X`
+  spelled long; the `gh repo edit` line names the repository the API reported
+  as `full_name`, and none when the lookup failed, leaving it to gh to read
+  from that remote; a repository with no remote yet uses the forms in
+  `references/new-repo.md`, "Creation", step 2.
 - The checks are a subset of the canon: an `ok` row means that check
   passed, not that the owning section, cited per row, is satisfied.
 
@@ -59,3 +64,4 @@ measures. Runs under `SKILL.md`'s procedure, and under its reading of
 | `commitlint` / `workflow` | a workflow runs wagoid/commitlint-github-action on pull requests | `references/commits.md`, "Conventional Commits" |
 | `commitlint` / `breaking-footer` | .github/tools/breaking-footer/main.go exists | `references/commits.md`, "Conventional Commits" |
 | `ruleset` / `default-branch` | an active branch ruleset on ~DEFAULT_BRANCH with deletion and non_fast_forward rules | `references/new-repo.md`, "Creation" |
+| `repository` / `delete-branch-on-merge` | delete_branch_on_merge is on: a merged PR's branch is deleted | `references/new-repo.md`, "Creation" |

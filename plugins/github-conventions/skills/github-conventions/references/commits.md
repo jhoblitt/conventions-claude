@@ -12,8 +12,9 @@ routing. The PR description is a different artifact with its own shape:
   `@commitlint/config-conventional` allows. commitlint enforces it on
   every pull request: `templates/commitlint.yml` runs
   `wagoid/commitlint-github-action` against `templates/.commitlintrc.yml`
-  (config-conventional with `body-max-line-length` off; its comment says
-  why). Where each lands: `references/new-repo.md`, "What lands where".
+  (config-conventional with `body-max-line-length` off and sentence-case
+  subjects allowed; the comments in the file say why). Where each lands:
+  `references/new-repo.md`, "What lands where".
 - A `BREAKING CHANGE:` or `BREAKING-CHANGE:` footer requires `!` in the
   subject (`feat!:`, `fix(api)!:`). The commitlint workflow runs
   `templates/breaking-footer/main.go` with `go run` to reject a footer the

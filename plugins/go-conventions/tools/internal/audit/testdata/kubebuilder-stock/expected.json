@@ -124,16 +124,16 @@
       "phase": "tooling",
       "current": "no .goreleaser.yaml",
       "canon": ".goreleaser.yaml at the root, version: 2",
-      "fix": "copy templates/.goreleaser.yaml"
+      "fix": "regenerate: goconv-audit --emit-goreleaser"
     },
     {
       "area": "release",
-      "check": "kos",
-      "status": "gap",
-      "phase": "tooling",
+      "check": "image",
+      "status": "skipped",
+      "phase": "none",
       "current": "no readable .goreleaser.yaml",
-      "canon": "a kos block builds the image from the same checkout",
-      "fix": "copy templates/.goreleaser.yaml"
+      "canon": "an image, when published, is a kos block paired with docker_signs",
+      "fix": ""
     },
     {
       "area": "release",
@@ -142,7 +142,7 @@
       "phase": "tooling",
       "current": "no readable .goreleaser.yaml",
       "canon": "signs and sboms blocks: cosign over the checksums, syft over the archives",
-      "fix": "copy templates/.goreleaser.yaml"
+      "fix": "regenerate: goconv-audit --emit-goreleaser"
     },
     {
       "area": "release",
@@ -151,7 +151,7 @@
       "phase": "tooling",
       "current": "no workflow runs goreleaser on a v* tag",
       "canon": "a workflow on v* tags runs goreleaser/goreleaser-action",
-      "fix": "copy templates/release.yml to .github/workflows/"
+      "fix": "regenerate: goconv-audit --emit-release-workflow"
     },
     {
       "area": "release",
@@ -271,9 +271,9 @@
       "fix": ""
     }
   ],
-  "gaps": 15,
-  "tooling": 15,
+  "gaps": 14,
+  "tooling": 14,
   "migration": 0,
   "ok": 5,
-  "skipped": 10
+  "skipped": 11
 }

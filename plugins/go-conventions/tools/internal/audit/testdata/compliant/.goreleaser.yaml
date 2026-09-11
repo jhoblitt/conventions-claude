@@ -16,8 +16,6 @@ builds:
       - -s -w
     goos:
       - linux
-      - darwin
-      - windows
     goarch:
       - amd64
       - arm64
@@ -25,10 +23,6 @@ builds:
 archives:
   - formats:
       - tar.gz
-    format_overrides:
-      - goos: windows
-        formats:
-          - zip
 
 checksum:
   name_template: checksums.txt
@@ -50,6 +44,14 @@ kos:
       - latest
     sbom: spdx
 
+docker_signs:
+  - cmd: cosign
+    args:
+      - sign
+      - "${artifact}"
+      - "--yes"
+    artifacts: manifests
+
 sboms:
   - artifacts: archive
 
@@ -62,14 +64,6 @@ signs:
       - "${artifact}"
       - "--yes"
     artifacts: checksum
-
-docker_signs:
-  - cmd: cosign
-    args:
-      - sign
-      - "${artifact}"
-      - "--yes"
-    artifacts: manifests
 
 changelog:
   use: github

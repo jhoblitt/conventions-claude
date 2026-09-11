@@ -57,7 +57,7 @@ index; it does not update the installed plugin.
 
 | Skill | What it does |
 | --- | --- |
-| `code-conventions` | The canon for any language. Loads when you navigate unfamiliar code — a definition, its callers, a type, a file's diagnostics — write, review, or delete a comment, or name a repository, pull request, merge request, or issue in a chat reply. |
+| `code-conventions` | The canon for any language. Loads when you navigate unfamiliar code — a definition, its callers, a type, a file's diagnostics — write, review, or delete a comment, write or edit a README or other doc, or name a repository, pull request, merge request, or issue in a chat reply. |
 
 ### github-conventions
 
@@ -72,7 +72,7 @@ index; it does not update the installed plugin.
 | Skill | What it does |
 | --- | --- |
 | `go-conventions` | The canon. Loads when you write or refactor Go, edit `go.mod`, a lint config, a Makefile, a goreleaser config or a Go workflow, or choose a Go library. |
-| `/go-conventions:go-new-project` | Scaffolds a new module: cobra and viper, `log/slog`, Ginkgo, the house lint tier, goreleaser with ko, then hands off to `github-new-repo`. |
+| `/go-conventions:go-new-project` | Scaffolds a new module: cobra and viper, `log/slog`, Ginkgo, the house lint tier, goreleaser (ko only when an image is wanted), then hands off to `github-new-repo`. |
 | `/go-conventions:go-converge` | Audits an existing Go repository, applies the tooling half, and migrates one named area at a time. |
 | `/go-conventions:go-review` | Reviews a working tree, a branch, or a pull request against the review canon. |
 
@@ -95,8 +95,8 @@ flowchart TD
   D -- yes --> F{"User approves the diff"}
   F --> E
   E --> C
-  C --> G["GitHub-side fixes: show the exact command"]
-  G --> H{"User approves the command"}
+  C --> G["GitHub-side fixes: show the exact commands"]
+  G --> H{"User approves each command"}
   H --> I["Re-run the audit, report<br/>what landed and what waits"]
 ```
 
@@ -109,7 +109,7 @@ flowchart TD
   C -- yes --> D["Hand back to the user, create nothing"]
   C -- no --> E["Show the whole batch"]
   E --> F{"User approves once"}
-  F --> G["gh repo create, ruleset,<br/>push main, push init,<br/>draft PR, CI watcher"]
+  F --> G["gh repo create, ruleset,<br/>delete-branch-on-merge,<br/>push main, push init,<br/>draft PR, CI watcher"]
   G --> H["Report the repository and PR URLs"]
 ```
 
@@ -118,13 +118,13 @@ flowchart TD
 ```mermaid
 flowchart TD
   A["Collect inputs:<br/>module, binary, description,<br/>env prefix"] --> B["git init -b main,<br/>go mod init, set go 1.27"]
-  B --> C["Render every template<br/>to its destination"]
+  B --> C["Render every template to its destination;<br/>goconv-audit renders the two release files"]
   C --> D["Pin the house dependencies,<br/>go mod tidy"]
   D --> E["Write the first spec"]
   E --> F2["Write dependabot with the gomod entry"]
   F2 --> G2{"make check green"}
   G2 --> H2["Hand off"]
-  H2 -.->|github-conventions:github-new-repo| I2["Repository, ruleset, draft PR"]
+  H2 -.->|github-conventions:github-new-repo| I2["github-new-repo's batch:<br/>repository, settings, draft PR"]
   I2 --> J2["Report"]
 ```
 
