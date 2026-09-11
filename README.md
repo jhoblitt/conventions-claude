@@ -8,9 +8,10 @@ with three plugins that stop convention drift: **go-conventions**, the house
 canon for how Go code is written, tested, logged, linted, built, and
 released, **github-conventions**, the canon for how a GitHub repository is
 created, kept hygienic, and worked on through commits and pull requests, and
-**code-conventions**, the rules that hold whatever the language is — code
-navigation and comments. go-conventions depends on the other two; installing
-it installs all three.
+**code-conventions**, the rules that hold whatever the language or host is —
+code navigation, comments, and chat links to repositories, pull or merge
+requests, and issues. go-conventions depends on the other two; installing it
+installs all three.
 
 ## Install
 
@@ -56,7 +57,7 @@ index; it does not update the installed plugin.
 
 | Skill | What it does |
 | --- | --- |
-| `code-conventions` | The canon for any language. Loads when you navigate unfamiliar code — a definition, its callers, a type, a file's diagnostics — or write, review, or delete a comment. |
+| `code-conventions` | The canon for any language. Loads when you navigate unfamiliar code — a definition, its callers, a type, a file's diagnostics — write, review, or delete a comment, or name a repository, pull request, merge request, or issue in a chat reply. |
 
 ### github-conventions
 
