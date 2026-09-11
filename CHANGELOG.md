@@ -1,3 +1,18 @@
+## [1.2.2](https://github.com/jhoblitt/conventions-claude/compare/v1.2.1...v1.2.2) (2026-09-11)
+
+### Bug Fixes
+
+* **github-conventions:** bump upload-artifact to v7 in the scorecard template ([2e379b1](https://github.com/jhoblitt/conventions-claude/commit/2e379b13470aa8d8d7f7bf393601fab3f25c70f6))
+* **go-conventions:** bump upload-artifact to v7 in the ci template ([dbca972](https://github.com/jhoblitt/conventions-claude/commit/dbca97264979928a947408778fbe39f9415bdc1a))
+
+
+## What's Changed
+* chore(deps): bump the go-dependencies group across 2 directories with 2 updates by @dependabot[bot] in https://github.com/jhoblitt/conventions-claude/pull/7
+* chore(deps): bump actions/upload-artifact from 4.6.2 to 7.0.1 in the github-actions group across 1 directory by @dependabot[bot] in https://github.com/jhoblitt/conventions-claude/pull/3
+
+## New Contributors
+* @dependabot[bot] made their first contribution in https://github.com/jhoblitt/conventions-claude/pull/7
+
 ## [1.2.1](https://github.com/jhoblitt/conventions-claude/compare/v1.2.0...v1.2.1) (2026-09-11)
 
 ### Documentation
