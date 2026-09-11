@@ -57,7 +57,7 @@ index; it does not update the installed plugin.
 
 | Skill | What it does |
 | --- | --- |
-| `code-conventions` | The canon for any language. Loads when you navigate unfamiliar code — a definition, its callers, a type, a file's diagnostics — write, review, or delete a comment, or name a repository, pull request, merge request, or issue in a chat reply. |
+| `code-conventions` | The canon for any language. Loads when you navigate unfamiliar code — a definition, its callers, a type, a file's diagnostics — write, review, or delete a comment, write or edit a README or other doc, or name a repository, pull request, merge request, or issue in a chat reply. |
 
 ### github-conventions
 
