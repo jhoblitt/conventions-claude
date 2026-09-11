@@ -28,12 +28,12 @@ func protective() audit.Ruleset {
 
 var _ = Describe("the ruleset check", func() {
 	var (
-		lookup *auditfakes.FakeRulesetLookup
+		lookup *auditfakes.FakeRemoteLookup
 		dir    string
 	)
 
 	BeforeEach(func() {
-		lookup = &auditfakes.FakeRulesetLookup{}
+		lookup = &auditfakes.FakeRemoteLookup{}
 		dir = filepath.Join("testdata", "empty")
 	})
 

@@ -15,5 +15,6 @@
 | commitlint | workflow | gap | no step uses wagoid/commitlint-github-action | a workflow runs wagoid/commitlint-github-action on pull requests | copy templates/commitlint.yml to .github/workflows/ |
 | commitlint | breaking-footer | gap | no .github/tools/breaking-footer/main.go | .github/tools/breaking-footer/main.go exists | copy templates/breaking-footer/main.go to .github/tools/breaking-footer/ |
 | ruleset | default-branch | skipped | not checked (--remote not given) | an active branch ruleset on ~DEFAULT_BRANCH with deletion and non_fast_forward rules |  |
+| repository | delete-branch-on-merge | skipped | not checked (--remote not given) | delete_branch_on_merge is on: a merged PR's branch is deleted |  |
 
-14 gaps, 0 ok, 1 skipped
+14 gaps, 0 ok, 2 skipped

@@ -95,8 +95,8 @@ flowchart TD
   D -- yes --> F{"User approves the diff"}
   F --> E
   E --> C
-  C --> G["GitHub-side fixes: show the exact command"]
-  G --> H{"User approves the command"}
+  C --> G["GitHub-side fixes: show the exact commands"]
+  G --> H{"User approves each command"}
   H --> I["Re-run the audit, report<br/>what landed and what waits"]
 ```
 
@@ -109,7 +109,7 @@ flowchart TD
   C -- yes --> D["Hand back to the user, create nothing"]
   C -- no --> E["Show the whole batch"]
   E --> F{"User approves once"}
-  F --> G["gh repo create, ruleset,<br/>push main, push init,<br/>draft PR, CI watcher"]
+  F --> G["gh repo create, ruleset,<br/>delete-branch-on-merge,<br/>push main, push init,<br/>draft PR, CI watcher"]
   G --> H["Report the repository and PR URLs"]
 ```
 

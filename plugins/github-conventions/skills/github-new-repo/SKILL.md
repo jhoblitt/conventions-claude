@@ -6,8 +6,8 @@ description: Use when creating a new GitHub repository, publishing a local proje
 # Create a GitHub repository
 
 Every rule this procedure applies — visibility, the empty repository, the
-ruleset, populating through a pull request, what lands where — and the
-precedence ladder it runs under live in the canon skill,
+ruleset and merge setting, populating through a pull request, what lands
+where — and the precedence ladder it runs under live in the canon skill,
 `${CLAUDE_PLUGIN_ROOT}/skills/github-conventions/SKILL.md` with its
 `references/` and `templates/`, and are not repeated here; this file only
 sequences them. A `references/<file>` or `templates/<file>` path below is
@@ -55,10 +55,11 @@ is `references/workflows.md`, "Template placeholders".
    this step.
 2. **Show the batch — Gate: one approval.** In one message: the slug and
    visibility; the ruleset JSON, `templates/ruleset.json` verbatim; the
-   branch, `init` onto `main`; the PR title and description, drafted per
-   `references/pull-requests.md`, "The description". Nothing in step 3
-   runs before the user approves the batch as a whole; a change to any
-   item re-shows the batch.
+   merge setting, the `gh repo edit` line of `references/new-repo.md`,
+   "Creation", step 2; the branch, `init` onto `main`; the PR title and
+   description, drafted per `references/pull-requests.md`, "The
+   description". Nothing in step 3 runs before the user approves the batch
+   as a whole; a change to any item re-shows the batch.
 3. **Execute**, in the canon's order (`references/new-repo.md`,
    "Creation"), stopping at the first failure:
    1. `gh repo create <owner>/<name> --public` or `--private`, and nothing
@@ -66,15 +67,17 @@ is `references/workflows.md`, "Template placeholders".
    2. The ruleset: the `gh api` line of `references/new-repo.md`,
       "Creation", step 2, with `--input` at
       `${CLAUDE_PLUGIN_ROOT}/skills/github-conventions/templates/ruleset.json`.
-   3. `git remote add origin https://github.com/<owner>/<name>.git` (or the
+   3. The merge setting: the `gh repo edit` line of that same step, naming
+      the repository as the ruleset line does.
+   4. `git remote add origin https://github.com/<owner>/<name>.git` (or the
       SSH form the user's other clones use), then `git push origin main` —
       the root commit, the only push the default branch ever gets.
-   4. `git push origin init`.
-   5. `gh pr create --draft --assignee @me` with the approved title and
+   5. `git push origin init`.
+   6. `gh pr create --draft --assignee @me` with the approved title and
       description (`references/pull-requests.md`, "Opening a PR"). A
       failed assignment is non-fatal: the PR exists; note it, do not
       retry.
-   6. Start the CI watcher in this same turn (`references/pull-requests.md`,
+   7. Start the CI watcher in this same turn (`references/pull-requests.md`,
       "Watching CI").
 4. **Report** the repository URL, the PR URL, and the watcher's status,
    plus anything skipped: the assignee, CodeQL.

@@ -40,5 +40,6 @@
 | commitlint | workflow | ok | commitlint.yml | a workflow runs wagoid/commitlint-github-action on pull requests |  |
 | commitlint | breaking-footer | ok | .github/tools/breaking-footer/main.go | .github/tools/breaking-footer/main.go exists |  |
 | ruleset | default-branch | skipped | not checked (--remote not given) | an active branch ruleset on ~DEFAULT_BRANCH with deletion and non_fast_forward rules |  |
+| repository | delete-branch-on-merge | skipped | not checked (--remote not given) | delete_branch_on_merge is on: a merged PR's branch is deleted |  |
 
-0 gaps, 39 ok, 1 skipped
+0 gaps, 39 ok, 2 skipped

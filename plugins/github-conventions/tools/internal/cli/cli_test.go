@@ -31,7 +31,7 @@ var _ = Describe("Run", func() {
 		Expect(run(ctx, fixture)).To(Succeed())
 
 		Expect(stdout.String()).To(HavePrefix("| Area | Check | Status | Current | Canon | Fix |\n"))
-		Expect(stdout.String()).To(HaveSuffix("14 gaps, 0 ok, 1 skipped\n"))
+		Expect(stdout.String()).To(HaveSuffix("14 gaps, 0 ok, 2 skipped\n"))
 		Expect(stderr.String()).To(BeEmpty())
 	})
 
@@ -48,9 +48,9 @@ var _ = Describe("Run", func() {
 			Skipped int `json:"skipped"`
 		}
 		Expect(json.Unmarshal(stdout.Bytes(), &report)).To(Succeed())
-		Expect(report.Rows).To(HaveLen(15))
+		Expect(report.Rows).To(HaveLen(16))
 		Expect(report.Gaps).To(Equal(14))
-		Expect(report.Skipped).To(Equal(1))
+		Expect(report.Skipped).To(Equal(2))
 	})
 
 	It("audits the working directory when no dir is given", func(ctx SpecContext) {

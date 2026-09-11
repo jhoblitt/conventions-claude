@@ -60,7 +60,7 @@ func Run(ctx context.Context, args []string, stdin io.Reader, stdout, stderr io.
 	flags := root.Flags()
 	flags.BoolVar(&asJSON, "json", false, "render the audit as JSON")
 	flags.BoolVar(&asMarkdown, "markdown", false, "render the audit as a markdown table (the default)")
-	flags.BoolVar(&remote, "remote", false, "also check the branch ruleset, through gh")
+	flags.BoolVar(&remote, "remote", false, "also check the branch ruleset and delete-branch-on-merge, through gh")
 	root.MarkFlagsMutuallyExclusive("json", "markdown")
 
 	return root.ExecuteContext(ctx)

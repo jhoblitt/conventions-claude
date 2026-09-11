@@ -4,14 +4,15 @@ but not its visibility, and there is no `gh`. Under
 asked for when not given and never defaulted; the repository is created
 empty — `gh repo create <owner>/<repo>` with the visibility flag and no
 `--add-readme`, `--license`, `--gitignore`, `--source`, or `--push`; the
-ruleset is applied from `templates/ruleset.json` through `gh api`; the
+ruleset is applied from `templates/ruleset.json` through `gh api` and the
+repository set to delete a merged branch through `gh repo edit`; the
 tree is populated through a pull request from an `init` branch onto a
 `main` that holds one empty root commit, never by pushing project files
 to the default branch. The procedure covers a tree that starts from
 `git init` — this fixture's — and hands back a tree whose `main` already
 has commits rather than renaming or rewriting a branch to fit. `github-new-repo` shows the whole GitHub-side batch
-— slug, visibility, ruleset JSON, branch, PR title and description — and
-waits for one approval before running any of it.
+— slug, visibility, ruleset JSON, merge setting, branch, PR title and
+description — and waits for one approval before running any of it.
 
 The regressions this case exists to catch: assuming a visibility, running
 (or narrating as run) the steps one at a time with a question after each,
@@ -26,13 +27,14 @@ Pass if and only if ALL of:
    gitignore, source, or push flag.
 3. The report describes applying the branch ruleset — `templates/ruleset.json`,
    or its content: deletion and non-fast-forward protection on the
-   default branch — through `gh api`.
+   default branch — through `gh api`, and setting the repository to delete
+   a merged PR's branch through `gh repo edit --delete-branch-on-merge`.
 4. The report describes populating the repository through a pull request
    from `init` onto `main`, where `main` holds only an empty root commit;
    the project files land on `init`.
 5. The GitHub-side steps are presented as one batch awaiting one
-   approval — slug, visibility, ruleset, branch, PR title and description
-   together, the visibility shown as the pending input — not as steps run
+   approval — slug, visibility, ruleset, merge setting, branch, PR title
+   and description together, the visibility shown as the pending input — not as steps run
    or asked about one at a time.
 6. The report nowhere claims a `gh` command ran or reports its output.
 7. If the report discusses a tree whose `main` already carries commits —

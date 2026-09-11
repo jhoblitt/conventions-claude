@@ -33,7 +33,7 @@ below this table apply to every trigger.
 
 | Doing this | Read |
 |---|---|
-| creating a repository, choosing its visibility, applying its ruleset, or writing its first files; auditing or converging a repository's license or README | `references/new-repo.md` |
+| creating a repository, choosing its visibility, applying its ruleset or merge setting, or writing its first files; auditing or converging a repository's license or README | `references/new-repo.md` |
 | adding or editing a workflow under `.github/workflows/`, pinning an action, editing `.github/dependabot.yml`, or filling a template placeholder | `references/workflows.md` |
 | reviewing a workflow diff | `references/workflows.md`, "Reviewing a workflow" |
 | adding or changing CodeQL, dependency review, Scorecard, or the Scorecard badge; judging a workflow for injection | `references/security.md` |

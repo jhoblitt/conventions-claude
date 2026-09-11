@@ -1,13 +1,13 @@
 # New repository
 
 Owns creating a repository: the visibility input, the `gh repo create` form,
-the ruleset, populating through a pull request, LICENSE, the README
-skeleton, and which template lands where. Runs under `SKILL.md`'s
-precedence and routing. `github-new-repo` is the skill that executes it.
-The contents of the files it lands are owned elsewhere: workflows,
-Dependabot, and placeholders by `references/workflows.md`; CodeQL,
-dependency review, and Scorecard by `references/security.md`; commitlint
-by `references/commits.md`.
+the ruleset, the merge-time setting, populating through a pull request,
+LICENSE, the README skeleton, and which template lands where. Runs under
+`SKILL.md`'s precedence and routing. `github-new-repo` is the skill that
+executes it. The contents of the files it lands are owned elsewhere:
+workflows, Dependabot, and placeholders by `references/workflows.md`;
+CodeQL, dependency review, and Scorecard by `references/security.md`;
+commitlint by `references/commits.md`.
 
 ## Visibility
 
@@ -19,15 +19,19 @@ never default it.
 1. `gh repo create <owner>/<repo> --public|--private` and nothing else: no
    `--add-readme`, `--license`, or `--gitignore`, no `--source`/`--push`.
    The repository starts empty.
-2. Apply the ruleset, naming the repository explicitly — right after
-   creation the cwd may have no remote:
+2. Apply the ruleset and set the merge-time behavior, naming the
+   repository explicitly — right after creation the cwd may have no
+   remote:
 
    ```sh
    gh api -X POST repos/<owner>/<repo>/rulesets --input templates/ruleset.json
+   gh repo edit <owner>/<repo> --delete-branch-on-merge
    ```
 
    `templates/ruleset.json` targets `~DEFAULT_BRANCH`, enforcement
-   `active`, rules `deletion` and `non_fast_forward`.
+   `active`, rules `deletion` and `non_fast_forward`. Without
+   `--delete-branch-on-merge` a merged PR's branch outlives its merge,
+   step 3's `init` branch included.
 3. Populate through a pull request, never a push to the default branch.
    The default branch is `main`. In a local `git init` tree whose
    `origin` is the new repository, it exists first as one empty root
