@@ -1,3 +1,13 @@
+## [1.2.1](https://github.com/jhoblitt/conventions-claude/compare/v1.2.0...v1.2.1) (2026-09-11)
+
+### Documentation
+
+* **marketplace:** name both go-conventions dependencies ([fee4c73](https://github.com/jhoblitt/conventions-claude/commit/fee4c73217eb747398d4827854c51e255ffedc2e))
+
+
+## What's Changed
+* docs(marketplace): name both go-conventions dependencies by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/11
+
 ## [1.2.0](https://github.com/jhoblitt/conventions-claude/compare/v1.1.0...v1.2.0) (2026-09-11)
 
 ### Features
