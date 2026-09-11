@@ -25,7 +25,7 @@
     {
       "name": "go-conventions",
       "source": "./plugins/go-conventions",
-      "description": "How Go code is written, tested, logged, linted, built, and released — Go 1.27, cobra/viper, log/slog, Ginkgo, the golangci-lint house tier, goreleaser with ko — plus skills to converge an existing repo, review a Go diff, and scaffold a new project; depends on github-conventions",
+      "description": "How Go code is written, tested, logged, linted, built, and released — Go 1.27, cobra/viper, log/slog, Ginkgo, the golangci-lint house tier, goreleaser with ko — plus skills to converge an existing repo, review a Go diff, and scaffold a new project; depends on github-conventions and code-conventions",
       "author": {
         "name": "Joshua Hoblitt"
       }
