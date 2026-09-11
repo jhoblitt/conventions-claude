@@ -16,8 +16,6 @@ builds:
       - -s -w
     goos:
       - linux
-      - darwin
-      - windows
     goarch:
       - amd64
       - arm64
@@ -25,14 +23,11 @@ builds:
 archives:
   - formats:
       - tar.gz
-    format_overrides:
-      - goos: windows
-        formats:
-          - zip
 
 checksum:
   name_template: checksums.txt
 
+# {{IMAGE}}
 # ko rebuilds the binary from this checkout with the same build options, so
 # the image's binary carries the same VCS stamp as the archives.
 kos:
@@ -50,6 +45,15 @@ kos:
       - latest
     sbom: spdx
 
+docker_signs:
+  - cmd: cosign
+    args:
+      - sign
+      - "${artifact}"
+      - "--yes"
+    artifacts: manifests
+# {{/IMAGE}}
+
 sboms:
   - artifacts: archive
 
@@ -62,14 +66,6 @@ signs:
       - "${artifact}"
       - "--yes"
     artifacts: checksum
-
-docker_signs:
-  - cmd: cosign
-    args:
-      - sign
-      - "${artifact}"
-      - "--yes"
-    artifacts: manifests
 
 changelog:
   use: github

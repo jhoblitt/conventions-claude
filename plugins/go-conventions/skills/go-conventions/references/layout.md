@@ -61,9 +61,11 @@ lives in `main`: no flag parsing, no logger setup, no logic.
 ## Template placeholders
 
 A `{{NAME}}` token in a template under `templates/` is filled when the file
-is copied; a rendered repository holds no `{{NAME}}` token. `go-new-project` fills them at
-scaffold time and `go-converge` when it lands a template
-(`skills/go-new-project/SKILL.md` owns which template takes which).
+is copied; a rendered repository holds no `{{NAME}}` token. `go-new-project`
+fills them at scaffold time and `go-converge` when it lands a template
+(`skills/go-new-project/SKILL.md` owns which template takes which), except
+that `.goreleaser.yaml` and `release.yml` are rendered for both by
+`goconv-audit` (go-converge's `references/goconv-audit.md`).
 github-conventions' own placeholders are its
 `references/workflows.md`, "Template placeholders".
 
@@ -73,11 +75,18 @@ github-conventions' own placeholders are its
 | `{{MODULES}}` | the module directories relative to the Makefile, space separated; `.` for a single-module repository. Assigned with `?=`, so a caller can override it |
 | `{{BINARY}}` | the binary name — the `cmd/<bin>` directory, the goreleaser build id, and the archive name |
 | `{{ENV_PREFIX}}` | the environment-variable prefix, the binary name upper-cased with `-` mapped to `_` (`references/cli.md`, "Configuration") |
-| `{{OWNER}}` | the owner half of the `<owner>/<repo>` pair the release workflow's fork guard and the ko image repository are built from |
+| `{{OWNER}}` | the owner half of the `<owner>/<repo>` pair the release workflow's fork guard and, with an image, the ko image repository are built from |
 | `{{REPO}}` | the repository half of that same pair |
 | `{{DESCRIPTION}}` | one line on what the binary does |
 | `{{PACKAGE}}` | the package a suite file belongs to, as written in `package <name>_test` |
 | `{{PACKAGE_TITLE}}` | that package name title-cased, so `Test{{PACKAGE_TITLE}}` is a valid exported test function |
+
+`# {{IMAGE}}` and `# {{/IMAGE}}` are not placeholders but the two ends of a
+block: the lines between them exist only when the release publishes a
+container image, and `references/release.md`, "Images", owns what decides
+that. `goconv-audit` renders the block — the marker lines removed, the lines
+between kept or dropped (go-converge's `references/goconv-audit.md`); a
+rendered repository holds neither marker.
 
 `{{ .Version }}` in `templates/.goreleaser.yaml`'s ko tags is not a
 placeholder: it is goreleaser's own template, evaluated at release time, and

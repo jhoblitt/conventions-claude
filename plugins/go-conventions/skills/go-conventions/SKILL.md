@@ -65,13 +65,14 @@ rules above apply to every trigger.
 ## Scripts
 
 ```sh
-bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" goconv-audit [--json|--markdown|--emit-golangci|--files <area>] [dir]
+bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" goconv-audit [--json|--markdown|--emit-golangci|--emit-goreleaser|--emit-release-workflow|--files <area>] [--binary <name>] [--owner <owner>] [--repo <repo>] [--image] [dir]
 ```
 
 Audits a repository against this canon; emits the house lint config for the
-repository's imports; lists the files an area's migration touches. The
-launcher fails loud: a non-zero exit is a real failure, never an empty
-result. Its contract is `skills/go-converge/references/goconv-audit.md`.
+repository's imports, and the two release files rendered for it; lists the
+files an area's migration touches. The launcher fails loud: a non-zero exit
+is a real failure, never an empty result. Its contract is
+`skills/go-converge/references/goconv-audit.md`.
 
 ## Ginkgo how-to
 

@@ -296,18 +296,46 @@ func (r *repo) workflowRow(area, check string, names []string, canon, missing, f
 
 // --- release ---
 
-const fixGoreleaser = "copy templates/.goreleaser.yaml"
+const (
+	fixGoreleaser      = "regenerate: goconv-audit --emit-goreleaser"
+	fixReleaseWorkflow = "regenerate: goconv-audit --emit-release-workflow"
+)
 
 func (r *repo) releaseRows() []Row {
 	return []Row{
 		r.goreleaserRow(),
-		r.goreleaserKeyRow("kos", []string{"kos"},
-			"a kos block builds the image from the same checkout"),
+		r.imageRow(),
 		r.goreleaserKeyRow("sign-sbom", []string{"signs", "sboms"},
 			"signs and sboms blocks: cosign over the checksums, syft over the archives"),
 		r.releaseWorkflowRow(),
 		r.ldflagsRow(),
 	}
+}
+
+// imageRow reads the image opt-in as the pair it is: kos with docker_signs is
+// an image, neither is none, and one without the other is the gap. A missing
+// or unreadable .goreleaser.yaml is already the goreleaser row's gap, and an
+// opt-in cannot be a gap on a file that is not there. Either block alone is
+// enough for --emit-goreleaser to render both (publishesImage), so the
+// regeneration is the fix.
+func (r *repo) imageRow() Row {
+	const canon = "an image, when published, is a kos block paired with docker_signs"
+
+	if !r.goreleaser.found || r.goreleaser.parse != nil {
+		return skipRow("release", "image", "no readable .goreleaser.yaml", canon)
+	}
+
+	kos, signs := r.goreleaser.hasKey("kos"), r.goreleaser.hasKey("docker_signs")
+	switch {
+	case kos && signs:
+		return okRow("release", "image", "present: kos, docker_signs", canon)
+	case kos:
+		return gapRow(PhaseTooling, "release", "image", "missing: docker_signs", canon, fixGoreleaser)
+	case signs:
+		return gapRow(PhaseTooling, "release", "image", "missing: kos", canon, fixGoreleaser)
+	}
+
+	return skipRow("release", "image", "no kos block: no image", canon)
 }
 
 func (r *repo) goreleaserRow() Row {
@@ -349,10 +377,7 @@ func (r *repo) goreleaserKeyRow(check string, keys []string, canon string) Row {
 }
 
 func (r *repo) releaseWorkflowRow() Row {
-	const (
-		canon = "a workflow on v* tags runs goreleaser/goreleaser-action"
-		fix   = "copy templates/release.yml to .github/workflows/"
-	)
+	const canon = "a workflow on v* tags runs goreleaser/goreleaser-action"
 
 	var names []string
 	for _, w := range r.workflows {
@@ -369,7 +394,7 @@ func (r *repo) releaseWorkflowRow() Row {
 	}
 
 	return r.workflowRow("release", "workflow", names, canon,
-		"no workflow runs goreleaser on a v* tag", fix)
+		"no workflow runs goreleaser on a v* tag", fixReleaseWorkflow)
 }
 
 // tagTriggered reports whether the workflow's push trigger carries a v* tag

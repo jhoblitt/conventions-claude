@@ -14,7 +14,7 @@
 | ci | checks | ok | none | .github/workflows/ci.yml | a workflow runs the go fix and go mod tidy checks |  |
 | ci | govulncheck | ok | none | .github/workflows/ci.yml | a workflow runs govulncheck over ./... |  |
 | release | goreleaser | ok | none | .goreleaser.yaml, version: 2 | .goreleaser.yaml at the root, version: 2 |  |
-| release | kos | ok | none | present: kos | a kos block builds the image from the same checkout |  |
+| release | image | ok | none | present: kos, docker_signs | an image, when published, is a kos block paired with docker_signs |  |
 | release | sign-sbom | ok | none | present: signs, sboms | signs and sboms blocks: cosign over the checksums, syft over the archives |  |
 | release | workflow | ok | none | .github/workflows/release.yml | a workflow on v* tags runs goreleaser/goreleaser-action |  |
 | release | no-ldflags-x | ok | none | no -X ldflags | no -X ldflags anywhere; the version is the build stamp |  |

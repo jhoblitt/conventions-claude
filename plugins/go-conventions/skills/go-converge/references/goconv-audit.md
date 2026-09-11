@@ -2,15 +2,19 @@
 
 Owns what `goconv-audit` prints and how it is read: the usage and exit
 codes, the row fields, the full check inventory, the markdown and JSON
-renderings, and the `--emit-golangci` and `--files` flags. Runs under
-`SKILL.md`'s procedure, and under its reading of `references/<file>` and
+renderings, and the `--emit-golangci`, `--emit-goreleaser`,
+`--emit-release-workflow` and `--files` flags. Runs under `SKILL.md`'s
+procedure, and under its reading of `references/<file>` and
 `templates/<file>`.
 
 `tools/cmd/goconv-audit/` implements this specification.
 - `dir` defaults to `.` and is a Go repository root (a `go.mod` there); markdown
-  is the default rendering, and the four flags exclude each other. Exit 0
-  whenever the audit ran; exit 1 on a usage or I/O error (a bad flag, a `dir`
-  with no `go.mod`, an unknown area), the reason on stderr.
+  is the default rendering, and the six mode flags exclude each other.
+  `--binary`, `--owner`, `--repo` and `--image` are values for the two release
+  renderings and a usage error with any other mode. Exit 0 whenever the audit
+  ran; exit 1 on a usage or I/O error (a bad flag, a `dir` with no `go.mod`, an
+  unknown area, a value a release rendering needs and cannot derive), the reason
+  on stderr.
 - Every answer is read statically and offline: `go.mod` through
   `golang.org/x/mod/modfile`; imports through `go/parser` with
   `parser.ImportsOnly` over every `*.go` outside `vendor/`, `testdata/`, and `.`-
@@ -18,7 +22,9 @@ renderings, and the `--emit-golangci` and `--files` flags. Runs under
   blocks as text. Never `go list`, never `exec`.
 - Row fields: `area`, `check`, `status` (`ok`, `gap`, `skipped`), `phase`,
   `current` (what the repository has), `canon` (what it should have), `fix`
-  (empty unless `gap`; a `templates/…` path in it is under the canon skill).
+  (empty unless `gap`; a `templates/…` path in it is under the canon skill, and
+  `regenerate: goconv-audit --emit-…` names the rendering below that replaces
+  the file).
   `phase` is `tooling` for a file-level gap this skill applies itself,
   `migration` for one that changes code and waits on the user, else `none`.
 - Markdown: `| Area | Check | Status | Phase | Current | Canon | Fix |`, its
@@ -29,7 +35,9 @@ renderings, and the `--emit-golangci` and `--files` flags. Runs under
 - A check that cannot apply is `skipped`, the reason in `current`: `library` (no
   main package, so no handler of its own to install), `controller-runtime` (the
   incumbent `references/kubernetes.md` keeps), `no logging`, `no test files`,
-  `no v2 lint config`.
+  `no v2 lint config`, `no kos block: no image` (the image is opt-in,
+  `references/release.md`, "Images"), `no readable .goreleaser.yaml` (on the
+  `image` row only; the `goreleaser` row carries that gap).
 - Under controller-runtime the scaffold's own `flag` and `go.uber.org/zap/zapcore`
   imports produce no `deps/<import path>` row at all — not a `skipped` one. That
   is the wiring `references/kubernetes.md` keeps; a standalone `go.uber.org/zap`
@@ -44,6 +52,31 @@ renderings, and the `--emit-golangci` and `--files` flags. Runs under
   from `go.mod`, minus every depguard `deny` entry whose `pkg` matches an import
   the repository carries today, so it lands green; the area migration restores
   each by re-running it once those imports are gone.
+- `--emit-goreleaser` prints `templates/.goreleaser.yaml` and
+  `--emit-release-workflow` prints `templates/release.yml`, each rendered for
+  the repository. `{{BINARY}}` is `--binary`, defaulting to the one `cmd/<name>/`
+  directory and otherwise required — the error lists the candidates, or says
+  there are none. `{{OWNER}}` and `{{REPO}}` are `--owner` and `--repo`,
+  defaulting to the second and third elements of a `github.com/<owner>/<repo>`
+  module path, however deep, and otherwise required, one error naming what is
+  missing. The opt-in of `references/release.md`, "Images", reads as `--image`
+  for "asked for" and, for "carries either block", a `kos` or `docker_signs`
+  key in a `.goreleaser.yaml` that parses.
+  The `# {{IMAGE}}` and `# {{/IMAGE}}` marker lines are always removed; the
+  lines between them are kept with an image and dropped without, a run of blank
+  lines a drop leaves collapsed to one. `--emit-goreleaser` also replaces the
+  template's `goos` and `goarch` lists with the existing file's first `builds`
+  entry's, each where it is non-empty, so a project's targets survive the
+  regeneration. Every other line renders verbatim: `{{ .Version }}` and
+  `${{ … }}` are not placeholders (`references/layout.md`, "Template
+  placeholders"). The `goreleaser`, `image` and `sign-sbom` rows fix with
+  `regenerate: goconv-audit --emit-goreleaser`, the `workflow` row with
+  `regenerate: goconv-audit --emit-release-workflow`; unset
+  `CLAUDE_PLUGIN_ROOT` exits 1, as for `--emit-golangci`, and so does a
+  binary, owner, repository, or carried target outside `[A-Za-z0-9._-]` —
+  every one lands unquoted in YAML the workflow runs — and an existing
+  `.goreleaser.yaml` that is empty, the tell of a shell redirect onto the
+  file the tool reads.
 - `--files <area>` prints, sorted and unique, one repository-relative path per
   line. `cli`: importers of `flag`, kong or urfave/cli, every `cmd/*/main.go`,
   everything under `internal/cli/`. `logging`: importers of `log`, logrus, zap or
@@ -70,7 +103,7 @@ renderings, and the `--emit-golangci` and `--files` flags. Runs under
 | `lint` | `config`, `linters`, `formatters`, `max-issues` | tooling |
 | `makefile` | `present`, `targets`, `golangci-version` | tooling |
 | `ci` | `setup-go`, `race`, `lint`, `checks`, `govulncheck` | tooling |
-| `release` | `goreleaser`, `kos`, `sign-sbom`, `workflow`, `no-ldflags-x` | tooling |
+| `release` | `goreleaser`, `image`, `sign-sbom`, `workflow`, `no-ldflags-x` | tooling |
 | `dependabot`, `gitignore`, `claude`, `version` | `gomod`, `present`, `pointer`, `package` | tooling |
 | `layout` | `cmd`, `pkg-dir` | migration |
 | `deps` | `cli`, `config`, `testing`, `fakes`, `logging` | migration |
