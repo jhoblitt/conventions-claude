@@ -1,6 +1,6 @@
 {
   "name": "conventions-claude",
-  "description": "Claude Code plugins that stop convention drift: a Go house canon (Go 1.27, cobra/viper, log/slog, Ginkgo, golangci-lint, goreleaser) with converge, review, and scaffold skills, a GitHub repository canon (rulesets, pinned actions, dependabot, CodeQL, Scorecard, commitlint, PR and commit practice) with its own converge and new-repo skills, and a language-agnostic code canon covering navigation through a language server and comment discipline",
+  "description": "Claude Code plugins that stop convention drift: a Go house canon (Go 1.27, cobra/viper, log/slog, Ginkgo, golangci-lint, goreleaser) with converge, review, and scaffold skills, a GitHub repository canon (rulesets, pinned actions, dependabot, CodeQL, Scorecard, commitlint, PR and commit practice) with its own converge and new-repo skills, and a language-agnostic code canon covering navigation through a language server, comment discipline, and chat links to repositories, pull or merge requests, and issues on any host",
   "owner": {
     "name": "Joshua Hoblitt",
     "url": "https://github.com/jhoblitt"
@@ -9,7 +9,7 @@
     {
       "name": "code-conventions",
       "source": "./plugins/code-conventions",
-      "description": "The engineering rules that hold in any language: a semantic question about code — a definition, its callers, its type, a file's diagnostics — goes to the language server through the LSP tool rather than to grep, and a comment earns its place by saying what the code cannot",
+      "description": "The engineering rules that hold in any language: a semantic question about code — a definition, its callers, its type, a file's diagnostics — goes to the language server through the LSP tool rather than to grep, a comment earns its place by saying what the code cannot, and a repository, pull request, merge request, or issue named in chat is a clickable link on whatever host serves it",
       "author": {
         "name": "Joshua Hoblitt"
       }
