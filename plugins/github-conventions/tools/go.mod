@@ -3,8 +3,8 @@ module github.com/jhoblitt/conventions-claude/plugins/github-conventions/tools
 go 1.27
 
 require (
-	github.com/onsi/ginkgo/v2 v2.32.1
-	github.com/onsi/gomega v1.43.0
+	github.com/onsi/ginkgo/v2 v2.33.0
+	github.com/onsi/gomega v1.43.1
 	github.com/spf13/cobra v1.10.2
 	go.yaml.in/yaml/v3 v3.0.5
 )
