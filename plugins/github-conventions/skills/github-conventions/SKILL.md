@@ -1,6 +1,6 @@
 ---
 name: github-conventions
-description: Use when creating a GitHub repository; editing a workflow under .github/workflows/, .github/dependabot.yml, or a repository ruleset; committing, rebasing, squashing, or otherwise rewriting branch history; opening or updating a pull request; watching or retrying CI after a push; or before posting or replying to any GitHub comment, review, or issue.
+description: Use when creating a GitHub repository; editing a workflow under .github/workflows/, .github/dependabot.yml, or a repository ruleset; committing, rebasing, squashing, or otherwise rewriting branch history; opening or updating a pull request; watching or retrying CI after a push; or before posting or replying to any GitHub comment, review, or issue, or filing an issue.
 ---
 
 # GitHub repository conventions
@@ -40,7 +40,7 @@ below this table apply to every trigger.
 | writing or fixing a commit message, amending, squashing, rebasing, or otherwise rewriting a branch's history, or diagnosing a commitlint failure | `references/commits.md` |
 | opening or updating a PR, writing its description, or running a multi-PR campaign | `references/pull-requests.md` |
 | watching CI after a push, or retrying a failed job | `references/pull-requests.md`, "Watching CI" |
-| about to post or reply to a GitHub comment, review, or issue | `references/pull-requests.md`, "Comments" |
+| about to post or reply to a GitHub comment, review, or issue, or to file an issue | `references/pull-requests.md`, "Comments" |
 
 ## Always
 
@@ -52,9 +52,10 @@ below this table apply to every trigger.
   "Permissions".
 - A pull request opens as a draft, assigned to its author —
   `references/pull-requests.md`, "Opening a PR".
-- No comment, review, or reply is posted without an explicit instruction
-  for that post, and every post made on the user's behalf opens with the
-  agent marker — `references/pull-requests.md`, "Comments".
+- No comment, review, or reply is posted, and no issue filed, without an
+  explicit instruction for that post, and every post made on the user's
+  behalf opens with the agent marker — `references/pull-requests.md`,
+  "Comments".
 
 ## Scripts
 

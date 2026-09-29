@@ -56,6 +56,7 @@ rule, bounded by this table: a rendering carries only what its row says.
 | `.claude-plugin/marketplace.json`, every `description` | the plugin names and the areas each covers |
 | `plugins/*/.claude-plugin/plugin.json`, `description` | the areas covered and the skill names |
 | `plugins/code-conventions/skills/code-conventions/SKILL.md`, "Precedence" | that this canon is the ladder's lowest rung, and that a more specific rule wins — so the plugin is correct when installed alone; the rungs themselves stay enumerated in github-conventions |
+| `plugins/github-conventions/skills/github-conventions/references/pull-requests.md`, "Posting requires an instruction" | for a filed issue, the condition code-conventions' `references/bug-reports.md` sets on filing a report — the user has seen its final text, every attachment, and where it goes — so github-conventions installed alone still gates one |
 | `plugins/*/skills/*/SKILL.md`, frontmatter `description` | triggering conditions only — never the procedure |
 | `plugins/*/agents/*.md`, frontmatter `description` | the agent's job in a line and how it is dispatched |
 | the SessionStart hook's `additionalContext` | the module path, the go directive, and the instruction to load the canon skill |

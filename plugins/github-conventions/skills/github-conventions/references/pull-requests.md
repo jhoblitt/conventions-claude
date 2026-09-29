@@ -82,13 +82,16 @@ only the user can make, or only retried flakes remain.
 
 ### Posting requires an instruction
 
-No comment, review, or reply is posted to a GitHub PR or issue without an
-explicit instruction for that specific post — including a "done" reply or
-a re-review ping, and including PRs the user authored. Addressing feedback
-in code (edits, commits, pushes) needs no instruction. An ambiguous
-instruction ("respond to item B") is not authorization: it means "handle
-it in code" or "draft the reply for me" — ask which. Default to drafting
-the text in chat for the user to post.
+No comment, review, or reply is posted to a GitHub PR or issue, and no
+issue is filed, without an explicit instruction for that specific post —
+including a "done" reply or a re-review ping, a feature request or a
+question as much as a bug report, and PRs the user authored. An issue's
+instruction comes after the user has seen its final text, every
+attachment, and the repository it goes to. Addressing feedback in code
+(edits, commits, pushes) needs no instruction. An ambiguous instruction
+("respond to item B") is not authorization: it means "handle it in code"
+or "draft the reply for me" — ask which. Default to drafting the text in
+chat for the user to post.
 
 ### Signing
 
@@ -107,7 +110,7 @@ carry the repository's AI-assistance disclosure in the user's voice.
 
 ### Filing an issue
 
-What a bug report carries, and when it is filed, on GitHub or any other
-tracker, is code-conventions' `references/bug-reports.md`, where that
-plugin is installed. This canon adds only GitHub's instance of it: a
-filed issue opens with the marker ("Signing" above).
+A filed issue is a post: it waits for its instruction and opens with the
+marker (both above). What a bug report carries, and what else filing one
+waits for, on GitHub or any other tracker, is code-conventions'
+`references/bug-reports.md`, where that plugin is installed.
