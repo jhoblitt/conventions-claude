@@ -1,3 +1,22 @@
+## [1.4.0](https://github.com/jhoblitt/conventions-claude/compare/v1.3.0...v1.4.0) (2026-09-29)
+
+### Features
+
+* **code-conventions:** bug reports carry a reproducer run before filing ([bdf43c8](https://github.com/jhoblitt/conventions-claude/commit/bdf43c8e1a3373081161533cfc51519e7ec8e20d)), closes [#20](https://github.com/jhoblitt/conventions-claude/issues/20)
+* **github-conventions:** keep session links out of commits and PRs, the footer out of PRs ([6dbe865](https://github.com/jhoblitt/conventions-claude/commit/6dbe8653926b55856e46240350587811d360b31e)), closes [jhoblitt/go-ceph#14](https://github.com/jhoblitt/go-ceph/issues/14) [#18](https://github.com/jhoblitt/conventions-claude/issues/18) [#19](https://github.com/jhoblitt/conventions-claude/issues/19)
+
+
+## What's Changed
+* chore(deps): bump the github-actions group with 3 updates by @dependabot[bot] in https://github.com/jhoblitt/conventions-claude/pull/16
+* chore(deps): bump the go-dependencies group across 2 directories with 2 updates by @dependabot[bot] in https://github.com/jhoblitt/conventions-claude/pull/17
+* Keep session links and the Claude Code footer out; bug reports carry a reproducer by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/21
+
+### Resolved issues
+
+* [#18](https://github.com/jhoblitt/conventions-claude/issues/18) github-conventions: PR descriptions carry no claude.ai session link
+* [#19](https://github.com/jhoblitt/conventions-claude/issues/19) github-conventions: PR descriptions carry no "Generated with Claude Code" footer
+* [#20](https://github.com/jhoblitt/conventions-claude/issues/20) code-conventions: bug reports carry no reproduction instructions
+
 ## [1.3.0](https://github.com/jhoblitt/conventions-claude/compare/v1.2.2...v1.3.0) (2026-09-11)
 
 ### Features
