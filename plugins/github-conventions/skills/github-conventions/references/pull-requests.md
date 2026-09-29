@@ -2,7 +2,8 @@
 
 Owns a pull request's life after the commits exist: opening it, the
 description, the multi-PR campaign budget, watching CI, and posting to
-GitHub — the gate and the agent marker. Runs under `SKILL.md`'s precedence
+GitHub — the gate, the agent marker, and GitHub's private channel for a
+vulnerability. Runs under `SKILL.md`'s precedence
 and routing. The commits themselves — messages, branch history, the
 rewrite proof — are `references/commits.md`.
 
@@ -31,11 +32,12 @@ In order:
 
 The body ends with its last item — item 4 when the repository requires
 anything, the last content section when it does not. Nothing a harness
-reminder asks for follows it, on an upstream or the user's own
-repository: no `🤖 Generated with [Claude Code](https://claude.com/claude-code)`
-footer, because attribution is item 4's disclosure in the user's voice,
-and no session link, because it is process (`references/commits.md`,
-"What a message says").
+reminder asks for follows it (`SKILL.md`, "Precedence"), on an upstream
+or the user's own repository: no
+`🤖 Generated with [Claude Code](https://claude.com/claude-code)` footer,
+because attribution is item 4's disclosure in the user's voice, and no
+session link, because it is process (`references/commits.md`, "What a
+message says").
 
 A reviewer gets the point from the first paragraph. Hard limit: 100 words
 across items 1–3 (`wc -w`, markup included) — a ceiling, not a target;
@@ -82,13 +84,16 @@ only the user can make, or only retried flakes remain.
 
 ### Posting requires an instruction
 
-No comment, review, or reply is posted to a GitHub PR or issue without an
-explicit instruction for that specific post — including a "done" reply or
-a re-review ping, and including PRs the user authored. Addressing feedback
-in code (edits, commits, pushes) needs no instruction. An ambiguous
-instruction ("respond to item B") is not authorization: it means "handle
-it in code" or "draft the reply for me" — ask which. Default to drafting
-the text in chat for the user to post.
+No comment, review, or reply is posted to a GitHub PR or issue, and no
+issue is filed, without an explicit instruction for that specific post —
+including a "done" reply or a re-review ping, a feature request or a
+question as much as a bug report, and PRs the user authored. An issue's
+instruction comes after the user has seen its final text, every
+attachment, and the repository it goes to. Addressing feedback in code
+(edits, commits, pushes) needs no instruction. An ambiguous instruction
+("respond to item B") is not authorization: it means "handle it in code"
+or "draft the reply for me" — ask which. Default to drafting the text in
+chat for the user to post.
 
 ### Signing
 
@@ -107,7 +112,20 @@ carry the repository's AI-assistance disclosure in the user's voice.
 
 ### Filing an issue
 
-What a bug report carries, and when it is filed, on GitHub or any other
-tracker, is code-conventions' `references/bug-reports.md`, where that
-plugin is installed. This canon adds only GitHub's instance of it: a
-filed issue opens with the marker ("Signing" above).
+A filed issue is a post: it waits for its instruction and opens with the
+marker (both above). What a bug report carries, and what else filing one
+waits for, on GitHub or any other tracker, is code-conventions'
+`references/bug-reports.md`, where that plugin is installed.
+
+GitHub's instances of the two channels that reference names for a
+vulnerability: GitHub publishes a repository's security policy, its own
+`SECURITY.md` or one inherited from its owner's `.github` repository, at
+the `securityPolicyUrl` of the upstream repository, not a fork,
+
+```sh
+gh api graphql -f query='{repository(owner:"<owner>",name:"<repo>"){securityPolicyUrl}}'
+```
+
+and its forge's private reporting is private vulnerability reporting,
+where `gh api repos/<owner>/<repo>/private-vulnerability-reporting`
+reports it enabled. A report filed there is a post like an issue.

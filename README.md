@@ -57,13 +57,13 @@ index; it does not update the installed plugin.
 
 | Skill | What it does |
 | --- | --- |
-| `code-conventions` | The canon for any language. Loads when you navigate unfamiliar code — a definition, its callers, a type, a file's diagnostics — write, review, or delete a comment, write or edit a README or other doc, file or draft a bug report on any tracker, or name a repository, pull request, merge request, or issue in a chat reply. |
+| `code-conventions` | The canon for any language. Loads when you navigate unfamiliar code — a definition, its callers, a type, a file's diagnostics — write, review, or delete a comment, write or edit a README or other doc, report a defect or a vulnerability upstream, or name a repository, pull request, merge request, or issue in a chat reply. |
 
 ### github-conventions
 
 | Skill | What it does |
 | --- | --- |
-| `github-conventions` | The canon. Loads when you create a repository, edit a workflow or `dependabot.yml`, commit, rebase, open or update a pull request, watch CI, or post a GitHub comment. Owns the precedence ladder all three plugins share. |
+| `github-conventions` | The canon. Loads when you create a repository, edit a workflow or `dependabot.yml`, commit, rebase, open or update a pull request, watch CI, post a GitHub comment, or file an issue. Owns the precedence ladder all three plugins share. |
 | `/github-conventions:github-converge` | Audits an existing repository against the canon and applies the file half on a branch. |
 | `/github-conventions:github-new-repo` | Creates a repository the house way: empty, ruleset-protected, populated by a draft pull request. |
 
@@ -203,11 +203,16 @@ flowchart TD
 
 ## Scope
 
-The plugins report and propose; they do not act outside the working tree
-without saying so first. Converge creates a file that is absent, and shows a
-diff before touching one that exists. Anything that reaches GitHub — a
-repository, a ruleset, a push, a pull request, a comment — happens only as a
-command you have seen and approved. A review reports; it never edits.
+github-converge creates a file that is absent, shows a diff before changing
+one that exists, and runs a GitHub-side command (a `gh` write) only once you
+have approved that exact line; its branch stays local until you push it or run
+its PR step. go-converge does the same for its tooling pass, and rewrites code
+only in an area you name, committing it once `make check` reports nothing new.
+go-new-project works in a local tree and hands the repository to
+github-new-repo, which shows the batch its step 2 lists and runs it on one
+approval, then watches CI, pushing a fix for a failure the pull request caused
+and rerunning a flaky job without asking (github-conventions, "Watching CI").
+A review reports; it never edits.
 
 ## Development
 
