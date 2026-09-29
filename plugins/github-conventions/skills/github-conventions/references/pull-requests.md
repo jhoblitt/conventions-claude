@@ -2,7 +2,8 @@
 
 Owns a pull request's life after the commits exist: opening it, the
 description, the multi-PR campaign budget, watching CI, and posting to
-GitHub — the gate and the agent marker. Runs under `SKILL.md`'s precedence
+GitHub — the gate, the agent marker, and GitHub's private channel for a
+vulnerability. Runs under `SKILL.md`'s precedence
 and routing. The commits themselves — messages, branch history, the
 rewrite proof — are `references/commits.md`.
 
@@ -115,3 +116,16 @@ A filed issue is a post: it waits for its instruction and opens with the
 marker (both above). What a bug report carries, and what else filing one
 waits for, on GitHub or any other tracker, is code-conventions'
 `references/bug-reports.md`, where that plugin is installed.
+
+GitHub's instances of the two channels that reference names for a
+vulnerability: GitHub publishes a repository's security policy, its own
+`SECURITY.md` or one inherited from its owner's `.github` repository, at
+the `securityPolicyUrl` of the upstream repository, not a fork,
+
+```sh
+gh api graphql -f query='{repository(owner:"<owner>",name:"<repo>"){securityPolicyUrl}}'
+```
+
+and its forge's private reporting is private vulnerability reporting,
+where `gh api repos/<owner>/<repo>/private-vulnerability-reporting`
+reports it enabled. A report filed there is a post like an issue.

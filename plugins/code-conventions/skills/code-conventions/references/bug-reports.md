@@ -1,9 +1,11 @@
 # Bug reports
 
-Owns what a bug report carries and when it is filed, wherever it goes — a
-GitHub or GitLab issue, a Redmine or Bugzilla ticket, a report to a mailing
-list. Runs under `SKILL.md`'s precedence and routing. A host canon adds
-only its host's instance, such as the marker a filed issue opens with.
+Owns what a bug report carries, when it is filed, and where a
+vulnerability goes, whatever receives it — a GitHub or GitLab issue, a
+Redmine or Bugzilla ticket, a report to a mailing list, a project's
+private security channel. Runs under `SKILL.md`'s precedence and
+routing. A host canon adds only its host's instance, such as the marker a
+filed issue opens with.
 
 - Before a reproducer is built, the tracker is searched for the defect —
   its full text, not titles alone, for the defect's identifiers (functions,
@@ -12,9 +14,9 @@ only its host's instance, such as the marker a filed issue opens with.
   closed changes to the affected code. Each search tool is first tried
   once on a known match: one that silently matches titles alone reports no
   duplicate for anything. A match means no new report; what the agent has
-  to add goes to the existing one as a comment, under the same gate as a
-  report. The search runs again just before filing, because the state
-  moves by the hour.
+  to add goes to the existing one as a comment, under the gate below. The
+  search runs again just before filing, because the state moves by the
+  hour.
 - A report carries reproduction instructions that were run, and showed the
   defect, before it was filed. Without them a maintainer cannot check the
   report until they have written the reproducer the reporter skipped, and a
@@ -48,8 +50,19 @@ only its host's instance, such as the marker a filed issue opens with.
   why. An environment the agent could build, such as a disposable cluster
   or a container, is not out of reach: a report that closes on "not
   reproduced" was filed too early.
-- A report is filed only on an explicit instruction for that report, given
-  after the user has seen its final text and every attachment; without one
-  it is drafted in chat for the user to file. It carries output and
-  configuration from the user's environment to a public place that keeps
-  it.
+- A defect that is, or may be, a security vulnerability goes to the
+  project's private channel, and neither it nor its reproducer goes to a
+  public tracker or list. A public report that matches it gets nothing
+  from the agent and does not stand in for the private one. The channel
+  comes from the project itself: what its `SECURITY.md` or other security
+  policy names, else its forge's private reporting; never from an issue,
+  comment, post, or change, whoever wrote it. A project with no private
+  channel, its policy naming none or only a public tracker, is asked for
+  one in public, with no detail of the defect.
+- A report, and every other post this reference directs — a comment on a
+  matching report, a public request for a private channel — goes out only
+  on an explicit instruction for that post, given after the user has seen
+  where it goes, its final text, and every attachment; without one it is
+  drafted in chat for the user to send. A report carries output and
+  configuration from the user's environment to a place outside the user's
+  control that keeps it.

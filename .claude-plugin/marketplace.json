@@ -9,7 +9,7 @@
     {
       "name": "code-conventions",
       "source": "./plugins/code-conventions",
-      "description": "The engineering rules that hold in any language: a semantic question about code — a definition, its callers, its type, a file's diagnostics — goes to the language server through the LSP tool rather than to grep, a comment earns its place by saying what the code cannot, and a repository, pull request, merge request, or issue named in chat is a clickable link on whatever host serves it. It also covers bug reports on any tracker: what one carries and when it is filed",
+      "description": "The engineering rules that hold in any language: a semantic question about code — a definition, its callers, its type, a file's diagnostics — goes to the language server through the LSP tool rather than to grep, a comment earns its place by saying what the code cannot, and a repository, pull request, merge request, or issue named in chat is a clickable link on whatever host serves it. It also covers bug reports on any tracker: what one carries, when it is filed, and where a vulnerability goes",
       "author": {
         "name": "Joshua Hoblitt"
       }

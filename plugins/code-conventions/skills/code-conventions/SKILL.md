@@ -1,18 +1,18 @@
 ---
 name: code-conventions
-description: Use when navigating unfamiliar code — locating a symbol's definition, its callers, its type, or the diagnostics on a file; when writing, reviewing, or deleting a comment; when writing or editing a README or any other doc; when judging whether a piece of code needs explanation; when filing or drafting a bug report on any tracker; or when a chat reply names a repository, pull request, merge request, or issue.
+description: Use when navigating unfamiliar code — locating a symbol's definition, its callers, its type, or the diagnostics on a file; when writing, reviewing, or deleting a comment; when writing or editing a README or any other doc; when judging whether a piece of code needs explanation; when reporting a defect or a security vulnerability upstream — searching for an existing report, building a reproducer, or filing or drafting the report on any tracker or channel; or when a chat reply names a repository, pull request, merge request, or issue.
 ---
 
 # Code conventions
 
 The canon for the rules that hold whatever the language or host is — how
 code is navigated, when a comment is written or deleted, what a comment or
-a doc describes, what a bug report carries and when it is filed, and how a
-repository, pull request, merge request, or issue is referred to in chat. It
-is consulted, not run: no skill executes it, and a language or host canon
-points here rather than restating it, adding only its own instance of a
-rule. A path of the form `references/<file>` is relative to this skill's
-directory.
+a doc describes, what a bug report carries, when it is filed, and where a
+vulnerability goes, and how a repository, pull request, merge request, or
+issue is referred to in chat. It is consulted, not run: no skill executes
+it, and a language or host canon points here rather than restating it,
+adding only its own instance of a rule. A path of the form
+`references/<file>` is relative to this skill's directory.
 
 ## Precedence
 
@@ -34,5 +34,5 @@ Read a reference when the work touches its trigger; skip the rest.
 |---|---|
 | locating a definition, its callers, or a symbol's type; reading a file's diagnostics; choosing between a language server and grep | `references/navigation.md` |
 | writing, reviewing, or deleting a comment; writing or editing a README or other doc; judging whether code needs explanation | `references/comments.md` |
-| filing or drafting a bug report on any tracker | `references/bug-reports.md` |
+| reporting a defect or a security vulnerability upstream: searching for an existing report, building a reproducer, filing or drafting the report | `references/bug-reports.md` |
 | naming a repository, pull request, merge request, or issue in a chat reply | `references/chat-links.md` |
