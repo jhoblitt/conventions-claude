@@ -1,3 +1,21 @@
+## [1.5.0](https://github.com/jhoblitt/conventions-claude/compare/v1.4.0...v1.5.0) (2026-09-29)
+
+### Features
+
+* **code-conventions:** search for an existing report before reproducing ([36bcb6e](https://github.com/jhoblitt/conventions-claude/commit/36bcb6eda52f93bcf0d9e11136b7d16c30f10f6e))
+* **code-conventions:** send a vulnerability to the project's private channel ([a32e468](https://github.com/jhoblitt/conventions-claude/commit/a32e4688458332a7644d4797a0d2d529085b16a9))
+* **code-conventions:** write a reproducer in the upstream project's language ([4f3b430](https://github.com/jhoblitt/conventions-claude/commit/4f3b43011c19df0565f0f0a163e314bbdb6decd7))
+* **github-conventions:** filing an issue waits for an instruction ([293adec](https://github.com/jhoblitt/conventions-claude/commit/293adecf0cd00361b7627300974de12c255a457b))
+* **github-conventions:** rank the harness's defaults below every rung ([c2a4cf7](https://github.com/jhoblitt/conventions-claude/commit/c2a4cf750a4f1139f536f6f6af427e71cd81e709))
+
+### Documentation
+
+* state each procedural skill's approval gate in the README ([7955b14](https://github.com/jhoblitt/conventions-claude/commit/7955b14a9e7dbd124fa6c5e13a105c421e54255e))
+
+
+## What's Changed
+* Gate issue filing, private vulnerability reports, prior-art search, upstream-language reproducers by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/22
+
 ## [1.4.0](https://github.com/jhoblitt/conventions-claude/compare/v1.3.0...v1.4.0) (2026-09-29)
 
 ### Features
