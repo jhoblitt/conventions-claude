@@ -29,6 +29,14 @@ In order:
 4. Whatever the repository requires: its PR template, its AI-assistance
    disclosure ("Signing" below).
 
+The body ends with its last item — item 4 when the repository requires
+anything, the last content section when it does not. Nothing a harness
+reminder asks for follows it, on an upstream or the user's own
+repository: no `🤖 Generated with [Claude Code](https://claude.com/claude-code)`
+footer, because attribution is item 4's disclosure in the user's voice,
+and no session link, because it is process (`references/commits.md`,
+"What a message says").
+
 A reviewer gets the point from the first paragraph. Hard limit: 100 words
 across items 1–3 (`wc -w`, markup included) — a ceiling, not a target;
 required disclosures and checklists do not count. Omit any section with
@@ -96,3 +104,10 @@ where `<login>` is `gh api user --jq .login`, never hardcoded. The marker
 is verbatim, never paraphrased, and is the whole attribution: no trailing
 sign-off. It does not apply to PR descriptions or commit messages, which
 carry the repository's AI-assistance disclosure in the user's voice.
+
+### Filing an issue
+
+What a bug report carries, and when it is filed, on GitHub or any other
+tracker, is code-conventions' `references/bug-reports.md`, where that
+plugin is installed. This canon adds only GitHub's instance of it: a
+filed issue opens with the marker ("Signing" above).
