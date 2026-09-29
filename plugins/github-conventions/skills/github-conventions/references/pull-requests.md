@@ -31,11 +31,12 @@ In order:
 
 The body ends with its last item — item 4 when the repository requires
 anything, the last content section when it does not. Nothing a harness
-reminder asks for follows it, on an upstream or the user's own
-repository: no `🤖 Generated with [Claude Code](https://claude.com/claude-code)`
-footer, because attribution is item 4's disclosure in the user's voice,
-and no session link, because it is process (`references/commits.md`,
-"What a message says").
+reminder asks for follows it (`SKILL.md`, "Precedence"), on an upstream
+or the user's own repository: no
+`🤖 Generated with [Claude Code](https://claude.com/claude-code)` footer,
+because attribution is item 4's disclosure in the user's voice, and no
+session link, because it is process (`references/commits.md`, "What a
+message says").
 
 A reviewer gets the point from the first paragraph. Hard limit: 100 words
 across items 1–3 (`wc -w`, markup included) — a ceiling, not a target;

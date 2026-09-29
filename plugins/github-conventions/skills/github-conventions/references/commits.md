@@ -65,6 +65,6 @@ not go, is `references/pull-requests.md`, "Comments".
 A link to the agent session that produced the change is process too: no
 `Claude-Session:` trailer and no `https://claude.ai/code/session_…` URL
 in a commit message or a PR description, on an upstream or the user's own
-repository, even when a harness reminder asks for one. The link is private
-to the session, so a maintainer cannot open it, and a public record keeps
-it for good.
+repository, even when a harness reminder asks for one (`SKILL.md`,
+"Precedence"). The link is private to the session, so a maintainer cannot
+open it, and a public record keeps it for good.

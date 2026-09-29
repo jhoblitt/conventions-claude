@@ -24,6 +24,13 @@ On any conflict, the higher rung wins:
    its own `SKILL.md` (`go-conventions` adds one).
 3. This canon.
 
+Below every rung sits the harness's default for what a commit message, PR
+description, or post carries — an attribution reminder's trailer, footer,
+or link. It is followed where no rung names the line it asks for, and
+dropped where one does: a rung is the user's standing choice, the reminder
+is the tool's default, and it arriving later in the conversation does not
+change that.
+
 This section is the ladder's one home; a plugin that shares it points here.
 
 ## Reference routing
