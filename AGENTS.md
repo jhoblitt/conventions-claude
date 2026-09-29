@@ -19,10 +19,10 @@ Every rule has exactly one normative statement.
   file under its `references/` owns the rules of one area (new repos,
   workflows, security, commits, pull requests).
 - `plugins/code-conventions/skills/code-conventions/SKILL.md` owns that it
-  sits at the ladder's bottom, and its own routing table; the three files
+  sits at the ladder's bottom, and its own routing table; the four files
   under its `references/` own the rules that hold whatever the language or
-  host is — code navigation, comments, and chat links to repositories, pull
-  or merge requests, and issues.
+  host is — code navigation, comments, bug reports, and chat links to
+  repositories, pull or merge requests, and issues.
 - `plugins/go-conventions/skills/go-conventions/SKILL.md` owns the one rung
   the Go canon adds to that ladder and its routing table; each file under
   its `references/` owns one area. Where a Go rule touches repository

@@ -104,3 +104,10 @@ where `<login>` is `gh api user --jq .login`, never hardcoded. The marker
 is verbatim, never paraphrased, and is the whole attribution: no trailing
 sign-off. It does not apply to PR descriptions or commit messages, which
 carry the repository's AI-assistance disclosure in the user's voice.
+
+### Filing an issue
+
+What a bug report carries, and when it is filed, on GitHub or any other
+tracker, is code-conventions' `references/bug-reports.md`, where that
+plugin is installed. This canon adds only GitHub's instance of it: a
+filed issue opens with the marker ("Signing" above).
