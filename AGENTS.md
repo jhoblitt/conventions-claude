@@ -53,6 +53,7 @@ rule, bounded by this table: a rendering carries only what its row says.
 | `README.md`, intro and skills tables | each skill's name, one line on what it does, and when it triggers; the install commands; the scope of each plugin |
 | `README.md`, workflow diagrams | the phases, modes, gates, and fan-out of each procedural skill, drawn from its `SKILL.md` |
 | `README.md`, interaction map | which skill hands off to which, and the go → github and go → code dependencies |
+| `README.md`, Scope | what each procedural skill does unasked and what waits for the user's approval, drawn from its `SKILL.md` gates |
 | `.claude-plugin/marketplace.json`, every `description` | the plugin names and the areas each covers |
 | `plugins/*/.claude-plugin/plugin.json`, `description` | the areas covered and the skill names |
 | `plugins/code-conventions/skills/code-conventions/SKILL.md`, "Precedence" | that this canon is the ladder's lowest rung, and that a more specific rule wins — so the plugin is correct when installed alone; the rungs themselves stay enumerated in github-conventions |

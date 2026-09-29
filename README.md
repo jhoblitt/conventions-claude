@@ -203,11 +203,16 @@ flowchart TD
 
 ## Scope
 
-The plugins report and propose; they do not act outside the working tree
-without saying so first. Converge creates a file that is absent, and shows a
-diff before touching one that exists. Anything that reaches GitHub — a
-repository, a ruleset, a push, a pull request, a comment — happens only as a
-command you have seen and approved. A review reports; it never edits.
+github-converge creates a file that is absent, shows a diff before changing
+one that exists, and runs a GitHub-side command (a `gh` write) only once you
+have approved that exact line; its branch stays local until you push it or run
+its PR step. go-converge does the same for its tooling pass, and rewrites code
+only in an area you name, committing it once `make check` reports nothing new.
+go-new-project works in a local tree and hands the repository to
+github-new-repo, which shows the batch its step 2 lists and runs it on one
+approval, then watches CI, pushing a fix for a failure the pull request caused
+and rerunning a flaky job without asking (github-conventions, "Watching CI").
+A review reports; it never edits.
 
 ## Development
 
