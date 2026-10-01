@@ -9,9 +9,9 @@ canon for how Go code is written, tested, logged, linted, built, and
 released, **github-conventions**, the canon for how a GitHub repository is
 created, kept hygienic, and worked on through commits and pull requests, and
 **code-conventions**, the rules that hold whatever the language or host is —
-code navigation, comments, bug reports, and chat links to repositories, pull
-or merge requests, and issues. go-conventions depends on the other two;
-installing it installs all three.
+code navigation, comments, bug reports, chat links to repositories, pull
+or merge requests, and issues, and code citations in durable documents.
+go-conventions depends on the other two; installing it installs all three.
 
 ## Install
 
@@ -57,7 +57,7 @@ index; it does not update the installed plugin.
 
 | Skill | What it does |
 | --- | --- |
-| `code-conventions` | The canon for any language. Loads when you navigate unfamiliar code — a definition, its callers, a type, a file's diagnostics — write, review, or delete a comment, write or edit a README or other doc, report a defect or a vulnerability upstream, or name a repository, pull request, merge request, or issue in a chat reply. |
+| `code-conventions` | The canon for any language. Loads when you navigate unfamiliar code — a definition, its callers, a type, a file's diagnostics — write, review, or delete a comment, write or edit a README or other doc, report a defect or a vulnerability upstream, name a repository, pull request, merge request, or issue in a chat reply, or cite code by file and line in a spec, plan, registry entry, review finding, or PR description. |
 
 ### github-conventions
 
