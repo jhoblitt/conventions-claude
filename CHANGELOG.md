@@ -1,3 +1,17 @@
+## [1.5.1](https://github.com/jhoblitt/conventions-claude/compare/v1.5.0...v1.5.1) (2026-10-01)
+
+### Bug Fixes
+
+* **go-conventions:** derive the release fork guard from origin ([05f2e94](https://github.com/jhoblitt/conventions-claude/commit/05f2e94bb63fa11fc1f8f1339059d477fb5f538f)), closes [#14](https://github.com/jhoblitt/conventions-claude/issues/14)
+
+
+## What's Changed
+* fix(go-conventions): derive the release fork guard from origin by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/27
+
+### Resolved issues
+
+* [#14](https://github.com/jhoblitt/conventions-claude/issues/14) go-conventions: the release fork guard is derived from the module path, not the remote
+
 ## [1.5.0](https://github.com/jhoblitt/conventions-claude/compare/v1.4.0...v1.5.0) (2026-09-29)
 
 ### Features
