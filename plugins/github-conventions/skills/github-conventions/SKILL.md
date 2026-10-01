@@ -1,6 +1,6 @@
 ---
 name: github-conventions
-description: Use when creating a GitHub repository; editing a workflow under .github/workflows/, .github/dependabot.yml, or a repository ruleset; committing, rebasing, squashing, or otherwise rewriting branch history; opening or updating a pull request; watching or retrying CI after a push; or before posting or replying to any GitHub comment, review, or issue, or filing an issue or a private vulnerability report.
+description: Use when creating a GitHub repository; editing a workflow under .github/workflows/, .github/dependabot.yml, or a repository ruleset; committing, rebasing, squashing, or otherwise rewriting branch history; opening, updating, or merging a pull request; watching or retrying CI after a push; or before posting or replying to any GitHub comment, review, or issue, or filing an issue or a private vulnerability report.
 ---
 
 # GitHub repository conventions
@@ -46,6 +46,7 @@ below this table apply to every trigger.
 | adding or changing CodeQL, dependency review, Scorecard, or the Scorecard badge; judging a workflow for injection | `references/security.md` |
 | writing or fixing a commit message, amending, squashing, rebasing, or otherwise rewriting a branch's history, or diagnosing a commitlint failure | `references/commits.md` |
 | opening or updating a PR, writing its description, or running a multi-PR campaign | `references/pull-requests.md` |
+| naming an issue or PR in a PR title, PR description, or commit message, or about to merge a PR | `references/pull-requests.md`, "Closing keywords" |
 | watching CI after a push, or retrying a failed job | `references/pull-requests.md`, "Watching CI" |
 | about to post or reply to a GitHub comment, review, or issue, or to file an issue or a private vulnerability report | `references/pull-requests.md`, "Comments" |
 
@@ -75,3 +76,14 @@ launcher fails loud: a non-zero exit is a real failure, never an empty
 result. The output contract — rows, statuses, the summary line — is owned
 by `github-converge` (`skills/github-converge/references/ghconv-audit.md`),
 not defined here.
+
+```sh
+bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" ghconv-closekw --pr <N> [--repo OWNER/REPO] [--dir DIR]
+bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" ghconv-closekw [--description FILE|-] [--range REV-RANGE] [--dir DIR]
+```
+
+Reports each closing keyword directly before an issue or PR reference: in a
+PR's title, description, and commit messages under `--pr`, or in a local
+description and commit range. The launcher fails loud: a
+non-zero exit is a real failure, never an empty result. The output contract
+is `references/pull-requests.md`, "Closing keywords".
