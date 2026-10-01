@@ -31,6 +31,10 @@ audit tool's output contract. Except where named as this skill's,
      `goconv-audit --emit-release-workflow <dir>`, each captured and then
      written where `skills/go-new-project/SKILL.md`, step 2, lands it, with
      `--binary`, `--owner` or `--repo` added when the tool asks for one.
+     When it reports that origin and the module path disagree, `--owner`
+     and `--repo` come from the user, never chosen by the model: the
+     disagreement is a fork or a moved repository only the user can tell
+     apart.
    - `makefile`, `ci`, `gitignore` — from `templates/`, placeholders filled per
      `references/layout.md`, "Template placeholders".
    - `dependabot` — `templates/dependabot-gomod.yml` appended under the existing

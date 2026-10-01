@@ -135,7 +135,11 @@ flowchart TD
   A["goconv-audit --markdown<br/>print the table as rendered"] --> B["Repository hygiene first"]
   B -.->|github-conventions:github-converge| C["Hygiene files land"]
   C --> D["Stay on the branch github-converge cut<br/>from the default branch"]
-  D --> E["Tooling phase: one commit per area,<br/>diff gate on any file that exists"]
+  D --> T{"Release files: origin and<br/>module path disagree?"}
+  T -- yes --> U{"User names the owner<br/>and repository"}
+  U --> V["Render the release files<br/>with those values"]
+  T -- no --> E["Tooling phase: one commit per area,<br/>diff gate on any file that exists"]
+  V --> E
   E --> F{"User names a migration area"}
   F --> G["layout"]
   G --> H["cli + logging + version"]
@@ -206,8 +210,10 @@ flowchart TD
 github-converge creates a file that is absent, shows a diff before changing
 one that exists, and runs a GitHub-side command (a `gh` write) only once you
 have approved that exact line; its branch stays local until you push it or run
-its PR step. go-converge does the same for its tooling pass, and rewrites code
-only in an area you name, committing it once `make check` reports nothing new.
+its PR step. go-converge does the same for its tooling pass, asks you for the
+release files' owner and repository when origin and the module path disagree,
+and rewrites code only in an area you name, committing it once `make check`
+reports nothing new.
 go-new-project works in a local tree and hands the repository to
 github-new-repo, which shows the batch its step 2 lists and runs it on one
 approval, then watches CI, pushing a fix for a failure the pull request caused

@@ -125,8 +125,13 @@ var _ = Describe("Run", func() {
 
 	It("asks for the slug a module path off github.com cannot supply", func(ctx SpecContext) {
 		GinkgoT().Setenv("CLAUDE_PLUGIN_ROOT", pluginRoot())
+		// The fixture sits inside this repository, whose origin would
+		// otherwise supply the slug.
+		abs, err := filepath.Abs(repo)
+		Expect(err).NotTo(HaveOccurred())
+		GinkgoT().Setenv("GIT_CEILING_DIRECTORIES", filepath.Dir(abs))
 
-		_, _, err := execute(ctx, "--emit-goreleaser", repo)
+		_, _, err = execute(ctx, "--emit-goreleaser", repo)
 		Expect(err).To(MatchError(ContainSubstring("--owner and --repo are required")))
 	})
 
