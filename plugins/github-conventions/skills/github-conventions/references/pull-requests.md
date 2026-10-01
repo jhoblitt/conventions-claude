@@ -48,6 +48,16 @@ messages, not into the description. Process stays out
 (`references/commits.md`, "What a message says"). A closing keyword next
 to a reference is "Closing keywords" below.
 
+Every repository, pull request, merge request, or issue the description
+names is a clickable link to its page, in the shape and with the host
+taken as code-conventions' `references/chat-links.md` sets for a chat
+reply, where that plugin is installed. GitHub's own `#N` and
+`owner/repo#N` already render as that link and stay as written. A bare
+`#N` never names an item on another tracker — Redmine, Bugzilla, a GitLab
+instance: GitHub links it to this repository's item `N`, so it points at
+an unrelated issue rather than at nothing. Write
+`[#80948](https://tracker.ceph.com/issues/80948)`.
+
 ## Closing keywords
 
 GitHub reads `close`, `closes`, `closed`, `fix`, `fixes`, `fixed`,
