@@ -75,7 +75,7 @@ github-conventions' own placeholders are its
 | `{{MODULES}}` | the module directories relative to the Makefile, space separated; `.` for a single-module repository. Assigned with `?=`, so a caller can override it |
 | `{{BINARY}}` | the binary name — the `cmd/<bin>` directory, the goreleaser build id, and the archive name |
 | `{{ENV_PREFIX}}` | the environment-variable prefix, the binary name upper-cased with `-` mapped to `_` (`references/cli.md`, "Configuration") |
-| `{{OWNER}}` | the owner half of the `<owner>/<repo>` pair the release workflow's fork guard and, with an image, the ko image repository are built from |
+| `{{OWNER}}` | the owner half of the `<owner>/<repo>` pair the release workflow's fork guard and, with an image, the ko image repository are built from (go-converge's `references/goconv-audit.md` owns the derivation) |
 | `{{REPO}}` | the repository half of that same pair |
 | `{{DESCRIPTION}}` | one line on what the binary does |
 | `{{PACKAGE}}` | the package a suite file belongs to, as written in `package <name>_test` |

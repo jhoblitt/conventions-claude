@@ -1,9 +1,11 @@
 // Package audit checks a Go repository against the go-conventions canon and
 // renders the result as markdown or JSON.
 //
-// Everything it reports is read statically from the tree: go.mod through
+// Every row it reports is read statically from the tree: go.mod through
 // [modfile], imports through go/parser, YAML through go.yaml.in/yaml/v3, and
-// the Makefile and workflow run: blocks as text. Nothing is executed.
+// the Makefile and workflow run: blocks as text. Nothing is executed, except
+// that [Goreleaser] and [ReleaseWorkflow] run git remote get-url origin to
+// find the repository the release files name.
 package audit
 
 import (

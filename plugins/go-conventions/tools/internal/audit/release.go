@@ -1,13 +1,17 @@
 package audit
 
 import (
+	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 )
 
 // Inputs are the values the two release templates are rendered with. An empty
@@ -16,8 +20,9 @@ import (
 type Inputs struct {
 	// Binary fills {{BINARY}}; empty means the one cmd/<name> directory.
 	Binary string
-	// Owner and Repo fill {{OWNER}} and {{REPO}}; empty means the second and
-	// third elements of a github.com module path.
+	// Owner and Repo fill {{OWNER}} and {{REPO}}; empty means the GitHub
+	// origin remote's, else the second and third elements of a github.com
+	// module path.
 	Owner string
 	Repo  string
 	// Image opts the project into the container image. An existing
@@ -30,27 +35,27 @@ type Inputs struct {
 // opts.Dir: the placeholders filled from in, the {{IMAGE}} block kept when the
 // project publishes an image, and an existing .goreleaser.yaml's goos and
 // goarch lists carried into the first build in place of the template's.
-func Goreleaser(opts Options, in Inputs) (string, error) {
+func Goreleaser(ctx context.Context, opts Options, in Inputs) (string, error) {
 	repo, err := scan(opts)
 	if err != nil {
 		return "", err
 	}
 
-	return repo.emitRelease(".goreleaser.yaml", in, true)
+	return repo.emitRelease(ctx, ".goreleaser.yaml", in, true)
 }
 
 // ReleaseWorkflow renders templates/release.yml for the repository at
 // opts.Dir the same way, minus the targets: the workflow has none.
-func ReleaseWorkflow(opts Options, in Inputs) (string, error) {
+func ReleaseWorkflow(ctx context.Context, opts Options, in Inputs) (string, error) {
 	repo, err := scan(opts)
 	if err != nil {
 		return "", err
 	}
 
-	return repo.emitRelease("release.yml", in, false)
+	return repo.emitRelease(ctx, "release.yml", in, false)
 }
 
-func (r *repo) emitRelease(name string, in Inputs, targets bool) (string, error) {
+func (r *repo) emitRelease(ctx context.Context, name string, in Inputs, targets bool) (string, error) {
 	// A shell redirect onto .goreleaser.yaml truncates it before this process
 	// reads it, and an empty file would silently render as a project with
 	// template targets and no image. No goreleaser config is legitimately
@@ -62,7 +67,7 @@ func (r *repo) emitRelease(name string, in Inputs, targets bool) (string, error)
 	if err != nil {
 		return "", err
 	}
-	in, err = r.resolveInputs(in)
+	in, err = r.resolveInputs(ctx, in)
 	if err != nil {
 		return "", err
 	}
@@ -107,10 +112,10 @@ func (in Inputs) validate() error {
 
 // resolveInputs fills what the caller left empty from the tree, or says which
 // flag it needs, then checks every value is a name. The binary is the
-// cmd/<name> directory when there is one; the owner and repository are read
-// from a github.com module path.
-func (r *repo) resolveInputs(in Inputs) (Inputs, error) {
-	in, err := r.deriveInputs(in)
+// cmd/<name> directory when there is one; the owner and repository are
+// [repo.slug]'s.
+func (r *repo) resolveInputs(ctx context.Context, in Inputs) (Inputs, error) {
+	in, err := r.deriveInputs(ctx, in)
 	if err != nil {
 		return in, err
 	}
@@ -118,7 +123,7 @@ func (r *repo) resolveInputs(in Inputs) (Inputs, error) {
 	return in, in.validate()
 }
 
-func (r *repo) deriveInputs(in Inputs) (Inputs, error) {
+func (r *repo) deriveInputs(ctx context.Context, in Inputs) (Inputs, error) {
 	if in.Binary == "" {
 		names, err := r.commandDirs()
 		if err != nil {
@@ -137,7 +142,11 @@ func (r *repo) deriveInputs(in Inputs) (Inputs, error) {
 	if in.Owner != "" && in.Repo != "" {
 		return in, nil
 	}
-	if owner, repo, ok := githubSlug(r.module); ok {
+	owner, repo, ok, err := r.slug(ctx)
+	if err != nil {
+		return in, err
+	}
+	if ok {
 		if in.Owner == "" {
 			in.Owner = owner
 		}
@@ -160,7 +169,7 @@ func (r *repo) deriveInputs(in Inputs) (Inputs, error) {
 		verb = "are"
 	}
 
-	return in, fmt.Errorf("%s %s required: module %s is not github.com/<owner>/<repo>",
+	return in, fmt.Errorf("%s %s required: no GitHub origin, and module %s is not github.com/<owner>/<repo>",
 		strings.Join(missing, " and "), verb, r.module)
 }
 
@@ -185,6 +194,92 @@ func (r *repo) commandDirs() ([]string, error) {
 	}
 
 	return names, nil
+}
+
+// slug is the owner and repository the release serves: origin's when it is a
+// GitHub remote, else the module path's. Where both are known and disagree —
+// a fork, or a repository moved without a module-path change — neither is
+// picked: the guard would otherwise name a repository the release never runs
+// in, so the caller is told to choose with the flags.
+func (r *repo) slug(ctx context.Context) (owner, repo string, ok bool, err error) {
+	modOwner, modRepo, modOK := githubSlug(r.module)
+	originOwner, originRepo, originOK, err := originSlug(ctx, r.dir)
+	switch {
+	case err != nil:
+		return "", "", false, err
+	case originOK && modOK && (!strings.EqualFold(originOwner, modOwner) || !strings.EqualFold(originRepo, modRepo)):
+		return "", "", false, fmt.Errorf("--owner and --repo are required: origin is %q but module %s names %q",
+			originOwner+"/"+originRepo, r.module, modOwner+"/"+modRepo)
+	case originOK:
+		return originOwner, originRepo, true, nil
+	default:
+		return modOwner, modRepo, modOK, nil
+	}
+}
+
+// originSlug reads the owner and repository out of the URL of the git remote
+// origin of dir, when it has one on github.com. A tree outside git, without
+// origin, or with origin elsewhere has none; any other git failure is an
+// error, since falling back would render the module path's guard unasked.
+func originSlug(ctx context.Context, dir string) (owner, repo string, ok bool, err error) {
+	ctx, cancel := context.WithTimeout(ctx, gitTimeout)
+	defer cancel()
+
+	cmd := exec.CommandContext(ctx, "git", "remote", "get-url", "origin")
+	cmd.Dir = dir
+	// noOrigin reads git's stderr, which a translated locale would reword.
+	cmd.Env = append(cmd.Environ(), "LC_ALL=C")
+	out, err := cmd.Output()
+	var exit *exec.ExitError
+	switch {
+	case err == nil:
+		owner, repo, ok = parseRemote(strings.TrimSpace(string(out)))
+
+		return owner, repo, ok, nil
+	case errors.As(err, &exit) && noOrigin(exit):
+		return "", "", false, nil
+	case errors.As(err, &exit):
+		return "", "", false, fmt.Errorf("git remote get-url origin in %s: %w: %s",
+			dir, err, strings.TrimSpace(string(exit.Stderr)))
+	default:
+		return "", "", false, fmt.Errorf("git remote get-url origin in %s: %w", dir, err)
+	}
+}
+
+// gitTimeout bounds the one git call, which reads local config only.
+const gitTimeout = 10 * time.Second
+
+// noOrigin is git's answer for a repository without origin (exit 2) or a
+// directory outside any repository (exit 128 saying so). Exit 128 also
+// covers refusals such as dubious ownership, which are not an absent remote.
+func noOrigin(exit *exec.ExitError) bool {
+	switch exit.ExitCode() {
+	case 2:
+		return true
+	case 128:
+		return bytes.Contains(exit.Stderr, []byte("not a git repository"))
+	default:
+		return false
+	}
+}
+
+// remoteHost matches the scheme, user, host, and port of a GitHub remote URL
+// (any scheme://, any case, port allowed) or the scp-like
+// git@github.com: form, where a colon separates the path and no port exists.
+var remoteHost = regexp.MustCompile(
+	`(?i)^(?:[a-z][a-z0-9+.-]*://(?:[^@/]+@)?github\.com(?::[0-9]+)?/|(?:[^@/:]+@)?github\.com:)`)
+
+func parseRemote(url string) (owner, repo string, ok bool) {
+	loc := remoteHost.FindStringIndex(url)
+	if loc == nil {
+		return "", "", false
+	}
+	parts := strings.Split(strings.TrimSuffix(strings.TrimSuffix(url[loc[1]:], "/"), ".git"), "/")
+	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
+		return "", "", false
+	}
+
+	return parts[0], parts[1], true
 }
 
 // githubSlug reads the owner and repository out of a github.com module path;

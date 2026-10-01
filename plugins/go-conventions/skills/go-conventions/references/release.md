@@ -70,7 +70,10 @@ gets the stamp.
 `templates/release.yml`, on `push` of tags matching `v*`:
 
 - Fork-guarded: `if: github.repository == '{{OWNER}}/{{REPO}}'`, so a fork
-  never publishes under the upstream name.
+  never publishes under the upstream name. The guard must name the
+  repository the releases are tagged in: one naming any other leaves the
+  release job never running there. How `goconv-audit` derives it is
+  go-converge's `references/goconv-audit.md`.
 - The `goreleaser` job escalates to `contents: write` (the release) and
   `id-token: write` (keyless signing), and, with an image, `packages: write`
   (ghcr.io).

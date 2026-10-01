@@ -21,8 +21,8 @@ Ask for each of these that was not given; never assume one:
 - **One-line description** of what the binary does.
 - **Environment prefix** — defaulted from the binary name.
 
-`{{OWNER}}` and `{{REPO}}` are derived from the module path by the tool that
-renders the release files, and asked for when it cannot (go-converge's
+`{{OWNER}}` and `{{REPO}}` are derived by the tool that renders the release
+files, and asked for when it cannot (go-converge's
 `references/goconv-audit.md`). A container image is not an input: one is
 published only when the user asked for it, so `--image` is passed to that
 tool only then (`references/release.md`, "Images"). What each placeholder is

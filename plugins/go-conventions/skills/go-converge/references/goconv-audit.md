@@ -15,11 +15,13 @@ procedure, and under its reading of `references/<file>` and
   ran; exit 1 on a usage or I/O error (a bad flag, a `dir` with no `go.mod`, an
   unknown area, a value a release rendering needs and cannot derive), the reason
   on stderr.
-- Every answer is read statically and offline: `go.mod` through
+- Every audit row is read statically and offline: `go.mod` through
   `golang.org/x/mod/modfile`; imports through `go/parser` with
   `parser.ImportsOnly` over every `*.go` outside `vendor/`, `testdata/`, and `.`-
   and `_`-led directories; YAML into loose maps; the Makefile and workflow `run:`
-  blocks as text. Never `go list`, never `exec`.
+  blocks as text. Never `go list`, never `exec`. The one exception is the two
+  release renderings, which run `git remote get-url origin` for the
+  `{{OWNER}}`/`{{REPO}}` derivation below.
 - Row fields: `area`, `check`, `status` (`ok`, `gap`, `skipped`), `phase`,
   `current` (what the repository has), `canon` (what it should have), `fix`
   (empty unless `gap`; a `templates/…` path in it is under the canon skill, and
@@ -57,11 +59,17 @@ procedure, and under its reading of `references/<file>` and
   the repository. `{{BINARY}}` is `--binary`, defaulting to the one `cmd/<name>/`
   directory and otherwise required — the error lists the candidates, or says
   there are none. `{{OWNER}}` and `{{REPO}}` are `--owner` and `--repo`,
-  defaulting to the second and third elements of a `github.com/<owner>/<repo>`
-  module path, however deep, and otherwise required, one error naming what is
-  missing. The opt-in of `references/release.md`, "Images", reads as `--image`
-  for "asked for" and, for "carries either block", a `kos` or `docker_signs`
-  key in a `.goreleaser.yaml` that parses.
+  defaulting first to the `<owner>/<repo>` of a `github.com` URL that
+  `git remote get-url origin` reports, then to the second and third elements
+  of a `github.com/<owner>/<repo>` module path, however deep, and otherwise
+  required, one error naming what is missing. Where both an origin and a
+  module path supply a pair and they differ other than in case — a fork, or a
+  repository moved without a module-path change — neither is used: the error
+  names both and requires `--owner` and `--repo`. No origin means git reports
+  no such remote or no repository; any other git failure is an error. The
+  opt-in of `references/release.md`, "Images", reads as `--image` for "asked
+  for" and, for "carries either block", a `kos` or `docker_signs` key in a
+  `.goreleaser.yaml` that parses.
   The `# {{IMAGE}}` and `# {{/IMAGE}}` marker lines are always removed; the
   lines between them are kept with an image and dropped without, a run of blank
   lines a drop leaves collapsed to one. `--emit-goreleaser` also replaces the
