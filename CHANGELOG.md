@@ -1,3 +1,21 @@
+## [1.6.0](https://github.com/jhoblitt/conventions-claude/compare/v1.5.1...v1.6.0) (2026-10-02)
+
+### Features
+
+* **code-conventions:** link code citations in durable documents to a pinned line range ([883e61a](https://github.com/jhoblitt/conventions-claude/commit/883e61a9a823c6cf389aea53ab9e480e7e9fddb8)), closes [#23](https://github.com/jhoblitt/conventions-claude/issues/23)
+* **github-conventions:** keep closing keywords away from references not meant to close ([e65c7ba](https://github.com/jhoblitt/conventions-claude/commit/e65c7ba08c45a4ec8724f635803eeacbb053a911)), closes [owner/repo#N](https://github.com/owner/repo/issues/N) [#N](https://github.com/jhoblitt/conventions-claude/issues/N) [#25](https://github.com/jhoblitt/conventions-claude/issues/25)
+* **github-conventions:** link every item a PR description names ([747a237](https://github.com/jhoblitt/conventions-claude/commit/747a2379df434fa602fb070c190e59acf30279c1)), closes [#N](https://github.com/jhoblitt/conventions-claude/issues/N) [#N](https://github.com/jhoblitt/conventions-claude/issues/N) [#24](https://github.com/jhoblitt/conventions-claude/issues/24)
+
+### Documentation
+
+* record the linux-only release targets and the image opt-in ([7f122b3](https://github.com/jhoblitt/conventions-claude/commit/7f122b348939a681b7678ede3e6aba3a31b676d0)), closes [#13](https://github.com/jhoblitt/conventions-claude/issues/13)
+
+
+## What's Changed
+* chore(deps): bump the go-dependencies group across 2 directories with 1 update by @dependabot[bot] in https://github.com/jhoblitt/conventions-claude/pull/28
+* chore(deps): bump the github-actions group with 3 updates by @dependabot[bot] in https://github.com/jhoblitt/conventions-claude/pull/29
+* Prose rules: closing keywords, linked references, code citations, release record by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/26
+
 ## [1.5.1](https://github.com/jhoblitt/conventions-claude/compare/v1.5.0...v1.5.1) (2026-10-01)
 
 ### Bug Fixes
