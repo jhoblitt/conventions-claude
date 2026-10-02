@@ -1,8 +1,9 @@
 // Command ghconv-closekw reports every GitHub closing keyword that sits
 // directly before an issue or pull request reference, in a pull request's
-// title, description, and commit messages as GitHub holds them (or a local
-// draft and commit range), so each can be confirmed as a close that is meant
-// before the PR merges.
+// title, description, and commit messages as GitHub holds them and in the
+// merge and squash messages GitHub renders from them (or a local draft and
+// commit range), so each can be confirmed as a close that is meant before the
+// PR merges.
 //
 // Spec: skills/github-conventions/references/pull-requests.md
 // Callers: skills/github-conventions/SKILL.md

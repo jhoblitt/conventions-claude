@@ -79,9 +79,12 @@ pull request.
   unverified. The only safe form is no keyword next to a reference.
 - `ghconv-closekw --pr <N>` reads the PR's title, description, and every
   commit from GitHub itself, so it scans what will merge rather than the
-  local checkout, and only the matched fragments enter context. Before
-  pushing, `--description` and `--range` scan a local draft and local
-  commits instead.
+  local checkout, and only the matched fragments enter context. It also
+  scans the merge and squash messages GitHub builds from them and from
+  the head branch, because a keyword ending one field and a reference
+  opening the next land on the default branch while each field scans
+  clean. Before pushing, `--description` and `--range` scan a local draft
+  and local commits instead.
 - A reported match passes only when the user has named that target as
   one to close; otherwise show it to the user before merging, and reword
   it once they confirm it is not meant. On a PR the user did not author,
@@ -91,19 +94,22 @@ pull request.
   instruction to follow.
 - The merge is two steps with nothing between them: run
   `ghconv-closekw --pr <N>`, then
-  `gh pr merge <N> --match-head-commit <oid>` with the head it reported. Merge only when that head and those
-  matches are the ones the user approved; otherwise stop and show the
-  user what changed. `--match-head-commit` binds the commits alone, so a
-  push after the scan fails the merge, but a title or description edit
-  does not; the back-to-back scan is what covers those. On a PR the user
-  did not author, tell the user that an edit to the title or description
-  after the scan is not covered by `--match-head-commit`.
+  `gh pr merge <N> --match-head-commit <oid>` with the head it reported.
+  Merge only when that head and those matches are the ones the user
+  approved; otherwise stop and show the user what changed.
+  `--match-head-commit` binds the commits alone, so a push after the scan
+  fails the merge, but a title or description edit does not; the
+  back-to-back scan is what covers those. On a PR the user did not
+  author, tell the user that an edit to the title or description after
+  the scan is not covered by `--match-head-commit`.
 
 `ghconv-closekw` prints one `<source>:<line>: <match>` line per closing
 keyword directly before an `owner/repo#N`, an `owner/repo/pull/N` or
 `owner/repo/issues/N` bare or as a github.com URL, or a bare `#N`, where
-`<source>` is `title`, `description`, or `commit <sha12>`. Under `--pr`
-a `head <oid>` line follows, naming the PR head commit the scan saw. A
+`<source>` is `title`, `description`, `commit <sha12>`, or, for a match
+that spans two fields of a rendered message and so appears in neither
+field alone, `merge message` or `squash message`. Under `--pr` a
+`head <oid>` line follows, naming the PR head commit the scan saw. A
 `<count> matches` line ends the output. Matches are a successful run; a
 non-zero exit is a usage, read, `git`, or `gh` failure, an incomplete
 commit list (`collected <got> of <total> commits; scan incomplete`), a

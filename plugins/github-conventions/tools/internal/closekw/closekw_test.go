@@ -211,10 +211,12 @@ var _ = Describe("Run", func() {
 		// value drops the field, a jsonNull value sends null).
 		writeView := func(set map[string]any) {
 			view := map[string]any{
-				"title":      "a title",
-				"body":       "",
-				"url":        "https://github.com/o/r/pull/26",
-				"headRefOid": "h2",
+				"title":               "a title",
+				"body":                "",
+				"url":                 "https://github.com/o/r/pull/26",
+				"headRefOid":          "h2",
+				"headRefName":         "topic",
+				"headRepositoryOwner": map[string]any{"login": "fork"},
 			}
 			for k, v := range set {
 				if v == nil {
@@ -275,6 +277,54 @@ var _ = Describe("Run", func() {
 					"4 matches\n"))
 		})
 
+		It("reports a keyword and reference the merge message joins across the branch and the title", func(ctx SpecContext) {
+			writeView(map[string]any{"headRefName": "x/fixes", "title": "#5 tidy"})
+			writePages(page(1, node("h2", "chore: c")))
+
+			Expect(run(ctx, "", "--pr", "26")).To(Succeed())
+			Expect(stdout.String()).To(Equal("merge message:1: fixes #5\nhead h2\n1 matches\n"))
+		})
+
+		It("reports a keyword and reference the merge message joins across the branch and the description", func(ctx SpecContext) {
+			writeView(map[string]any{"headRefName": "x/fixes", "body": "#5 is the follow-up"})
+			writePages(page(1, node("h2", "chore: c")))
+
+			Expect(run(ctx, "", "--pr", "26")).To(Succeed())
+			Expect(stdout.String()).To(Equal("merge message:1: fixes #5\nhead h2\n1 matches\n"))
+		})
+
+		It("reports once a match both merge messages join, from the title and the description alike", func(ctx SpecContext) {
+			writeView(map[string]any{"headRefName": "x/fixes", "title": "#5 tidy", "body": "#5 is the follow-up"})
+			writePages(page(1, node("h2", "chore: c")))
+
+			Expect(run(ctx, "", "--pr", "26")).To(Succeed())
+			Expect(stdout.String()).To(Equal("merge message:1: fixes #5\nhead h2\n1 matches\n"))
+		})
+
+		It("renders the squash message as GitHub does, with each commit a list item", func(ctx SpecContext) {
+			// GitHub puts "* " before each squashed commit, so a commit ending
+			// "fixes" and the next starting "#5" are joined with "* " between
+			// them, which is no closing keyword.
+			writeView(nil)
+			writePages(page(2, node("h1", "feat: a\n\nthis fixes"), node("h2", "#5 next")))
+
+			Expect(run(ctx, "", "--pr", "26")).To(Succeed())
+			Expect(stdout.String()).To(Equal("head h2\n0 matches\n"))
+		})
+
+		It("does not report a match one field holds again from a rendered message", func(ctx SpecContext) {
+			writeView(map[string]any{"title": "closes #7", "body": "resolves o/r#8"})
+			writePages(page(1, node("h2", "feat: a\n\nFixes #9")))
+
+			Expect(run(ctx, "", "--pr", "26")).To(Succeed())
+			Expect(stdout.String()).To(Equal(
+				"title:1: closes #7\n" +
+					"description:1: resolves o/r#8\n" +
+					"commit h2:3: Fixes #9\n" +
+					"head h2\n" +
+					"3 matches\n"))
+		})
+
 		It("asks for the commits of the PR gh resolved, on its host", func(ctx SpecContext) {
 			writeView(map[string]any{"url": "https://ghe.example/team/proj/pull/26"})
 			writePages(page(1, node("h2", "x")))
@@ -283,7 +333,7 @@ var _ = Describe("Run", func() {
 
 			calls := invocations()
 			Expect(calls).To(HaveLen(2))
-			Expect(calls[0]).To(Equal("pr view 26 --json title,body,url,headRefOid"))
+			Expect(calls[0]).To(Equal("pr view 26 --json title,body,url,headRefOid,headRefName,headRepositoryOwner"))
 			Expect(calls[1]).To(HavePrefix(graphqlCall("ghe.example", "team", "proj")))
 
 			query := strings.TrimPrefix(calls[1], graphqlCall("ghe.example", "team", "proj"))
@@ -299,7 +349,7 @@ var _ = Describe("Run", func() {
 			Expect(run(ctx, "", "--pr", "26", "--repo", "o/r")).To(Succeed())
 
 			calls := invocations()
-			Expect(calls[0]).To(Equal("pr view 26 --json title,body,url,headRefOid --repo o/r"))
+			Expect(calls[0]).To(Equal("pr view 26 --json title,body,url,headRefOid,headRefName,headRepositoryOwner --repo o/r"))
 			Expect(calls[1]).To(HavePrefix(graphqlCall("github.com", "o", "r")))
 		})
 
@@ -320,10 +370,12 @@ var _ = Describe("Run", func() {
 		})
 
 		It("fails loud when the head moved between pages", func(ctx SpecContext) {
+			// The last page agrees with gh pr view, so only the per-page check
+			// can catch the first one.
 			writeView(nil)
-			writePages(pageAt("h2", 2, node("h1", "a")), pageAt("h3", 2, node("h2", "b")))
+			writePages(pageAt("h3", 2, node("h1", "a")), pageAt("h2", 2, node("h2", "b")))
 
-			Expect(run(ctx, "", "--pr", "26")).To(MatchError(ContainSubstring("head moved during the scan (h2, then h3)")))
+			Expect(run(ctx, "", "--pr", "26")).To(MatchError(ContainSubstring("head moved during the scan (h3, then h2)")))
 			Expect(stdout.String()).To(BeEmpty())
 		})
 
@@ -442,6 +494,10 @@ var _ = Describe("Run", func() {
 			Entry("url missing", map[string]any{"url": nil}, "no url field"),
 			Entry("headRefOid missing", map[string]any{"headRefOid": nil}, "no headRefOid field"),
 			Entry("headRefOid empty", map[string]any{"headRefOid": ""}, "no headRefOid field"),
+			Entry("headRefName missing", map[string]any{"headRefName": nil}, "no headRefName field"),
+			Entry("headRefName empty", map[string]any{"headRefName": ""}, "no headRefName field"),
+			Entry("headRepositoryOwner null", map[string]any{"headRepositoryOwner": jsonNull{}}, "no headRepositoryOwner field"),
+			Entry("headRepositoryOwner without a login", map[string]any{"headRepositoryOwner": map[string]any{}}, "no headRepositoryOwner field"),
 		)
 	})
 
