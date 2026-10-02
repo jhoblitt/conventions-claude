@@ -61,6 +61,7 @@ point at. This marketplace gives both a normative home.
 - **goreleaser with ko, cosign, and an SBOM**, ghcr images, fork-guarded.
   Rejected: goreleaser without images; go-release-action matrices; a
   hand-rolled `go build` loop.
+  Superseded on this point by `2026-09-11-release-targets-and-image-opt-in.md`.
 - **Apache-2.0 by default**, owned by github-conventions. Rejected: GPL-3.0;
   asking at scaffold time.
 - **A small Makefile whose `check` is exactly CI.** Rejected: no Makefile;

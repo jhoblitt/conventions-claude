@@ -60,7 +60,9 @@ sanity checks that found nothing, that the PR was opened as a draft,
 labels added, "rebased onto main", which remote it was pushed from. A
 finding that changed the diff is part of the change and stays. Whose
 voice an AI-assistance disclosure is in, and where the agent marker does
-not go, is `references/pull-requests.md`, "Comments".
+not go, is `references/pull-requests.md`, "Comments". When a closing
+keyword may sit next to an issue or PR reference is
+`references/pull-requests.md`, "Closing keywords".
 
 A link to the agent session that produced the change is process too: no
 `Claude-Session:` trailer and no `https://claude.ai/code/session_…` URL
