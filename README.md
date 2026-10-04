@@ -63,7 +63,7 @@ index; it does not update the installed plugin.
 
 | Skill | What it does |
 | --- | --- |
-| `github-conventions` | The canon. Loads when you create a repository, edit a workflow or `dependabot.yml`, commit, rebase, open, update, or merge a pull request, watch CI, post a GitHub comment, or file an issue. Owns the precedence ladder all three plugins share. |
+| `github-conventions` | The canon. Loads when you create a repository, edit a workflow or `dependabot.yml`, commit, rebase, open, update, or merge a pull request, watch CI, post a GitHub comment, file an issue, or put a disclosure into a gist. Owns the precedence ladder all three plugins share. |
 | `/github-conventions:github-converge` | Audits an existing repository against the canon and applies the file half on a branch. |
 | `/github-conventions:github-new-repo` | Creates a repository the house way: empty, ruleset-protected, populated by a draft pull request. |
 

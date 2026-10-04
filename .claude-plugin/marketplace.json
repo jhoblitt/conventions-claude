@@ -17,7 +17,7 @@
     {
       "name": "github-conventions",
       "source": "./plugins/github-conventions",
-      "description": "How a GitHub repository is created and kept hygienic — rulesets, SHA-pinned actions, dependabot, CodeQL, Scorecard, dependency review, commitlint — and how commits, pull requests, CI watching, GitHub comments, and filed issues are handled; audits and converges an existing repo, scaffolds a new one",
+      "description": "How a GitHub repository is created and kept hygienic — rulesets, SHA-pinned actions, dependabot, CodeQL, Scorecard, dependency review, commitlint — and how commits, pull requests, CI watching, GitHub comments, filed issues, and disclosure gists are handled; audits and converges an existing repo, scaffolds a new one",
       "author": {
         "name": "Joshua Hoblitt"
       }
