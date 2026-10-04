@@ -4,14 +4,19 @@
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/jhoblitt/conventions-claude/badge)](https://scorecard.dev/viewer/?uri=github.com/jhoblitt/conventions-claude)
 
 A [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces)
-with three plugins that stop convention drift: **go-conventions**, the house
+with four plugins that stop convention drift: **go-conventions**, the house
 canon for how Go code is written, tested, logged, linted, built, and
 released, **github-conventions**, the canon for how a GitHub repository is
-created, kept hygienic, and worked on through commits and pull requests, and
+created, kept hygienic, and worked on through commits and pull requests,
 **code-conventions**, the rules that hold whatever the language or host is —
 code navigation, comments, bug reports, chat links to repositories, pull
-or merge requests, and issues, and code citations in durable documents.
-go-conventions depends on the other two; installing it installs all three.
+or merge requests, and issues, and code citations in durable documents, and
+**ceph-conventions**, the canon for contributing to `ceph/ceph` and
+`tracker.ceph.com` — the upstream PR checklist, DCO and `Fixes` trailers, the
+config-diff and Jenkins checks, stable-branch backports, Redmine filing,
+and embargoed security disclosure.
+go-conventions and ceph-conventions each depend on github-conventions and
+code-conventions; installing either installs all three.
 
 ## Install
 
@@ -63,7 +68,7 @@ index; it does not update the installed plugin.
 
 | Skill | What it does |
 | --- | --- |
-| `github-conventions` | The canon. Loads when you create a repository, edit a workflow or `dependabot.yml`, commit, rebase, open, update, or merge a pull request, watch CI, post a GitHub comment, file an issue, or put a disclosure into a gist. Owns the precedence ladder all three plugins share. |
+| `github-conventions` | The canon. Loads when you create a repository, edit a workflow or `dependabot.yml`, commit, rebase, open, update, or merge a pull request, watch CI, post a GitHub comment, file an issue, or put a disclosure into a gist. Owns the precedence ladder all four plugins share. |
 | `/github-conventions:github-converge` | Audits an existing repository against the canon and applies the file half on a branch. |
 | `/github-conventions:github-new-repo` | Creates a repository the house way: empty, ruleset-protected, populated by a draft pull request. |
 
@@ -81,6 +86,12 @@ is formatted with gofumpt (or gofmt), and a session that starts in a Go module
 is told the module path and to load the canon. Both cost nothing anywhere else
 — the launcher checks the path and the presence of `go.mod` before it builds
 anything, and fails open.
+
+### ceph-conventions
+
+| Skill | What it does |
+| --- | --- |
+| `ceph-conventions` | The Ceph contribution canon, layered on github-conventions and code-conventions. Loads when you open or update a `ceph/ceph` PR, fill its checklist, write a `Fixes:` trailer or a DCO sign-off, clear the config-diff check or read the Jenkins ceph-pr-pipeline, prepare a stable-branch backport and track its Redmine Backport issue, file or search a `tracker.ceph.com` issue, or handle a Ceph defect that may be a security vulnerability. |
 
 ### Skill workflows
 
@@ -184,8 +195,11 @@ flowchart TD
   GOC["go-conventions<br/>the Go canon"]
   GHC["github-conventions<br/>the repository canon"]
   CC["code-conventions<br/>the any-language canon"]
+  CEPH["ceph-conventions<br/>the Ceph contribution canon"]
   GOC -.->|precedence ladder, workflow hygiene, commits, pull requests| GHC
   GOC -.->|code navigation, comments| CC
+  CEPH -.->|precedence ladder, pull requests, commits, CI watching| GHC
+  CEPH -.->|bug reports, vulnerability routing| CC
   NP["/go-conventions:go-new-project"] --> GOC
   NP -.->|hands off| NR["/github-conventions:github-new-repo"]
   NR --> GHC

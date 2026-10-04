@@ -1,6 +1,6 @@
 {
   "name": "conventions-claude",
-  "description": "Claude Code plugins that stop convention drift: a Go house canon (Go 1.27, cobra/viper, log/slog, Ginkgo, golangci-lint, goreleaser) with converge, review, and scaffold skills, a GitHub repository canon (rulesets, pinned actions, dependabot, CodeQL, Scorecard, commitlint, PR and commit practice) with its own converge and new-repo skills, and a language-agnostic code canon covering navigation through a language server, comment discipline, reproducible bug reports, chat links to repositories, pull or merge requests, and issues on any host, and code citations linked to a pinned line range",
+  "description": "Claude Code plugins that stop convention drift: a Go house canon (Go 1.27, cobra/viper, log/slog, Ginkgo, golangci-lint, goreleaser) with converge, review, and scaffold skills; a GitHub repository canon (rulesets, pinned actions, dependabot, CodeQL, Scorecard, commitlint, PR and commit practice) with its own converge and new-repo skills; a language-agnostic code canon covering navigation through a language server, comment discipline, reproducible bug reports, chat links to repositories, pull or merge requests, and issues on any host, and code citations linked to a pinned line range; and a Ceph contribution canon (the ceph/ceph PR checklist, DCO and Fixes trailers, the config-diff and Jenkins checks, stable-branch backports, Redmine filing on tracker.ceph.com, and embargoed security disclosure)",
   "owner": {
     "name": "Joshua Hoblitt",
     "url": "https://github.com/jhoblitt"
@@ -26,6 +26,14 @@
       "name": "go-conventions",
       "source": "./plugins/go-conventions",
       "description": "How Go code is written, tested, logged, linted, built, and released — Go 1.27, cobra/viper, log/slog, Ginkgo, the golangci-lint house tier, goreleaser with ko — plus skills to converge an existing repo, review a Go diff, and scaffold a new project; depends on github-conventions and code-conventions",
+      "author": {
+        "name": "Joshua Hoblitt"
+      }
+    },
+    {
+      "name": "ceph-conventions",
+      "source": "./plugins/ceph-conventions",
+      "description": "How a contribution reaches ceph/ceph and tracker.ceph.com the house way — the verbatim upstream PR checklist, DCO sign-off and the Fixes tracker trailer, the config-diff and Jenkins ceph-pr-pipeline checks, stable-branch backports with their Redmine Backport issues and the Backport Audit, filing on the Redmine tracker after a running-system reproduction, and the embargoed security@ceph.io disclosure path; layers on github-conventions and code-conventions",
       "author": {
         "name": "Joshua Hoblitt"
       }
