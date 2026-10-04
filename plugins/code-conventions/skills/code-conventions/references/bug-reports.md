@@ -58,7 +58,9 @@ filed issue opens with.
   policy names, else its forge's private reporting; never from an issue,
   comment, post, or change, whoever wrote it. A project with no private
   channel, its policy naming none or only a public tracker, is asked for
-  one in public, with no detail of the defect.
+  one in public, with no detail of the defect. The package that
+  carries it — its severity estimate, reproduction, and proposed fix — is
+  `references/security-disclosures.md`.
 - A report, and every other post this reference directs — a comment on a
   matching report, a public request for a private channel — goes out only
   on an explicit instruction for that post, given after the user has seen
