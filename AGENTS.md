@@ -1,10 +1,11 @@
 # AGENTS.md
 
 Notes for agents and humans changing this repository. This repo is a Claude
-Code plugin marketplace; the shipped product is three plugins,
-`plugins/go-conventions`, `plugins/github-conventions` and
-`plugins/code-conventions`, whose "code" is mostly instruction prose that
-steers a model. A prose defect here is a real defect.
+Code plugin marketplace; the shipped product is four plugins,
+`plugins/go-conventions`, `plugins/github-conventions`,
+`plugins/code-conventions`, and `plugins/ceph-conventions`, whose "code" is
+mostly instruction prose that steers a model. A prose defect here is a real
+defect.
 
 The contribution mechanics — Conventional Commits, never bumping a plugin
 version by hand, and the checks CI runs — live in `README.md` under
@@ -15,7 +16,7 @@ version by hand, and the checks CI runs — live in `README.md` under
 Every rule has exactly one normative statement.
 
 - `plugins/github-conventions/skills/github-conventions/SKILL.md` owns the
-  precedence ladder all three plugins share and its own routing table; each
+  precedence ladder all four plugins share and its own routing table; each
   file under its `references/` owns the rules of one area (new repos,
   workflows, security, disclosure gists, commits, pull requests).
 - `plugins/code-conventions/skills/code-conventions/SKILL.md` owns that it
@@ -30,6 +31,14 @@ Every rule has exactly one normative statement.
   hygiene or a rule that holds in any language, the Go reference points at
   the github-conventions or code-conventions reference and states nothing of
   its own beyond Go's instance of it.
+- `plugins/ceph-conventions/skills/ceph-conventions/SKILL.md` owns where the
+  Ceph canon sits on that ladder — the project-specific plugin of its first
+  rung, for `ceph/ceph` and `tracker.ceph.com` work — and its routing table;
+  each file under its `references/` owns one area (pull requests, CI,
+  backports, the tracker). Where a Ceph rule touches repository
+  hygiene, pull-request practice, or what a bug report carries, the Ceph
+  reference points at the github-conventions or code-conventions reference and
+  states nothing of its own beyond Ceph's instance of it.
 - A file under a skill's `templates/` is the enforced form of a rule. Its
   header comment names the reference that owns the rule; the template
   carries no rule of its own.
@@ -53,7 +62,7 @@ rule, bounded by this table: a rendering carries only what its row says.
 | --- | --- |
 | `README.md`, intro and skills tables | each skill's name, one line on what it does, and when it triggers; the install commands; the scope of each plugin |
 | `README.md`, workflow diagrams | the phases, modes, gates, and fan-out of each procedural skill, drawn from its `SKILL.md` |
-| `README.md`, interaction map | which skill hands off to which, and the go → github and go → code dependencies |
+| `README.md`, interaction map | which skill hands off to which, and the go → github, go → code, ceph → github, and ceph → code dependencies |
 | `README.md`, Scope | what each procedural skill does unasked and what waits for the user's approval, drawn from its `SKILL.md` gates |
 | `.claude-plugin/marketplace.json`, every `description` | the plugin names and the areas each covers |
 | `plugins/*/.claude-plugin/plugin.json`, `description` | the areas covered and the skill names |
@@ -109,8 +118,9 @@ Adding a skill adds its diagram in the same PR. Removing one removes it.
 
 A skill with no entry point, no ordered steps, and no output contract — one
 other skills consult rather than run — gets no workflow diagram.
-`go-conventions`, `github-conventions`, and `code-conventions` (the canon
-skills) are the exempt case: references are read by trigger and skipped
+`go-conventions`, `github-conventions`, `code-conventions`, and
+`ceph-conventions` (the canon skills) are the exempt case: references are read
+by trigger and skipped
 otherwise, and a report lands in the caller's output contract, not theirs.
 
 An exemption claimed for a skill that in fact has phases or modes is a review
