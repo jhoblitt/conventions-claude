@@ -1,3 +1,13 @@
+## [1.8.0](https://github.com/jhoblitt/conventions-claude/compare/v1.7.0...v1.8.0) (2026-10-07)
+
+### Features
+
+* **ceph-conventions:** add the Ceph contribution canon ([8f06b36](https://github.com/jhoblitt/conventions-claude/commit/8f06b3649259a2ec6ba0c9e87153bcba9aab8379))
+
+
+## What's Changed
+* feat(ceph-conventions): add the Ceph contribution canon by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/31
+
 ## [1.7.0](https://github.com/jhoblitt/conventions-claude/compare/v1.6.1...v1.7.0) (2026-10-07)
 
 ### Features

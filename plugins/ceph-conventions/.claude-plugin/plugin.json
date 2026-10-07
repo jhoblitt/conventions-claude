@@ -1,7 +1,7 @@
 {
   "name": "ceph-conventions",
   "displayName": "Ceph Conventions",
-  "version": "1.6.0",
+  "version": "1.8.0",
   "description": "The ceph-conventions canon skill for how a contribution reaches ceph/ceph and tracker.ceph.com the house way, layered on github-conventions and code-conventions: the upstream PR workflow — the verbatim Ceph checklist, the Fixes trailer to a tracker URL, DCO sign-off; the ceph CI mechanics — the config-diff check cleared by /config check ok, the Jenkins ceph-pr-pipeline; stable-branch backports with their Redmine Backport issues and the Backport Audit; filing on tracker.ceph.com through the Redmine REST API after a running-system reproduction; and the security@ceph.io embargoed disclosure path",
   "author": {
     "name": "Joshua Hoblitt",
