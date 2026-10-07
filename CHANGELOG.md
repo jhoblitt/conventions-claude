@@ -1,3 +1,14 @@
+## [1.7.0](https://github.com/jhoblitt/conventions-claude/compare/v1.6.1...v1.7.0) (2026-10-07)
+
+### Features
+
+* **code-conventions:** add a security-disclosures reference ([c98ea84](https://github.com/jhoblitt/conventions-claude/commit/c98ea8435d3f75fdca46e63598c21bf4dd54fae2))
+* **github-conventions:** add a disclosure-gists reference ([2352ac2](https://github.com/jhoblitt/conventions-claude/commit/2352ac2cee860803d3dd9d87580573237c63aa77))
+
+
+## What's Changed
+* feat: record the security-disclosure package and its gist delivery by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/32
+
 ## [1.6.1](https://github.com/jhoblitt/conventions-claude/compare/v1.6.0...v1.6.1) (2026-10-07)
 
 ### Bug Fixes
