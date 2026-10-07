@@ -83,7 +83,8 @@ bash "${CLAUDE_PLUGIN_ROOT}/tools/run.sh" ghconv-closekw [--description FILE|-] 
 ```
 
 Reports each closing keyword directly before an issue or PR reference: in a
-PR's title, description, and commit messages under `--pr`, or in a local
-description and commit range. The launcher fails loud: a
+PR's title, description, and commit messages, and the merge and squash
+messages GitHub renders from them, under `--pr`, or in a local description
+and commit range. The launcher fails loud: a
 non-zero exit is a real failure, never an empty result. The output contract
 is `references/pull-requests.md`, "Closing keywords".
