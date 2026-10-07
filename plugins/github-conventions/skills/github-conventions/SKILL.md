@@ -1,6 +1,6 @@
 ---
 name: github-conventions
-description: Use when creating a GitHub repository; editing a workflow under .github/workflows/, .github/dependabot.yml, or a repository ruleset; committing, rebasing, squashing, or otherwise rewriting branch history; opening, updating, or merging a pull request; watching or retrying CI after a push; or before posting or replying to any GitHub comment, review, or issue, or filing an issue or a private vulnerability report.
+description: Use when creating a GitHub repository; editing a workflow under .github/workflows/, .github/dependabot.yml, or a repository ruleset; committing, rebasing, squashing, or otherwise rewriting branch history; opening, updating, or merging a pull request; watching or retrying CI after a push; or before posting or replying to any GitHub comment, review, or issue, or filing an issue or a private vulnerability report; or putting a security-vulnerability disclosure into a GitHub gist.
 ---
 
 # GitHub repository conventions
@@ -44,6 +44,7 @@ below this table apply to every trigger.
 | adding or editing a workflow under `.github/workflows/`, pinning an action, editing `.github/dependabot.yml`, or filling a template placeholder | `references/workflows.md` |
 | reviewing a workflow diff | `references/workflows.md`, "Reviewing a workflow" |
 | adding or changing CodeQL, dependency review, Scorecard, or the Scorecard badge; judging a workflow for injection | `references/security.md` |
+| putting a security-vulnerability disclosure into a GitHub gist — its file set, naming, section order, and secret-by-default delivery | `references/disclosure-gists.md` |
 | writing or fixing a commit message, amending, squashing, rebasing, or otherwise rewriting a branch's history, or diagnosing a commitlint failure | `references/commits.md` |
 | opening or updating a PR, writing its description, or running a multi-PR campaign | `references/pull-requests.md` |
 | naming an issue or PR in a PR title, PR description, or commit message, or about to merge a PR | `references/pull-requests.md`, "Closing keywords" |

@@ -17,13 +17,13 @@ Every rule has exactly one normative statement.
 - `plugins/github-conventions/skills/github-conventions/SKILL.md` owns the
   precedence ladder all three plugins share and its own routing table; each
   file under its `references/` owns the rules of one area (new repos,
-  workflows, security, commits, pull requests).
+  workflows, security, disclosure gists, commits, pull requests).
 - `plugins/code-conventions/skills/code-conventions/SKILL.md` owns that it
-  sits at the ladder's bottom, and its own routing table; the five files
+  sits at the ladder's bottom, and its own routing table; the six files
   under its `references/` own the rules that hold whatever the language or
-  host is — code navigation, comments, bug reports, chat links to
-  repositories, pull or merge requests, and issues, and code citations in
-  durable documents.
+  host is — code navigation, comments, bug reports, security-disclosure
+  packages, chat links to repositories, pull or merge requests, and issues,
+  and code citations in durable documents.
 - `plugins/go-conventions/skills/go-conventions/SKILL.md` owns the one rung
   the Go canon adds to that ladder and its routing table; each file under
   its `references/` owns one area. Where a Go rule touches repository
