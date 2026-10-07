@@ -1,3 +1,13 @@
+## [1.6.1](https://github.com/jhoblitt/conventions-claude/compare/v1.6.0...v1.6.1) (2026-10-07)
+
+### Bug Fixes
+
+* **github-conventions:** scan the merge and squash messages GitHub renders ([e12c942](https://github.com/jhoblitt/conventions-claude/commit/e12c942527c57c439b01dbd07029ea0c7d9aec02))
+
+
+## What's Changed
+* fix(github-conventions): scan the merge and squash messages GitHub renders by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/30
+
 ## [1.6.0](https://github.com/jhoblitt/conventions-claude/compare/v1.5.1...v1.6.0) (2026-10-02)
 
 ### Features
