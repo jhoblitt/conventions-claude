@@ -1,3 +1,13 @@
+## [1.8.2](https://github.com/jhoblitt/conventions-claude/compare/v1.8.1...v1.8.2) (2026-10-09)
+
+### Bug Fixes
+
+* **github-conventions:** carry scorecard-action's release tag in its template ([2c20674](https://github.com/jhoblitt/conventions-claude/commit/2c20674c4df696dd058d5f5848a7f259129dfb4f))
+
+
+## What's Changed
+* fix(github-conventions): carry scorecard-action's release tag in its template by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/33
+
 ## [1.8.1](https://github.com/jhoblitt/conventions-claude/compare/v1.8.0...v1.8.1) (2026-10-09)
 
 ### Bug Fixes

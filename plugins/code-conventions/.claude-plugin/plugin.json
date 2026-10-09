@@ -1,7 +1,7 @@
 {
   "name": "code-conventions",
   "displayName": "Code Conventions",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "The engineering canon that holds in any language: a semantic question about code — a definition, its callers, its type, a file's diagnostics — goes to the language server through the LSP tool rather than to grep, a comment earns its place by saying what the code cannot, a restatement being deleted on sight, and a repository, pull request, merge request, or issue named in chat is a clickable link on whatever host serves it, and a file:line citation in a durable document links to the line range at a pinned ref. It also covers bug reports on any tracker: what one carries, when it is filed, where a vulnerability goes, and the shape of the disclosure package that carries it",
   "author": {
     "name": "Joshua Hoblitt",
