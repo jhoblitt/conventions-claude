@@ -24,7 +24,11 @@ workflow is `references/commits.md`; where each template lands is
 - Files under `templates/` carry major tags (`@v7`) on purpose — Dependabot
   scans only `.github/workflows/`, so a pin inside a plugin would rot; the
   skill that copies one runs `pinact run` immediately after, so a target
-  repository only ever holds pins. Never pin a template.
+  repository only ever holds pins. Never pin a template. An action that
+  publishes no major tag (`ossf/scorecard-action` tags only `vX.Y.Z`) is
+  the one exception: its template (`templates/scorecard.yml`) carries a
+  full release tag, because `pinact` cannot resolve a tag that does not
+  exist; the target repository's Dependabot moves the pin on from there.
 
 ## actionlint
 

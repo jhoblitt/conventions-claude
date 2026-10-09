@@ -3,8 +3,12 @@
 # with this repo's values and diff it against the live copy, so the two
 # renderings of one file cannot drift: edit the template, then re-render.
 #
-# Live workflows carry SHA pins with version comments (pinact); templates
-# carry major tags on purpose, so pins are normalized away before the diff.
+# Live pins (a SHA plus its version comment, from pinact) are normalized to
+# the major tag before the diff. On the template side only
+# ossf/scorecard-action's full tag is normalized, and the check fails if that
+# template stops carrying one; a full tag in any other template still shows
+# up as drift. What tag a template carries is references/workflows.md,
+# "Pinning".
 # dependabot.yml is excluded: the live file appends gomod entries to the
 # template's github-actions entry, which is a merge, not a rendering.
 set -euo pipefail
@@ -26,7 +30,8 @@ render() {
       -e "s|{{MODULE}}|$MODULE|g" \
       -e "s|{{CODEQL_LANGUAGES}}|$CODEQL_LANGUAGES|g" \
       -e "s|{{CODEQL_BUILD_MODE}}|$CODEQL_BUILD_MODE|g" \
-      -e "s|{{MODULES}}|$MODULES|g" "$1"
+      -e "s|{{MODULES}}|$MODULES|g" "$1" |
+    sed -E 's/(uses: ossf\/scorecard-action)@(v[0-9]+)(\.[0-9]+)+$/\1@\2/'
 }
 
 unpin() {
@@ -55,6 +60,11 @@ check "$GH/breaking-footer/main.go" .github/tools/breaking-footer/main.go
 check "$GH/LICENSE" LICENSE
 check "$GO/.golangci.yml" .golangci.yml
 check "$GO/Makefile" Makefile
+
+if ! grep -Eq 'uses: ossf/scorecard-action@v[0-9]+\.[0-9]+\.[0-9]+$' "$GH/scorecard.yml"; then
+  echo "$GH/scorecard.yml: ossf/scorecard-action needs a full vX.Y.Z tag (references/workflows.md, \"Pinning\")"
+  fail=1
+fi
 
 [ "$fail" -eq 0 ] && echo "templates and live copies agree"
 exit "$fail"
