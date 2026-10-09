@@ -90,10 +90,10 @@ Makefile, license, and commitlint config are renderings of the templates.
 template with this repo's values and diffs it against the live copy. Edit
 the template, then re-render; never edit the live copy alone.
 
-Live workflows carry commit-SHA pins with version comments while templates
-carry major tags, so `dogfood-sync.sh` normalizes the pins away before it
-diffs. Why templates stay unpinned, and that a copying skill pins right
-after, is
+Live workflows carry commit-SHA pins with version comments, so
+`dogfood-sync.sh` normalizes before it diffs; its header says what. What
+tag a template carries, why templates stay unpinned, and that a copying
+skill pins right after, is
 `plugins/github-conventions/skills/github-conventions/references/workflows.md`,
 "Pinning".
 
