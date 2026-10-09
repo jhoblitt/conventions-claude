@@ -1,3 +1,13 @@
+## [1.8.1](https://github.com/jhoblitt/conventions-claude/compare/v1.8.0...v1.8.1) (2026-10-09)
+
+### Bug Fixes
+
+* **go-conventions:** pin golangci-lint v2.14.0 ([573844e](https://github.com/jhoblitt/conventions-claude/commit/573844e52a53e8d2cfd2723d6765d501d82c9928))
+
+
+## What's Changed
+* fix(go-conventions): pin golangci-lint v2.14.0 by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/34
+
 ## [1.8.0](https://github.com/jhoblitt/conventions-claude/compare/v1.7.0...v1.8.0) (2026-10-07)
 
 ### Features
