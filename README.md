@@ -12,9 +12,9 @@ created, kept hygienic, and worked on through commits and pull requests,
 code navigation, comments, bug reports, chat links to repositories, pull
 or merge requests, and issues, and code citations in durable documents, and
 **ceph-conventions**, the canon for contributing to `ceph/ceph` and
-`tracker.ceph.com` — the upstream PR checklist, DCO and `Fixes` trailers, the
-config-diff and Jenkins checks, stable-branch backports, Redmine filing,
-and embargoed security disclosure.
+`tracker.ceph.com` — the upstream PR checklist, commit titles, DCO, `Fixes`,
+and `Assisted-by` trailers, the config-diff and Jenkins checks,
+stable-branch backports, Redmine filing, and embargoed security disclosure.
 go-conventions and ceph-conventions each depend on github-conventions and
 code-conventions; installing either installs all three.
 
@@ -91,7 +91,7 @@ anything, and fails open.
 
 | Skill | What it does |
 | --- | --- |
-| `ceph-conventions` | The Ceph contribution canon, layered on github-conventions and code-conventions. Loads when you open or update a `ceph/ceph` PR, fill its checklist, write a `Fixes:` trailer or a DCO sign-off, clear the config-diff check or read the Jenkins ceph-pr-pipeline, prepare a stable-branch backport and track its Redmine Backport issue, file or search a `tracker.ceph.com` issue, or handle a Ceph defect that may be a security vulnerability. |
+| `ceph-conventions` | The Ceph contribution canon, layered on github-conventions and code-conventions. Loads when you open or update a `ceph/ceph` PR, fill its checklist, write a Ceph commit title, a `Fixes:` or `Assisted-by:` trailer, or a DCO sign-off, clear the config-diff check or read the Jenkins ceph-pr-pipeline, prepare a stable-branch backport and track its Redmine Backport issue, file or search a `tracker.ceph.com` issue, or handle a Ceph defect that may be a security vulnerability. |
 
 ### Skill workflows
 

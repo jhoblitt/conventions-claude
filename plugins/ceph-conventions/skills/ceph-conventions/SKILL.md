@@ -1,6 +1,6 @@
 ---
 name: ceph-conventions
-description: Use when contributing to ceph/ceph or tracker.ceph.com — opening or updating a Ceph pull request, filling its checklist, writing a Fixes trailer or a DCO sign-off; clearing the config-diff "Check Ceph config changes" check or reading the Jenkins ceph-pr-pipeline; preparing a stable-branch backport, tracking its Redmine Backport issue, or answering the Backport Audit; filing, searching, commenting on, or editing a tracker.ceph.com issue through the Redmine API; or handling a Ceph defect that may be a security vulnerability.
+description: Use when contributing to ceph/ceph or tracker.ceph.com — opening or updating a Ceph pull request, filling its checklist, writing a Ceph commit title, a Fixes or Assisted-by trailer, or a DCO sign-off; clearing the config-diff "Check Ceph config changes" check or reading the Jenkins ceph-pr-pipeline; preparing a stable-branch backport, tracking its Redmine Backport issue, or answering the Backport Audit; filing, searching, commenting on, or editing a tracker.ceph.com issue through the Redmine API; or handling a Ceph defect that may be a security vulnerability.
 ---
 
 # Ceph conventions
@@ -26,20 +26,27 @@ conventions plugin its first rung names. It depends on both sibling
 plugins: if the Skill tool lists no `github-conventions:*` or no
 `code-conventions:*` skill, stop and say to install it. Where Ceph's
 process differs from the generic rule — the verbatim PR checklist, the
-`Fixes:` trailer, the DCO sign-off, the bare bot command, the Jenkins and
-config-diff checks, the backport tracker, the reproduction bar — Ceph's
-instance wins, because it is written for this project. Everything the
-generic rule still governs — the draft-and-assign, the description's shape
-and length ceiling, the closing-keyword hazard, the comment gate and agent
-marker, what a bug report carries — is inherited unchanged.
+subsystem-prefixed commit title, the `Fixes:` and `Assisted-by:` trailers,
+the DCO sign-off, the bare bot command, the Jenkins and config-diff checks,
+the backport tracker, the reproduction bar — Ceph's instance wins, because
+it is written for this project. Everything the generic rule still governs —
+the draft-and-assign, the description's shape and length ceiling, the
+closing-keyword hazard, the comment gate and agent marker, what a bug report
+carries — is inherited unchanged.
 
 ## Always
 
 - A `ceph/ceph` PR carries the upstream checklist verbatim, never a custom
   one — `references/pull-requests.md`.
-- Every commit is `Signed-off-by:` (DCO), and a tracker issue is referenced
-  by a `Fixes: <tracker URL>` trailer, never a bare `#N` —
-  `references/pull-requests.md`.
+- Every commit is `Signed-off-by:` (DCO), added by the human and never by an
+  agent, and a tracker issue is referenced by a `Fixes: <tracker URL>`
+  trailer, never a bare `#N` — `references/pull-requests.md`.
+- A commit title is `<subsystem>: <description>`, never a Conventional
+  Commits subject, and AI assistance is disclosed by an `Assisted-by:`
+  trailer, never a `Co-Authored-By:` — `references/pull-requests.md`.
+- A backport's cherry-pick keeps the message `git cherry-pick -x` wrote, and
+  its other commits and its PR title start with the branch name —
+  `references/backports.md`, "Backport commits and PR title".
 - A backport's Redmine Backport issue comes from Ceph's automation, not by
   hand — `references/backports.md`.
 - A defect is filed on `tracker.ceph.com` only after it reproduces on a
@@ -59,7 +66,7 @@ above apply to every trigger.
 
 | Doing this | Read |
 |---|---|
-| opening or updating a `ceph/ceph` PR, filling its checklist, writing a `Fixes:` trailer, a DCO sign-off, or `Co-Authored-By:`; posting a bot command (`/config check ok`, `/audit retest`, `jenkins test`) | `references/pull-requests.md` |
+| opening or updating a `ceph/ceph` PR, filling its checklist, writing a commit title, a `Fixes:` or `Assisted-by:` trailer, a DCO sign-off, or `Co-Authored-By:`; posting a bot command (`/config check ok`, `/audit retest`, `jenkins test`) | `references/pull-requests.md` |
 | clearing the config-diff "Check Ceph config changes" check, reading the Jenkins ceph-pr-pipeline, or watching Ceph CI | `references/ci.md` |
-| preparing a stable-branch backport PR, tracking its Redmine Backport issue, or answering the Backport Audit | `references/backports.md` |
+| preparing a stable-branch backport PR or its commits, tracking its Redmine Backport issue, or answering the Backport Audit | `references/backports.md` |
 | filing, searching, commenting on, or editing a `tracker.ceph.com` issue; judging the reproduction bar; a possible security vulnerability | `references/tracker.md` |
