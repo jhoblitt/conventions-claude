@@ -1,3 +1,13 @@
+## [1.8.3](https://github.com/jhoblitt/conventions-claude/compare/v1.8.2...v1.8.3) (2026-10-12)
+
+### Bug Fixes
+
+* **ceph-conventions:** state Ceph's commit title and AI-assistance rules ([039e01c](https://github.com/jhoblitt/conventions-claude/commit/039e01c822c80ee0cc363c375c30d0599e7e3482)), closes [ceph/ceph#66788](https://github.com/ceph/ceph/issues/66788)
+
+
+## What's Changed
+* fix(ceph-conventions): state Ceph's commit title and AI-assistance rules by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/35
+
 ## [1.8.2](https://github.com/jhoblitt/conventions-claude/compare/v1.8.1...v1.8.2) (2026-10-09)
 
 ### Bug Fixes
