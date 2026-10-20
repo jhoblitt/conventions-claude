@@ -47,10 +47,19 @@ a fix is process ("What a message says" below).
 
 After any history rewrite, before pushing:
 
-1. `git diff <old-head> HEAD` is empty — say so. A non-empty diff means
-   the rewrite went wrong: stop and report, never push.
+1. A rewrite in place — a squash, reword, or reorder — leaves
+   `git diff <old-head> HEAD` empty. A rebase onto a moved base leaves
+   `git range-diff <new-base> <old-head> HEAD` showing every commit's
+   patch unchanged, apart from conflict resolutions and commits the new
+   base already carries, each named in the report. Say which proof held.
+   Anything else means the rewrite went wrong: stop and report, never
+   push.
 2. Every `Signed-off-by:` survived.
-3. Push with `--force-with-lease`.
+3. Push with `--force-with-lease=<branch>:<old-head>`, several branches
+   with `--atomic`, as one plain `git push` command, which a permission
+   rule can match. Once the proof holds, the push to a branch of the
+   user's own open PR is part of the rewrite: make it without asking,
+   and report it.
 
 ## What a message says
 
