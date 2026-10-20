@@ -1,3 +1,13 @@
+## [1.8.4](https://github.com/jhoblitt/conventions-claude/compare/v1.8.3...v1.8.4) (2026-10-20)
+
+### Bug Fixes
+
+* **github-conventions:** prove a rebase with range-diff and push it unasked ([32d7875](https://github.com/jhoblitt/conventions-claude/commit/32d78753e567bac0c55e179d390322144cf35f84))
+
+
+## What's Changed
+* fix(github-conventions): prove a rebase with range-diff and push it unasked by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/38
+
 ## [1.8.3](https://github.com/jhoblitt/conventions-claude/compare/v1.8.2...v1.8.3) (2026-10-12)
 
 ### Bug Fixes
