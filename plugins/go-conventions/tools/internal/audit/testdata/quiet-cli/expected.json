@@ -114,7 +114,7 @@
       "status": "gap",
       "phase": "tooling",
       "current": "no step or run: block runs govulncheck",
-      "canon": "a workflow runs govulncheck over ./...",
+      "canon": "a workflow runs govulncheck over ./..., the action with repo-checkout: false",
       "fix": "copy templates/ci.yml to .github/workflows/"
     },
     {

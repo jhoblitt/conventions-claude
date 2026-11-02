@@ -298,6 +298,19 @@ func (r *repo) usesAction(action string) []string {
 	return names
 }
 
+// stepsUsing returns every step in the document whose uses: names action, so a
+// check can read the step's with: inputs.
+func (d document) stepsUsing(action string) []map[string]any {
+	var steps []map[string]any
+	walkMaps(d.doc, func(node map[string]any) {
+		if ref, ok := node["uses"].(string); ok && refUses(ref, action) {
+			steps = append(steps, node)
+		}
+	})
+
+	return steps
+}
+
 // runsMatching reports the workflows with a run: block satisfying match.
 func (r *repo) runsMatching(match func(string) bool) []string {
 	var names []string

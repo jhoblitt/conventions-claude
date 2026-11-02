@@ -273,10 +273,35 @@ func (r *repo) ciRows() []Row {
 		r.workflowRow("ci", "checks", checks,
 			"a workflow runs the go fix and go mod tidy checks",
 			"no run: block runs fix-check and tidy-check", fixCI),
-		r.workflowRow("ci", "govulncheck", vuln,
-			"a workflow runs govulncheck over ./...",
-			"no step or run: block runs govulncheck", fixCI),
+		r.govulncheckRow(vuln),
 	}
+}
+
+// govulncheckRow requires repo-checkout: false on every golang/govulncheck-action
+// step: the action's own checkout takes actions/checkout's default and persists
+// the job's token (github-conventions' references/workflows.md, "Checkout
+// credentials"). The action skips it on inputs.repo-checkout != 'false', a
+// comparison GitHub makes without regard to case.
+func (r *repo) govulncheckRow(vuln []string) Row {
+	const canon = "a workflow runs govulncheck over ./..., the action with repo-checkout: false"
+
+	var persisting []string
+	for _, w := range r.workflows {
+		for _, step := range w.stepsUsing("golang/govulncheck-action") {
+			if value, _ := scalarAt(step, "with", "repo-checkout"); !strings.EqualFold(value, "false") {
+				persisting = append(persisting, w.path)
+
+				break
+			}
+		}
+	}
+	if len(persisting) > 0 {
+		return gapRow(PhaseTooling, "ci", "govulncheck",
+			listing("golang/govulncheck-action checks out with persisted credentials", persisting, ""),
+			canon, "set repo-checkout: false on every golang/govulncheck-action step")
+	}
+
+	return r.workflowRow("ci", "govulncheck", vuln, canon, "no step or run: block runs govulncheck", fixCI)
 }
 
 // workflowRow reports the workflows that satisfied a check, or the gap plus

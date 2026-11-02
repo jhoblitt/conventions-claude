@@ -69,7 +69,10 @@ Every job sets `timeout-minutes`. The templates' values are the scale:
 
 ## Checkout credentials
 
-Every `actions/checkout` step sets `persist-credentials: false`.
+Every `actions/checkout` step sets `persist-credentials: false`. That
+includes a checkout an action runs inside itself: it takes checkout's
+default and persists the token. Where the action has an input that skips
+its checkout, the job checks the tree out itself and sets that input.
 
 ## Template placeholders
 

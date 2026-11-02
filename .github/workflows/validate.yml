@@ -118,9 +118,12 @@ jobs:
         with:
           persist-credentials: false
 
+      # repo-checkout: github-conventions' references/workflows.md,
+      # "Checkout credentials".
       - name: govulncheck
         uses: golang/govulncheck-action@032d45514ae346b1db93c04b0c90b841c370344f # v1.1.0
         with:
+          repo-checkout: false
           go-version-file: ${{ matrix.module }}/go.mod
           work-dir: ${{ matrix.module }}
           go-package: ./...

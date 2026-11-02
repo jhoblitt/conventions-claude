@@ -1,6 +1,7 @@
 package audit_test
 
 import (
+	"maps"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -58,6 +59,28 @@ func rowFor(report audit.Report, area, check string) audit.Row {
 	Fail("no row " + area + "/" + check)
 
 	return audit.Row{}
+}
+
+// auditFiles audits a repository holding go.mod (go 1.27) plus files, each
+// keyed by its slash-separated path, for a row no fixture reaches.
+func auditFiles(files map[string]string) audit.Report {
+	GinkgoHelper()
+
+	dir := GinkgoT().TempDir()
+	files = maps.Clone(files)
+	if _, ok := files["go.mod"]; !ok {
+		files["go.mod"] = "module example.com/x\n\ngo 1.27\n"
+	}
+	for name, text := range files {
+		path := filepath.Join(dir, filepath.FromSlash(name))
+		Expect(os.MkdirAll(filepath.Dir(path), 0o750)).To(Succeed())
+		Expect(os.WriteFile(path, []byte(text), 0o600)).To(Succeed())
+	}
+
+	report, err := audit.Run(audit.Options{Dir: dir, PluginRoot: pluginRoot})
+	Expect(err).NotTo(HaveOccurred())
+
+	return report
 }
 
 var _ = Describe("Run", func() {
@@ -290,6 +313,49 @@ var _ = Describe("Run", func() {
 				Expect(err).NotTo(HaveOccurred())
 				Expect(paths).NotTo(BeEmpty(), "%s reports a logging gap, --files logging is empty", fixture)
 			}
+		})
+	})
+
+	Describe("the govulncheck row", func() {
+		workflow := func(with string) map[string]string {
+			return map[string]string{".github/workflows/ci.yml": `on: pull_request
+jobs:
+  govulncheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: golang/govulncheck-action@v1
+        with:
+          go-package: ./...
+` + with}
+		}
+
+		DescribeTable("passes the action only when it skips its own checkout",
+			func(with string, status audit.Status) {
+				row := rowFor(auditFiles(workflow(with)), "ci", "govulncheck")
+				Expect(row.Status).To(Equal(status), "current: %s", row.Current)
+				if status == audit.StatusGap {
+					Expect(row.Current).To(ContainSubstring(".github/workflows/ci.yml"))
+				}
+			},
+			Entry("no repo-checkout input, so the action's checkout persists", "", audit.StatusGap),
+			Entry("repo-checkout: true", "          repo-checkout: true\n", audit.StatusGap),
+			Entry("repo-checkout: false", "          repo-checkout: false\n", audit.StatusOK),
+			Entry("a quoted false in another case, which the action's != 'false' also skips on",
+				"          repo-checkout: \"False\"\n", audit.StatusOK),
+		)
+
+		It("passes govulncheck run from a script, which checks nothing out", func() {
+			row := rowFor(auditFiles(map[string]string{".github/workflows/ci.yml": `on: pull_request
+jobs:
+  vuln:
+    runs-on: ubuntu-latest
+    steps:
+      - run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+`}), "ci", "govulncheck")
+			Expect(row.Status).To(Equal(audit.StatusOK))
 		})
 	})
 

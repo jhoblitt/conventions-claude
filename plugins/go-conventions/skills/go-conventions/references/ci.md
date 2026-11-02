@@ -84,7 +84,10 @@ Jobs:
   into `GOLANGCI_LINT_VERSION`, then `golangci/golangci-lint-action` v9
   runs with `version: ${{ env.GOLANGCI_LINT_VERSION }}`.
 - `checks`: `make vet fix-check tidy-check generate-check`.
-- `govulncheck`: `golang/govulncheck-action` v1 over `./...`.
+- `govulncheck`: `golang/govulncheck-action` v1 over `./...`, with
+  `repo-checkout: false` — the action's own checkout is the kind
+  github-conventions' `references/workflows.md`, "Checkout credentials",
+  skips.
 
 Only `checks` fans out over `MODULES`, through `make`; `test`, `lint`, and
 `govulncheck` run at the repository root and so cover the root module alone.

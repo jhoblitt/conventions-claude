@@ -12,7 +12,7 @@
 | ci | race | ok | none | .github/workflows/ci.yml | a workflow runs the suite with the race detector |  |
 | ci | lint | ok | none | .github/workflows/ci.yml | a workflow runs golangci/golangci-lint-action |  |
 | ci | checks | ok | none | .github/workflows/ci.yml | a workflow runs the go fix and go mod tidy checks |  |
-| ci | govulncheck | ok | none | .github/workflows/ci.yml | a workflow runs govulncheck over ./... |  |
+| ci | govulncheck | ok | none | .github/workflows/ci.yml | a workflow runs govulncheck over ./..., the action with repo-checkout: false |  |
 | release | goreleaser | ok | none | .goreleaser.yaml, version: 2 | .goreleaser.yaml at the root, version: 2 |  |
 | release | image | ok | none | present: kos, docker_signs | an image, when published, is a kos block paired with docker_signs |  |
 | release | sign-sbom | ok | none | present: signs, sboms | signs and sboms blocks: cosign over the checksums, syft over the archives |  |
