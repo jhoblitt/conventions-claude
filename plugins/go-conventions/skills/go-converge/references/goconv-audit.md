@@ -39,7 +39,9 @@ procedure, and under its reading of `references/<file>` and
   incumbent `references/kubernetes.md` keeps), `no logging`, `no test files`,
   `no v2 lint config`, `no kos block: no image` (the image is opt-in,
   `references/release.md`, "Images"), `no readable .goreleaser.yaml` (on the
-  `image` row only; the `goreleaser` row carries that gap).
+  `image` row only; the `goreleaser` row carries that gap), `no workflow runs
+  goreleaser on a v* tag` (on the `goreleaser-version` row only; the
+  `workflow` row carries that gap).
 - Under controller-runtime the scaffold's own `flag` and `go.uber.org/zap/zapcore`
   imports produce no `deps/<import path>` row at all — not a `skipped` one. That
   is the wiring `references/kubernetes.md` keeps; a standalone `go.uber.org/zap`
@@ -78,7 +80,8 @@ procedure, and under its reading of `references/<file>` and
   regeneration. Every other line renders verbatim: `{{ .Version }}` and
   `${{ … }}` are not placeholders (`references/layout.md`, "Template
   placeholders"). The `goreleaser`, `image` and `sign-sbom` rows fix with
-  `regenerate: goconv-audit --emit-goreleaser`, the `workflow` row with
+  `regenerate: goconv-audit --emit-goreleaser`, the `workflow` and
+  `goreleaser-version` rows with
   `regenerate: goconv-audit --emit-release-workflow`; unset
   `CLAUDE_PLUGIN_ROOT` exits 1, as for `--emit-golangci`, and so does a
   binary, owner, repository, or carried target outside `[A-Za-z0-9._-]` —
@@ -111,7 +114,7 @@ procedure, and under its reading of `references/<file>` and
 | `lint` | `config`, `linters`, `formatters`, `max-issues` | tooling |
 | `makefile` | `present`, `targets`, `golangci-version` | tooling |
 | `ci` | `setup-go`, `race`, `lint`, `checks`, `govulncheck` | tooling |
-| `release` | `goreleaser`, `image`, `sign-sbom`, `workflow`, `no-ldflags-x` | tooling |
+| `release` | `goreleaser`, `image`, `sign-sbom`, `workflow`, `goreleaser-version`, `no-ldflags-x` | tooling |
 | `dependabot`, `gitignore`, `claude`, `version` | `gomod`, `present`, `pointer`, `package` | tooling |
 | `layout` | `cmd`, `pkg-dir` | migration |
 | `deps` | `cli`, `config`, `testing`, `fakes`, `logging` | migration |

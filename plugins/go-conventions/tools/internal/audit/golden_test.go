@@ -394,6 +394,36 @@ jobs:
 				}),
 		)
 
+		DescribeTable("requires goreleaser-action on the tag workflow to run an exact v2 release",
+			func(trigger, with string, want audit.Status, current string) {
+				row := rowFor(auditFiles(map[string]string{".github/workflows/release.yml": trigger + `
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: goreleaser/goreleaser-action@v7
+        with:
+          args: release --clean
+` + with}), "release", "goreleaser-version")
+				Expect(row).To(SatisfyAll(HaveField("Status", want), HaveField("Current", current)))
+				if want == audit.StatusGap {
+					Expect(row.Fix).To(Equal("regenerate: goconv-audit --emit-release-workflow"))
+				}
+			},
+			Entry("an exact v2 release", "on: {push: {tags: [\"v*\"]}}", "          version: v2.19.0\n",
+				audit.StatusOK, ".github/workflows/release.yml: v2.19.0"),
+			Entry("no version input, so the action's ~> v2 default", "on: {push: {tags: [\"v*\"]}}", "",
+				audit.StatusGap, "not an exact release: .github/workflows/release.yml: no version input"),
+			Entry("a range", "on: {push: {tags: [\"v*\"]}}", "          version: \"~> v2\"\n",
+				audit.StatusGap, "not an exact release: .github/workflows/release.yml: version ~> v2"),
+			Entry("latest", "on: {push: {tags: [\"v*\"]}}", "          version: latest\n",
+				audit.StatusGap, "not an exact release: .github/workflows/release.yml: version latest"),
+			Entry("an exact release off v2", "on: {push: {tags: [\"v*\"]}}", "          version: v1.26.2\n",
+				audit.StatusGap, "not an exact release: .github/workflows/release.yml: version v1.26.2"),
+			Entry("no tag trigger, the workflow row's gap", "on: {push: {branches: [main]}}", "          version: latest\n",
+				audit.StatusSkipped, "no workflow runs goreleaser on a v* tag"),
+		)
+
 		It("finds -X in the Makefile and in a workflow run block", func() {
 			row := rowFor(run("legacy-daemon"), "release", "no-ldflags-x")
 			Expect(row.Status).To(Equal(audit.StatusGap))

@@ -17,6 +17,7 @@
 | release | image | skipped | none | no readable .goreleaser.yaml | an image, when published, is a kos block paired with docker_signs |  |
 | release | sign-sbom | gap | tooling | no readable .goreleaser.yaml | signs and sboms blocks: cosign over the checksums, syft over the archives | regenerate: goconv-audit --emit-goreleaser |
 | release | workflow | gap | tooling | no workflow runs goreleaser on a v* tag | a workflow on v* tags runs goreleaser/goreleaser-action | regenerate: goconv-audit --emit-release-workflow |
+| release | goreleaser-version | skipped | none | no workflow runs goreleaser on a v* tag | goreleaser-action runs an exact goreleaser v2 release, version: v2.x.y |  |
 | release | no-ldflags-x | ok | none | no -X ldflags | no -X ldflags anywhere; the version is the build stamp |  |
 | dependabot | gomod | gap | tooling | no .github/dependabot.yml | .github/dependabot.yml carries a gomod updates entry | append templates/dependabot-gomod.yml under the existing updates: list |
 | gitignore | present | gap | tooling | no .gitignore | .gitignore at the repository root | merge templates/.gitignore into the repository's |
@@ -31,4 +32,4 @@
 | deps | logging | ok | none | log/slog | log/slog only, in every non-test file that logs |  |
 | logging | stderr-json | skipped | none | library | the JSON handler writes to stderr; stdout is program output |  |
 
-16 gaps (15 tooling, 1 migration), 5 ok, 9 skipped
+16 gaps (15 tooling, 1 migration), 5 ok, 10 skipped

@@ -155,6 +155,15 @@
     },
     {
       "area": "release",
+      "check": "goreleaser-version",
+      "status": "skipped",
+      "phase": "none",
+      "current": "no workflow runs goreleaser on a v* tag",
+      "canon": "goreleaser-action runs an exact goreleaser v2 release, version: v2.x.y",
+      "fix": ""
+    },
+    {
+      "area": "release",
       "check": "no-ldflags-x",
       "status": "ok",
       "phase": "none",
@@ -284,5 +293,5 @@
   "tooling": 17,
   "migration": 6,
   "ok": 3,
-  "skipped": 5
+  "skipped": 6
 }

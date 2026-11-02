@@ -83,5 +83,12 @@ gets the stamp.
   the release before anything is published.
 - cosign and syft are installed; with an image, the job logs in to ghcr.io
   with `GITHUB_TOKEN`.
+- goreleaser-action runs one exact goreleaser release, `version: v2.x.y`,
+  never a range and never the input left to its `~> v2` default. The action
+  resolves a range to the newest match on every run, so a release nobody
+  tested against the project would get the job's write and OIDC tokens, and
+  two tags of one project could build with different goreleaser versions.
+  The input is the version's one home. Dependabot bumps the action's pin
+  but never the input, so a bump edits it by hand.
 - The concurrency form — a constant group, never cancelled — is the release
   exception in github-conventions' `references/workflows.md`, "Concurrency".

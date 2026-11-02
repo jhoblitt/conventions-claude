@@ -17,6 +17,7 @@
 | release | image | ok | none | present: kos, docker_signs | an image, when published, is a kos block paired with docker_signs |  |
 | release | sign-sbom | ok | none | present: signs, sboms | signs and sboms blocks: cosign over the checksums, syft over the archives |  |
 | release | workflow | ok | none | .github/workflows/release.yml | a workflow on v* tags runs goreleaser/goreleaser-action |  |
+| release | goreleaser-version | ok | none | .github/workflows/release.yml: v2.19.0 | goreleaser-action runs an exact goreleaser v2 release, version: v2.x.y |  |
 | release | no-ldflags-x | ok | none | no -X ldflags | no -X ldflags anywhere; the version is the build stamp |  |
 | dependabot | gomod | ok | none | ecosystems: github-actions, gomod | .github/dependabot.yml carries a gomod updates entry |  |
 | gitignore | present | ok | none | .gitignore | .gitignore at the repository root |  |
@@ -31,4 +32,4 @@
 | deps | logging | ok | none | log/slog | log/slog only, in every non-test file that logs |  |
 | logging | stderr-json | ok | none | slog.NewJSONHandler, never over os.Stdout | the JSON handler writes to stderr; stdout is program output |  |
 
-0 gaps (0 tooling, 0 migration), 30 ok, 0 skipped
+0 gaps (0 tooling, 0 migration), 31 ok, 0 skipped

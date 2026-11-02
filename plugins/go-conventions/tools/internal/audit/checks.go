@@ -333,8 +333,48 @@ func (r *repo) releaseRows() []Row {
 		r.goreleaserKeyRow("sign-sbom", []string{"signs", "sboms"},
 			"signs and sboms blocks: cosign over the checksums, syft over the archives"),
 		r.releaseWorkflowRow(),
+		r.goreleaserVersionRow(),
 		r.ldflagsRow(),
 	}
+}
+
+// exactGoreleaser is one goreleaser v2 release as goreleaser-action's version
+// input names it. Anything else — a range, latest, the input left to its ~> v2
+// default — the action resolves anew on every run.
+var exactGoreleaser = regexp.MustCompile(`^v2\.\d+\.\d+$`)
+
+// goreleaserVersionRow reads the goreleaser-action steps of the workflows the
+// workflow row counts; with none there, that row carries the gap.
+func (r *repo) goreleaserVersionRow() Row {
+	const canon = "goreleaser-action runs an exact goreleaser v2 release, version: v2.x.y"
+
+	var exact, loose []string
+	for _, w := range r.workflows {
+		if !tagTriggered(w) {
+			continue
+		}
+		for _, step := range w.stepsUsing("goreleaser/goreleaser-action") {
+			version, set := scalarAt(step, "with", "version")
+			switch {
+			case !set:
+				loose = append(loose, w.path+": no version input")
+			case exactGoreleaser.MatchString(version):
+				exact = append(exact, w.path+": "+version)
+			default:
+				loose = append(loose, w.path+": version "+version)
+			}
+		}
+	}
+
+	switch {
+	case len(loose) > 0:
+		return gapRow(PhaseTooling, "release", "goreleaser-version",
+			listing("not an exact release", loose, ""), canon, fixReleaseWorkflow)
+	case len(exact) > 0:
+		return okRow("release", "goreleaser-version", strings.Join(exact, ", "), canon)
+	}
+
+	return skipRow("release", "goreleaser-version", "no workflow runs goreleaser on a v* tag", canon)
 }
 
 // imageRow reads the image opt-in as the pair it is: kos with docker_signs is
