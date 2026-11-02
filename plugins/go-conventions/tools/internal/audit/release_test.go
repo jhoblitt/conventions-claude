@@ -158,7 +158,7 @@ var _ = Describe("ReleaseWorkflow", func() {
 			}
 			if !image {
 				Expect(out).To(ContainSubstring("      contents: write\n      id-token: write\n"))
-				Expect(out).To(ContainSubstring("download-syft@v0\n\n      - name: goreleaser\n"))
+				Expect(out).To(ContainSubstring("download-syft@v0\n\n      # version: references/release.md"))
 			}
 		},
 		Entry("a new project, no image", "", audit.Inputs{}, false),

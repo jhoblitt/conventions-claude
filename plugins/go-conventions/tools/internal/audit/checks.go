@@ -27,8 +27,8 @@ func (r *repo) rows() []Row {
 
 func (r *repo) toolchainRow() Row {
 	const (
-		canon = "go 1.27, the minor only, and no toolchain line"
-		fix   = "set go 1.27 in go.mod and drop any toolchain line"
+		canon = "go 1.27, the minor only; no toolchain line, except toolchain go1.27.N in a module its consumers build from its checkout"
+		fix   = "set go 1.27 in go.mod; keep a toolchain line only as go1.27.N, in a module its consumers build from its checkout"
 	)
 
 	current := "no go directive"
@@ -38,7 +38,7 @@ func (r *repo) toolchainRow() Row {
 	if r.toolchain != "" {
 		current += ", toolchain " + r.toolchain
 	}
-	if r.goVersion == canonGoVersion && r.toolchain == "" {
+	if r.goVersion == canonGoVersion && (r.toolchain == "" || canonToolchain.MatchString(r.toolchain)) {
 		return okRow("toolchain", "go-directive", current, canon)
 	}
 
@@ -46,6 +46,10 @@ func (r *repo) toolchainRow() Row {
 }
 
 const canonGoVersion = "1.27"
+
+// canonToolchain is a released patch of the canon minor. Which patch is the
+// latest is not knowable offline, so any of them passes.
+var canonToolchain = regexp.MustCompile(`^go1\.27\.\d+$`)
 
 // --- lint ---
 
@@ -273,10 +277,35 @@ func (r *repo) ciRows() []Row {
 		r.workflowRow("ci", "checks", checks,
 			"a workflow runs the go fix and go mod tidy checks",
 			"no run: block runs fix-check and tidy-check", fixCI),
-		r.workflowRow("ci", "govulncheck", vuln,
-			"a workflow runs govulncheck over ./...",
-			"no step or run: block runs govulncheck", fixCI),
+		r.govulncheckRow(vuln),
 	}
+}
+
+// govulncheckRow requires repo-checkout: false on every golang/govulncheck-action
+// step: the action's own checkout takes actions/checkout's default and persists
+// the job's token (github-conventions' references/workflows.md, "Checkout
+// credentials"). The action skips it on inputs.repo-checkout != 'false', a
+// comparison GitHub makes without regard to case.
+func (r *repo) govulncheckRow(vuln []string) Row {
+	const canon = "a workflow runs govulncheck over ./..., the action with repo-checkout: false"
+
+	var persisting []string
+	for _, w := range r.workflows {
+		for _, step := range w.stepsUsing("golang/govulncheck-action") {
+			if value, _ := scalarAt(step, "with", "repo-checkout"); !strings.EqualFold(value, "false") {
+				persisting = append(persisting, w.path)
+
+				break
+			}
+		}
+	}
+	if len(persisting) > 0 {
+		return gapRow(PhaseTooling, "ci", "govulncheck",
+			listing("golang/govulncheck-action checks out with persisted credentials", persisting, ""),
+			canon, "set repo-checkout: false on every golang/govulncheck-action step")
+	}
+
+	return r.workflowRow("ci", "govulncheck", vuln, canon, "no step or run: block runs govulncheck", fixCI)
 }
 
 // workflowRow reports the workflows that satisfied a check, or the gap plus
@@ -299,17 +328,77 @@ func (r *repo) workflowRow(area, check string, names []string, canon, missing, f
 const (
 	fixGoreleaser      = "regenerate: goconv-audit --emit-goreleaser"
 	fixReleaseWorkflow = "regenerate: goconv-audit --emit-release-workflow"
+
+	canonGoreleaser        = ".goreleaser.yaml at the root, version: 2"
+	canonImage             = "an image, when published, is a kos block paired with docker_signs"
+	canonSignSBOM          = "signs and sboms blocks: cosign over the checksums, syft over the archives"
+	canonReleaseWorkflow   = "a workflow on v* tags runs goreleaser/goreleaser-action"
+	canonGoreleaserVersion = "goreleaser-action runs an exact goreleaser v2 release, version: v2.x.y"
 )
 
+// releaseRows skips every goreleaser row for a repository that releases with
+// semantic-release and runs no goreleaser: it publishes no binaries, so none
+// of them can apply (references/release.md, "Without binaries"). The
+// no-ldflags-x row still does, since its consumers build the binary.
 func (r *repo) releaseRows() []Row {
+	if r.semanticRelease && !r.goreleaser.found && len(r.goreleaserWorkflows()) == 0 {
+		const reason = "semantic-release, no goreleaser config or workflow"
+
+		return []Row{
+			skipRow("release", "goreleaser", reason, canonGoreleaser),
+			skipRow("release", "image", reason, canonImage),
+			skipRow("release", "sign-sbom", reason, canonSignSBOM),
+			skipRow("release", "workflow", reason, canonReleaseWorkflow),
+			skipRow("release", "goreleaser-version", reason, canonGoreleaserVersion),
+			r.ldflagsRow(),
+		}
+	}
+
 	return []Row{
 		r.goreleaserRow(),
 		r.imageRow(),
-		r.goreleaserKeyRow("sign-sbom", []string{"signs", "sboms"},
-			"signs and sboms blocks: cosign over the checksums, syft over the archives"),
+		r.goreleaserKeyRow("sign-sbom", []string{"signs", "sboms"}, canonSignSBOM),
 		r.releaseWorkflowRow(),
+		r.goreleaserVersionRow(),
 		r.ldflagsRow(),
 	}
+}
+
+// exactGoreleaser is one goreleaser v2 release as goreleaser-action's version
+// input names it. Anything else — a range, latest, the input left to its ~> v2
+// default — the action resolves anew on every run.
+var exactGoreleaser = regexp.MustCompile(`^v2\.\d+\.\d+$`)
+
+// goreleaserVersionRow reads the goreleaser-action steps of the workflows the
+// workflow row counts; with none there, that row carries the gap.
+func (r *repo) goreleaserVersionRow() Row {
+	var exact, loose []string
+	for _, w := range r.workflows {
+		if !tagTriggered(w) {
+			continue
+		}
+		for _, step := range w.stepsUsing("goreleaser/goreleaser-action") {
+			version, set := scalarAt(step, "with", "version")
+			switch {
+			case !set:
+				loose = append(loose, w.path+": no version input")
+			case exactGoreleaser.MatchString(version):
+				exact = append(exact, w.path+": "+version)
+			default:
+				loose = append(loose, w.path+": version "+version)
+			}
+		}
+	}
+
+	switch {
+	case len(loose) > 0:
+		return gapRow(PhaseTooling, "release", "goreleaser-version",
+			listing("not an exact release", loose, ""), canonGoreleaserVersion, fixReleaseWorkflow)
+	case len(exact) > 0:
+		return okRow("release", "goreleaser-version", strings.Join(exact, ", "), canonGoreleaserVersion)
+	}
+
+	return skipRow("release", "goreleaser-version", "no workflow runs goreleaser on a v* tag", canonGoreleaserVersion)
 }
 
 // imageRow reads the image opt-in as the pair it is: kos with docker_signs is
@@ -319,43 +408,39 @@ func (r *repo) releaseRows() []Row {
 // enough for --emit-goreleaser to render both (publishesImage), so the
 // regeneration is the fix.
 func (r *repo) imageRow() Row {
-	const canon = "an image, when published, is a kos block paired with docker_signs"
-
 	if !r.goreleaser.found || r.goreleaser.parse != nil {
-		return skipRow("release", "image", "no readable .goreleaser.yaml", canon)
+		return skipRow("release", "image", "no readable .goreleaser.yaml", canonImage)
 	}
 
 	kos, signs := r.goreleaser.hasKey("kos"), r.goreleaser.hasKey("docker_signs")
 	switch {
 	case kos && signs:
-		return okRow("release", "image", "present: kos, docker_signs", canon)
+		return okRow("release", "image", "present: kos, docker_signs", canonImage)
 	case kos:
-		return gapRow(PhaseTooling, "release", "image", "missing: docker_signs", canon, fixGoreleaser)
+		return gapRow(PhaseTooling, "release", "image", "missing: docker_signs", canonImage, fixGoreleaser)
 	case signs:
-		return gapRow(PhaseTooling, "release", "image", "missing: kos", canon, fixGoreleaser)
+		return gapRow(PhaseTooling, "release", "image", "missing: kos", canonImage, fixGoreleaser)
 	}
 
-	return skipRow("release", "image", "no kos block: no image", canon)
+	return skipRow("release", "image", "no kos block: no image", canonImage)
 }
 
 func (r *repo) goreleaserRow() Row {
-	const canon = ".goreleaser.yaml at the root, version: 2"
-
 	switch {
 	case !r.goreleaser.found:
-		return gapRow(PhaseTooling, "release", "goreleaser", "no .goreleaser.yaml", canon, fixGoreleaser)
+		return gapRow(PhaseTooling, "release", "goreleaser", "no .goreleaser.yaml", canonGoreleaser, fixGoreleaser)
 	case r.goreleaser.parse != nil:
 		return gapRow(PhaseTooling, "release", "goreleaser",
-			"yaml parse error: "+r.goreleaser.parse.Error(), canon, fixGoreleaser)
+			"yaml parse error: "+r.goreleaser.parse.Error(), canonGoreleaser, fixGoreleaser)
 	}
 
 	version, _ := scalarAt(r.goreleaser.doc, "version")
 	if version != "2" {
 		return gapRow(PhaseTooling, "release", "goreleaser",
-			r.goreleaser.path+", version: "+or(version, version != ""), canon, fixGoreleaser)
+			r.goreleaser.path+", version: "+or(version, version != ""), canonGoreleaser, fixGoreleaser)
 	}
 
-	return okRow("release", "goreleaser", r.goreleaser.path+", version: 2", canon)
+	return okRow("release", "goreleaser", r.goreleaser.path+", version: 2", canonGoreleaser)
 }
 
 func (r *repo) goreleaserKeyRow(check string, keys []string, canon string) Row {
@@ -377,8 +462,13 @@ func (r *repo) goreleaserKeyRow(check string, keys []string, canon string) Row {
 }
 
 func (r *repo) releaseWorkflowRow() Row {
-	const canon = "a workflow on v* tags runs goreleaser/goreleaser-action"
+	return r.workflowRow("release", "workflow", r.goreleaserWorkflows(), canonReleaseWorkflow,
+		"no workflow runs goreleaser on a v* tag", fixReleaseWorkflow)
+}
 
+// goreleaserWorkflows names the v*-tag workflows with a step that uses
+// goreleaser-action.
+func (r *repo) goreleaserWorkflows() []string {
 	var names []string
 	for _, w := range r.workflows {
 		if !tagTriggered(w) {
@@ -393,8 +483,7 @@ func (r *repo) releaseWorkflowRow() Row {
 		}
 	}
 
-	return r.workflowRow("release", "workflow", names, canon,
-		"no workflow runs goreleaser on a v* tag", fixReleaseWorkflow)
+	return names
 }
 
 // tagTriggered reports whether the workflow's push trigger carries a v* tag

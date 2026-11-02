@@ -9,27 +9,27 @@
 | workflows | pinned:codeql.yml | ok | every uses: is SHA-pinned | every uses: ends in a 40-hex commit SHA with a # v… comment |  |
 | workflows | permissions:codeql.yml | ok | contents: read | a top-level permissions key, with no write scope |  |
 | workflows | timeout:codeql.yml | ok | 1 job(s), all with timeout-minutes | every job sets timeout-minutes |  |
-| workflows | concurrency:codeql.yml | ok | concurrency group set | a top-level concurrency key |  |
+| workflows | concurrency:codeql.yml | ok | concurrency group set | a top-level concurrency key; a callable workflow's group leads with its own name |  |
 | workflows | checkout-credentials:codeql.yml | ok | persist-credentials: false on all 1 | every actions/checkout step sets with.persist-credentials: false |  |
 | workflows | pinned:commitlint.yml | ok | every uses: is SHA-pinned | every uses: ends in a 40-hex commit SHA with a # v… comment |  |
 | workflows | permissions:commitlint.yml | ok | contents: read | a top-level permissions key, with no write scope |  |
 | workflows | timeout:commitlint.yml | ok | 1 job(s), all with timeout-minutes | every job sets timeout-minutes |  |
-| workflows | concurrency:commitlint.yml | ok | concurrency group set | a top-level concurrency key |  |
+| workflows | concurrency:commitlint.yml | ok | concurrency group set | a top-level concurrency key; a callable workflow's group leads with its own name |  |
 | workflows | checkout-credentials:commitlint.yml | ok | persist-credentials: false on all 1 | every actions/checkout step sets with.persist-credentials: false |  |
 | workflows | pinned:dependency-review.yml | ok | every uses: is SHA-pinned | every uses: ends in a 40-hex commit SHA with a # v… comment |  |
 | workflows | permissions:dependency-review.yml | ok | contents: read | a top-level permissions key, with no write scope |  |
 | workflows | timeout:dependency-review.yml | ok | 1 job(s), all with timeout-minutes | every job sets timeout-minutes |  |
-| workflows | concurrency:dependency-review.yml | ok | concurrency group set | a top-level concurrency key |  |
+| workflows | concurrency:dependency-review.yml | ok | concurrency group set | a top-level concurrency key; a callable workflow's group leads with its own name |  |
 | workflows | checkout-credentials:dependency-review.yml | ok | persist-credentials: false on all 1 | every actions/checkout step sets with.persist-credentials: false |  |
 | workflows | pinned:scorecard.yml | ok | every uses: is SHA-pinned | every uses: ends in a 40-hex commit SHA with a # v… comment |  |
 | workflows | permissions:scorecard.yml | ok | contents: read | a top-level permissions key, with no write scope |  |
 | workflows | timeout:scorecard.yml | ok | 1 job(s), all with timeout-minutes | every job sets timeout-minutes |  |
-| workflows | concurrency:scorecard.yml | ok | concurrency group set | a top-level concurrency key |  |
+| workflows | concurrency:scorecard.yml | ok | concurrency group set | a top-level concurrency key; a callable workflow's group leads with its own name |  |
 | workflows | checkout-credentials:scorecard.yml | ok | persist-credentials: false on all 1 | every actions/checkout step sets with.persist-credentials: false |  |
 | workflows | pinned:workflow-lint.yml | ok | every uses: is SHA-pinned | every uses: ends in a 40-hex commit SHA with a # v… comment |  |
 | workflows | permissions:workflow-lint.yml | ok | contents: read | a top-level permissions key, with no write scope |  |
 | workflows | timeout:workflow-lint.yml | ok | 2 job(s), all with timeout-minutes | every job sets timeout-minutes |  |
-| workflows | concurrency:workflow-lint.yml | ok | concurrency group set | a top-level concurrency key |  |
+| workflows | concurrency:workflow-lint.yml | ok | concurrency group set | a top-level concurrency key; a callable workflow's group leads with its own name |  |
 | workflows | checkout-credentials:workflow-lint.yml | ok | persist-credentials: false on all 2 | every actions/checkout step sets with.persist-credentials: false |  |
 | security | codeql | ok | codeql.yml | a workflow runs github/codeql-action/init |  |
 | security | dependency-review | ok | dependency-review.yml | a workflow runs actions/dependency-review-action |  |

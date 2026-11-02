@@ -1,6 +1,7 @@
 package audit_test
 
 import (
+	"maps"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -58,6 +59,28 @@ func rowFor(report audit.Report, area, check string) audit.Row {
 	Fail("no row " + area + "/" + check)
 
 	return audit.Row{}
+}
+
+// auditFiles audits a repository holding go.mod (go 1.27) plus files, each
+// keyed by its slash-separated path, for a row no fixture reaches.
+func auditFiles(files map[string]string) audit.Report {
+	GinkgoHelper()
+
+	dir := GinkgoT().TempDir()
+	files = maps.Clone(files)
+	if _, ok := files["go.mod"]; !ok {
+		files["go.mod"] = "module example.com/x\n\ngo 1.27\n"
+	}
+	for name, text := range files {
+		path := filepath.Join(dir, filepath.FromSlash(name))
+		Expect(os.MkdirAll(filepath.Dir(path), 0o750)).To(Succeed())
+		Expect(os.WriteFile(path, []byte(text), 0o600)).To(Succeed())
+	}
+
+	report, err := audit.Run(audit.Options{Dir: dir, PluginRoot: pluginRoot})
+	Expect(err).NotTo(HaveOccurred())
+
+	return report
 }
 
 var _ = Describe("Run", func() {
@@ -139,11 +162,25 @@ var _ = Describe("Run", func() {
 			Expect(row.Current).To(ContainSubstring("1.26.1"))
 		})
 
-		It("fails a toolchain line even on the canon directive", func() {
+		It("passes a toolchain line naming a go1.27 patch on the canon directive", func() {
 			row := rowFor(run("kubebuilder"), "toolchain", "go-directive")
-			Expect(row.Status).To(Equal(audit.StatusGap))
-			Expect(row.Current).To(ContainSubstring("toolchain"))
+			Expect(row.Status).To(Equal(audit.StatusOK))
+			Expect(row.Current).To(Equal("go 1.27, toolchain go1.27.1"))
 		})
+
+		DescribeTable("fails a toolchain line naming anything but a go1.27 patch",
+			func(toolchain string) {
+				row := rowFor(auditFiles(map[string]string{
+					"go.mod": "module example.com/x\n\ngo 1.27\n\ntoolchain " + toolchain + "\n",
+				}), "toolchain", "go-directive")
+				Expect(row.Status).To(Equal(audit.StatusGap))
+				Expect(row.Current).To(Equal("go 1.27, toolchain " + toolchain))
+			},
+			Entry("an older minor", "go1.26.5"),
+			Entry("a newer minor", "go1.28.0"),
+			Entry("a release candidate", "go1.27rc2"),
+			Entry("the default keyword", "default"),
+		)
 	})
 
 	Describe("the lint rows", func() {
@@ -293,6 +330,49 @@ var _ = Describe("Run", func() {
 		})
 	})
 
+	Describe("the govulncheck row", func() {
+		workflow := func(with string) map[string]string {
+			return map[string]string{".github/workflows/ci.yml": `on: pull_request
+jobs:
+  govulncheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: golang/govulncheck-action@v1
+        with:
+          go-package: ./...
+` + with}
+		}
+
+		DescribeTable("passes the action only when it skips its own checkout",
+			func(with string, status audit.Status) {
+				row := rowFor(auditFiles(workflow(with)), "ci", "govulncheck")
+				Expect(row.Status).To(Equal(status), "current: %s", row.Current)
+				if status == audit.StatusGap {
+					Expect(row.Current).To(ContainSubstring(".github/workflows/ci.yml"))
+				}
+			},
+			Entry("no repo-checkout input, so the action's checkout persists", "", audit.StatusGap),
+			Entry("repo-checkout: true", "          repo-checkout: true\n", audit.StatusGap),
+			Entry("repo-checkout: false", "          repo-checkout: false\n", audit.StatusOK),
+			Entry("a quoted false in another case, which the action's != 'false' also skips on",
+				"          repo-checkout: \"False\"\n", audit.StatusOK),
+		)
+
+		It("passes govulncheck run from a script, which checks nothing out", func() {
+			row := rowFor(auditFiles(map[string]string{".github/workflows/ci.yml": `on: pull_request
+jobs:
+  vuln:
+    runs-on: ubuntu-latest
+    steps:
+      - run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+`}), "ci", "govulncheck")
+			Expect(row.Status).To(Equal(audit.StatusOK))
+		})
+	})
+
 	Describe("the release rows", func() {
 		// The image is an opt-in read as a pair; the fixtures reach only the
 		// missing-file skip and the compliant ok, so the rest are built here.
@@ -326,6 +406,82 @@ var _ = Describe("Run", func() {
 					Status: audit.StatusGap, Phase: audit.PhaseTooling, Current: "missing: kos",
 					Fix: "regenerate: goconv-audit --emit-goreleaser",
 				}),
+		)
+
+		DescribeTable("requires goreleaser-action on the tag workflow to run an exact v2 release",
+			func(trigger, with string, want audit.Status, current string) {
+				row := rowFor(auditFiles(map[string]string{".github/workflows/release.yml": trigger + `
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: goreleaser/goreleaser-action@v7
+        with:
+          args: release --clean
+` + with}), "release", "goreleaser-version")
+				Expect(row).To(SatisfyAll(HaveField("Status", want), HaveField("Current", current)))
+				if want == audit.StatusGap {
+					Expect(row.Fix).To(Equal("regenerate: goconv-audit --emit-release-workflow"))
+				}
+			},
+			Entry("an exact v2 release", "on: {push: {tags: [\"v*\"]}}", "          version: v2.19.0\n",
+				audit.StatusOK, ".github/workflows/release.yml: v2.19.0"),
+			Entry("no version input, so the action's ~> v2 default", "on: {push: {tags: [\"v*\"]}}", "",
+				audit.StatusGap, "not an exact release: .github/workflows/release.yml: no version input"),
+			Entry("a range", "on: {push: {tags: [\"v*\"]}}", "          version: \"~> v2\"\n",
+				audit.StatusGap, "not an exact release: .github/workflows/release.yml: version ~> v2"),
+			Entry("latest", "on: {push: {tags: [\"v*\"]}}", "          version: latest\n",
+				audit.StatusGap, "not an exact release: .github/workflows/release.yml: version latest"),
+			Entry("an exact release off v2", "on: {push: {tags: [\"v*\"]}}", "          version: v1.26.2\n",
+				audit.StatusGap, "not an exact release: .github/workflows/release.yml: version v1.26.2"),
+			Entry("no tag trigger, the workflow row's gap", "on: {push: {branches: [main]}}", "          version: latest\n",
+				audit.StatusSkipped, "no workflow runs goreleaser on a v* tag"),
+		)
+
+		const tagWorkflow = `on: {push: {tags: ["v*"]}}
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: goreleaser/goreleaser-action@v7
+        with:
+          version: v2.19.0
+`
+
+		DescribeTable("skips the goreleaser rows for a semantic-release repository with no goreleaser",
+			func(files map[string]string) {
+				report := auditFiles(files)
+				for _, check := range []string{"goreleaser", "image", "sign-sbom", "workflow", "goreleaser-version"} {
+					Expect(rowFor(report, "release", check)).To(SatisfyAll(
+						HaveField("Status", audit.StatusSkipped),
+						HaveField("Current", "semantic-release, no goreleaser config or workflow")), check)
+				}
+				Expect(rowFor(report, "release", "no-ldflags-x").Status).To(Equal(audit.StatusOK))
+			},
+			Entry("a .releaserc.json", map[string]string{".releaserc.json": `{"branches":["main"]}`}),
+			Entry("an extensionless .releaserc", map[string]string{".releaserc": "branches: [main]\n"}),
+			Entry("a config under .config/", map[string]string{".config/releaserc.yml": "branches: [main]\n"}),
+			Entry("a release.config.mjs", map[string]string{"release.config.mjs": "export default {}\n"}),
+			Entry("a release key in package.json", map[string]string{"package.json": `{"release":{"branches":["main"]}}`}),
+		)
+
+		DescribeTable("still measures the goreleaser rows when the repository publishes through goreleaser",
+			func(files map[string]string, row, status string) {
+				Expect(string(rowFor(auditFiles(files), "release", row).Status)).To(Equal(status))
+			},
+			Entry("a package.json with no release key",
+				map[string]string{"package.json": `{"name":"x","scripts":{}}`}, "goreleaser", "gap"),
+			Entry("a package.json that does not parse",
+				map[string]string{"package.json": `{"release":`}, "goreleaser", "gap"),
+			Entry("a package.json whose release key is null",
+				map[string]string{"package.json": `{"release":null}`}, "goreleaser", "gap"),
+			Entry("a .config that is a file, not a directory",
+				map[string]string{".config": "x\n"}, "goreleaser", "gap"),
+			Entry("semantic-release beside a .goreleaser.yaml",
+				map[string]string{".releaserc.json": "{}", ".goreleaser.yaml": "version: 2\n"}, "goreleaser", "ok"),
+			Entry("semantic-release beside a tag workflow running goreleaser",
+				map[string]string{".releaserc.json": "{}", ".github/workflows/release.yml": tagWorkflow},
+				"workflow", "ok"),
 		)
 
 		It("finds -X in the Makefile and in a workflow run block", func() {

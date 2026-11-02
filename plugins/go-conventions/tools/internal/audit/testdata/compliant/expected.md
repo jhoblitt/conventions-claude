@@ -1,6 +1,6 @@
 | Area | Check | Status | Phase | Current | Canon | Fix |
 | --- | --- | --- | --- | --- | --- | --- |
-| toolchain | go-directive | ok | none | go 1.27 | go 1.27, the minor only, and no toolchain line |  |
+| toolchain | go-directive | ok | none | go 1.27 | go 1.27, the minor only; no toolchain line, except toolchain go1.27.N in a module its consumers build from its checkout |  |
 | lint | config | ok | none | .golangci.yml, version: 2 | a .golangci.yml at the root, golangci-lint v2 (version: "2") |  |
 | lint | linters | ok | none | enabled: govet, staticcheck, errcheck, errorlint, nilerr, nilnesserr, bodyclose, noctx, fatcontext, copyloopvar, recvcheck, ineffassign, unused, unparam, modernize, exptostd, intrange, perfsprint, usetesting, depguard, gomoddirectives, gocritic, revive, misspell, unconvert, gosec, ginkgolinter, sloglint | every linter templates/.golangci.yml enables |  |
 | lint | formatters | ok | none | enabled: gofmt, gofumpt, goimports | the formatters templates/.golangci.yml enables |  |
@@ -12,11 +12,12 @@
 | ci | race | ok | none | .github/workflows/ci.yml | a workflow runs the suite with the race detector |  |
 | ci | lint | ok | none | .github/workflows/ci.yml | a workflow runs golangci/golangci-lint-action |  |
 | ci | checks | ok | none | .github/workflows/ci.yml | a workflow runs the go fix and go mod tidy checks |  |
-| ci | govulncheck | ok | none | .github/workflows/ci.yml | a workflow runs govulncheck over ./... |  |
+| ci | govulncheck | ok | none | .github/workflows/ci.yml | a workflow runs govulncheck over ./..., the action with repo-checkout: false |  |
 | release | goreleaser | ok | none | .goreleaser.yaml, version: 2 | .goreleaser.yaml at the root, version: 2 |  |
 | release | image | ok | none | present: kos, docker_signs | an image, when published, is a kos block paired with docker_signs |  |
 | release | sign-sbom | ok | none | present: signs, sboms | signs and sboms blocks: cosign over the checksums, syft over the archives |  |
 | release | workflow | ok | none | .github/workflows/release.yml | a workflow on v* tags runs goreleaser/goreleaser-action |  |
+| release | goreleaser-version | ok | none | .github/workflows/release.yml: v2.19.0 | goreleaser-action runs an exact goreleaser v2 release, version: v2.x.y |  |
 | release | no-ldflags-x | ok | none | no -X ldflags | no -X ldflags anywhere; the version is the build stamp |  |
 | dependabot | gomod | ok | none | ecosystems: github-actions, gomod | .github/dependabot.yml carries a gomod updates entry |  |
 | gitignore | present | ok | none | .gitignore | .gitignore at the repository root |  |
@@ -31,4 +32,4 @@
 | deps | logging | ok | none | log/slog | log/slog only, in every non-test file that logs |  |
 | logging | stderr-json | ok | none | slog.NewJSONHandler, never over os.Stdout | the JSON handler writes to stderr; stdout is program output |  |
 
-0 gaps (0 tooling, 0 migration), 30 ok, 0 skipped
+0 gaps (0 tooling, 0 migration), 31 ok, 0 skipped

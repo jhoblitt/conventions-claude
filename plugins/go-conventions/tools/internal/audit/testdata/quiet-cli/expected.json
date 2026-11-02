@@ -6,7 +6,7 @@
       "status": "ok",
       "phase": "none",
       "current": "go 1.27",
-      "canon": "go 1.27, the minor only, and no toolchain line",
+      "canon": "go 1.27, the minor only; no toolchain line, except toolchain go1.27.N in a module its consumers build from its checkout",
       "fix": ""
     },
     {
@@ -114,7 +114,7 @@
       "status": "gap",
       "phase": "tooling",
       "current": "no step or run: block runs govulncheck",
-      "canon": "a workflow runs govulncheck over ./...",
+      "canon": "a workflow runs govulncheck over ./..., the action with repo-checkout: false",
       "fix": "copy templates/ci.yml to .github/workflows/"
     },
     {
@@ -152,6 +152,15 @@
       "current": "no workflow runs goreleaser on a v* tag",
       "canon": "a workflow on v* tags runs goreleaser/goreleaser-action",
       "fix": "regenerate: goconv-audit --emit-release-workflow"
+    },
+    {
+      "area": "release",
+      "check": "goreleaser-version",
+      "status": "skipped",
+      "phase": "none",
+      "current": "no workflow runs goreleaser on a v* tag",
+      "canon": "goreleaser-action runs an exact goreleaser v2 release, version: v2.x.y",
+      "fix": ""
     },
     {
       "area": "release",
@@ -275,5 +284,5 @@
   "tooling": 16,
   "migration": 1,
   "ok": 5,
-  "skipped": 8
+  "skipped": 9
 }

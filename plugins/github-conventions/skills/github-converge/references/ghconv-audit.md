@@ -53,7 +53,7 @@ and `templates/<file>`.
 | `workflows` / `pinned:<file>` | every uses: ends in a 40-hex commit SHA with a # v… comment | `references/workflows.md`, "Pinning" |
 | `workflows` / `permissions:<file>` | a top-level permissions key, with no write scope | `references/workflows.md`, "Permissions" |
 | `workflows` / `timeout:<file>` | every job sets timeout-minutes | `references/workflows.md`, "Timeouts" |
-| `workflows` / `concurrency:<file>` | a top-level concurrency key | `references/workflows.md`, "Concurrency" |
+| `workflows` / `concurrency:<file>` | a top-level concurrency key; a callable workflow's group leads with its own name | `references/workflows.md`, "Concurrency" |
 | `workflows` / `checkout-credentials:<file>` | every actions/checkout step sets with.persist-credentials: false | `references/workflows.md`, "Checkout credentials" |
 | `security` / `codeql` | a workflow runs github/codeql-action/init | `references/security.md`, "CodeQL" |
 | `security` / `dependency-review` | a workflow runs actions/dependency-review-action | `references/security.md`, "Dependency review" |

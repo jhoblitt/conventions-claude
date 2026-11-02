@@ -9,12 +9,12 @@
 | workflows | pinned:ci.yaml | gap | unpinned: actions/checkout@v3, actions/setup-go@v4, actions/checkout@v3 | every uses: ends in a 40-hex commit SHA with a # v… comment | run pinact run over .github/workflows |
 | workflows | permissions:ci.yaml | gap | no top-level permissions key | a top-level permissions key, with no write scope | add a top-level permissions: contents: read |
 | workflows | timeout:ci.yaml | gap | no timeout-minutes on: build, test | every job sets timeout-minutes | add timeout-minutes to each job |
-| workflows | concurrency:ci.yaml | gap | no top-level concurrency key | a top-level concurrency key | add a top-level concurrency group keyed on the workflow and the ref |
+| workflows | concurrency:ci.yaml | gap | no top-level concurrency key | a top-level concurrency key; a callable workflow's group leads with its own name | add a top-level concurrency group keyed on the workflow and the ref |
 | workflows | checkout-credentials:ci.yaml | gap | persist-credentials not false on 2 of 2 | every actions/checkout step sets with.persist-credentials: false | add with.persist-credentials: false to every actions/checkout step |
 | workflows | pinned:stale.yml | gap | unpinned: actions/stale@v9 | every uses: ends in a 40-hex commit SHA with a # v… comment | run pinact run over .github/workflows |
 | workflows | permissions:stale.yml | gap | permissions: write-all | a top-level permissions key, with no write scope | move the write scopes onto the jobs that need them |
 | workflows | timeout:stale.yml | gap | no timeout-minutes on: stale | every job sets timeout-minutes | add timeout-minutes to each job |
-| workflows | concurrency:stale.yml | gap | no top-level concurrency key | a top-level concurrency key | add a top-level concurrency group keyed on the workflow and the ref |
+| workflows | concurrency:stale.yml | gap | no top-level concurrency key | a top-level concurrency key; a callable workflow's group leads with its own name | add a top-level concurrency group keyed on the workflow and the ref |
 | workflows | checkout-credentials:stale.yml | ok | no actions/checkout steps | every actions/checkout step sets with.persist-credentials: false |  |
 | security | codeql | gap | no step uses github/codeql-action/init | a workflow runs github/codeql-action/init | copy templates/codeql.yml to .github/workflows/ |
 | security | dependency-review | gap | no step uses actions/dependency-review-action | a workflow runs actions/dependency-review-action | copy templates/dependency-review.yml to .github/workflows/ |

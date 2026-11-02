@@ -70,9 +70,13 @@ where the pin lives — the rendering is github-conventions'
 
 ## CI
 
-`templates/ci.yml`, on pull requests and pushes to `main`, ubuntu only, no
-OS or Go-version matrix. The `go` directive is the one version CI builds
-with (`references/toolchain.md`, "Go version"): the `test`, `lint`, and
+`templates/ci.yml`, on pull requests and pushes to `main`, and callable
+through `workflow_call` so a release workflow can gate on it; ubuntu only,
+no OS or Go-version matrix. `ci.yml` keeps its own `push` trigger even
+where a release workflow calls it (github-conventions'
+`references/workflows.md`, "Concurrency"). `go.mod` names the one version
+CI builds with
+(`references/toolchain.md`, "Go version"): the `test`, `lint`, and
 `checks` jobs reach it through `actions/setup-go` with
 `go-version-file: go.mod` and `check-latest: true`, and `govulncheck`,
 which has no setup-go step, passes `go-version-file` to its own action.
@@ -84,7 +88,10 @@ Jobs:
   into `GOLANGCI_LINT_VERSION`, then `golangci/golangci-lint-action` v9
   runs with `version: ${{ env.GOLANGCI_LINT_VERSION }}`.
 - `checks`: `make vet fix-check tidy-check generate-check`.
-- `govulncheck`: `golang/govulncheck-action` v1 over `./...`.
+- `govulncheck`: `golang/govulncheck-action` v1 over `./...`, with
+  `repo-checkout: false` — the action's own checkout is the kind
+  github-conventions' `references/workflows.md`, "Checkout credentials",
+  skips.
 
 Only `checks` fans out over `MODULES`, through `make`; `test`, `lint`, and
 `govulncheck` run at the repository root and so cover the root module alone.

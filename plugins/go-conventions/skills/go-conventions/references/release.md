@@ -2,7 +2,8 @@
 
 Owns the release contract: goreleaser v2 on `v*` tags, the build targets
 and options, archives and checksums, SBOMs, signing, the container image a
-project opts into, and the release workflow. Runs under `SKILL.md`'s
+project opts into, the release workflow, and the repository without
+binaries that the contract does not cover. Runs under `SKILL.md`'s
 precedence and routing. `templates/.goreleaser.yaml` and
 `templates/release.yml` are the forms; the version stamp they depend on is
 `references/layout.md`, "Version"; the placeholders and blocks they are
@@ -45,6 +46,21 @@ cancelled.
   placeholders"). `docker_signs`: cosign keyless `sign` over the image
   manifests.
 
+## Without binaries
+
+A repository that publishes no binaries — its consumers build the main
+package from its checkout, as an action's helper is built — has nothing
+for goreleaser to archive, checksum, sign, or describe in an SBOM. It may
+release with semantic-release instead, cutting tags and GitHub releases
+from the commit history; its release workflow gates on CI by calling
+`templates/ci.yml` (`references/ci.md`, "CI"), concurrency keyed as
+github-conventions' `references/workflows.md`, "Concurrency", sets for a
+release workflow that calls CI. None of this file's
+goreleaser contract applies to it, and the audit skips those rows
+(go-converge's `references/goconv-audit.md`). A repository that does
+publish binaries builds them with goreleaser as above, whatever tool cuts
+its tags.
+
 ## Images
 
 A release publishes a container image only when the project decides to;
@@ -83,5 +99,12 @@ gets the stamp.
   the release before anything is published.
 - cosign and syft are installed; with an image, the job logs in to ghcr.io
   with `GITHUB_TOKEN`.
+- goreleaser-action runs one exact goreleaser release, `version: v2.x.y`,
+  never a range and never the input left to its `~> v2` default. The action
+  resolves a range to the newest match on every run, so a release nobody
+  tested against the project would get the job's write and OIDC tokens, and
+  two tags of one project could build with different goreleaser versions.
+  The input is the version's one home. Dependabot bumps the action's pin
+  but never the input, so a bump edits it by hand.
 - The concurrency form — a constant group, never cancelled — is the release
   exception in github-conventions' `references/workflows.md`, "Concurrency".

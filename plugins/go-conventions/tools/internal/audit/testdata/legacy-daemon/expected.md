@@ -1,6 +1,6 @@
 | Area | Check | Status | Phase | Current | Canon | Fix |
 | --- | --- | --- | --- | --- | --- | --- |
-| toolchain | go-directive | gap | tooling | go 1.25.0 | go 1.27, the minor only, and no toolchain line | set go 1.27 in go.mod and drop any toolchain line |
+| toolchain | go-directive | gap | tooling | go 1.25.0 | go 1.27, the minor only; no toolchain line, except toolchain go1.27.N in a module its consumers build from its checkout | set go 1.27 in go.mod; keep a toolchain line only as go1.27.N, in a module its consumers build from its checkout |
 | lint | config | ok | none | .golangci.yml, version: 2 | a .golangci.yml at the root, golangci-lint v2 (version: "2") |  |
 | lint | linters | gap | tooling | missing: staticcheck, errorlint, nilerr, nilnesserr, bodyclose, noctx, fatcontext, copyloopvar, recvcheck, ineffassign, unused, unparam, modernize, exptostd, intrange, perfsprint, usetesting, depguard, gomoddirectives, gocritic, revive, misspell, unconvert, gosec, ginkgolinter, sloglint | every linter templates/.golangci.yml enables | regenerate: goconv-audit --emit-golangci |
 | lint | formatters | gap | tooling | missing: gofmt, gofumpt, goimports | the formatters templates/.golangci.yml enables | regenerate: goconv-audit --emit-golangci |
@@ -12,11 +12,12 @@
 | ci | race | gap | tooling | no run: block runs go test -race or make test | a workflow runs the suite with the race detector | copy templates/ci.yml to .github/workflows/ |
 | ci | lint | gap | tooling | no step uses golangci/golangci-lint-action | a workflow runs golangci/golangci-lint-action | copy templates/ci.yml to .github/workflows/ |
 | ci | checks | gap | tooling | no run: block runs fix-check and tidy-check | a workflow runs the go fix and go mod tidy checks | copy templates/ci.yml to .github/workflows/ |
-| ci | govulncheck | gap | tooling | no step or run: block runs govulncheck | a workflow runs govulncheck over ./... | copy templates/ci.yml to .github/workflows/ |
+| ci | govulncheck | gap | tooling | no step or run: block runs govulncheck | a workflow runs govulncheck over ./..., the action with repo-checkout: false | copy templates/ci.yml to .github/workflows/ |
 | release | goreleaser | gap | tooling | no .goreleaser.yaml | .goreleaser.yaml at the root, version: 2 | regenerate: goconv-audit --emit-goreleaser |
 | release | image | skipped | none | no readable .goreleaser.yaml | an image, when published, is a kos block paired with docker_signs |  |
 | release | sign-sbom | gap | tooling | no readable .goreleaser.yaml | signs and sboms blocks: cosign over the checksums, syft over the archives | regenerate: goconv-audit --emit-goreleaser |
 | release | workflow | gap | tooling | no workflow runs goreleaser on a v* tag | a workflow on v* tags runs goreleaser/goreleaser-action | regenerate: goconv-audit --emit-release-workflow |
+| release | goreleaser-version | skipped | none | no workflow runs goreleaser on a v* tag | goreleaser-action runs an exact goreleaser v2 release, version: v2.x.y |  |
 | release | no-ldflags-x | gap | tooling | -X in: .github/workflows/release.yml, Makefile | no -X ldflags anywhere; the version is the build stamp | drop the -X ldflags; internal/version reads debug.ReadBuildInfo |
 | dependabot | gomod | gap | tooling | no .github/dependabot.yml | .github/dependabot.yml carries a gomod updates entry | append templates/dependabot-gomod.yml under the existing updates: list |
 | gitignore | present | gap | tooling | no .gitignore | .gitignore at the repository root | merge templates/.gitignore into the repository's |
@@ -33,4 +34,4 @@
 | deps | flag | gap | migration | imported by: main.go | cobra, never the stdlib flag package | migrate area: cli |
 | deps | github.com/pkg/errors | gap | migration | imported by: main.go, store/store.go | errors and fmt.Errorf with %w | migrate area: errors |
 
-27 gaps (19 tooling, 8 migration), 4 ok, 1 skipped
+27 gaps (19 tooling, 8 migration), 4 ok, 2 skipped

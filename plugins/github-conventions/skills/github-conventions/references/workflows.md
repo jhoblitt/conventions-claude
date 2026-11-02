@@ -62,6 +62,26 @@ workflow: a release must never be cancelled mid-run, so it keys on a
 constant group with `cancel-in-progress: false` — serialized, never
 cancelled.
 
+A release workflow that gates on CI by calling it keeps that group at the
+workflow level. A run joins it when its push triggers it, so runs queue in
+push order, and the pending run GitHub cancels when a newer one queues is
+never the newest; where a release covers every commit since the last, as
+semantic-release's does, nothing goes unreleased. On the publishing job
+instead, the group would be joined in the order CI finishes, and an older
+push could displace the newest's release. The called workflow keeps its
+own `push` trigger: a release run's CI waits behind the previous release,
+and a displaced run's never runs.
+
+A workflow another can call (`on: workflow_call`) puts a literal of its
+own name ahead of that key — `ci-${{ github.workflow }}-…` for a workflow
+named `ci`.
+A called workflow's `github` context is its caller's, so there
+`${{ github.workflow }}` names the caller. Without the literal, a called
+workflow shares its caller's group and cancels it, and two workflows one
+caller calls share one group and cancel each other. `github.workflow`
+stays in the key so a called run and a direct run of the same file land
+in different groups.
+
 ## Timeouts
 
 Every job sets `timeout-minutes`. The templates' values are the scale:
@@ -69,7 +89,10 @@ Every job sets `timeout-minutes`. The templates' values are the scale:
 
 ## Checkout credentials
 
-Every `actions/checkout` step sets `persist-credentials: false`.
+Every `actions/checkout` step sets `persist-credentials: false`. That
+includes a checkout an action runs inside itself: it takes checkout's
+default and persists the token. Where the action has an input that skips
+its checkout, the job checks the tree out itself and sets that input.
 
 ## Template placeholders
 

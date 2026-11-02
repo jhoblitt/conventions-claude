@@ -7,8 +7,10 @@
 //
 // conventional-commits-parser treats any line beginning with BREAKING CHANGE
 // or BREAKING-CHANGE, followed by a colon or whitespace, as a footer — with no
-// regard for whether it is prose. Body text that merely wraps the keyword onto
-// the start of a line makes semantic-release cut a major release, silently.
+// regard for whether it is prose. It matches the keyword in any case, after any
+// run of whitespace, '*' or '|', so footerLine does too. Body text that merely
+// wraps the words onto the start of a line, lowercase or not, makes
+// semantic-release cut a major release, silently.
 // Requiring the subject to carry "!" as well makes the intent explicit, so
 // accidental prose no longer looks like a deliberate break.
 package main
@@ -22,7 +24,7 @@ import (
 )
 
 var (
-	footerLine   = regexp.MustCompile(`^[[:space:]*]*BREAKING[ -]CHANGE([[:space:]:]|$)`)
+	footerLine   = regexp.MustCompile(`(?i)^[[:space:]|*]*BREAKING[ -]CHANGE([[:space:]:]|$)`)
 	declaredHead = regexp.MustCompile(`^[a-zA-Z]+(\([^)]*\))?!:`)
 )
 
