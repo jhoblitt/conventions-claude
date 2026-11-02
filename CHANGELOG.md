@@ -1,3 +1,33 @@
+## [1.9.0](https://github.com/jhoblitt/conventions-claude/compare/v1.8.4...v1.9.0) (2026-11-02)
+
+### Features
+
+* **github-conventions:** key a callable workflow's concurrency on its own name ([3853949](https://github.com/jhoblitt/conventions-claude/commit/385394967b0794f231665bd5cb79fa259532ebfe))
+* **go-conventions:** allow a go1.27 toolchain line for checkout builds ([d5c3c1b](https://github.com/jhoblitt/conventions-claude/commit/d5c3c1b230885f6c4f618c22c678353d2faa670f))
+* **go-conventions:** support a repository that publishes no binaries ([1544d0e](https://github.com/jhoblitt/conventions-claude/commit/1544d0efb5b81957f52d375cdabb6e5c624608fb))
+
+### Bug Fixes
+
+* **github-conventions:** install actionlint v1.7.12 in workflow-lint ([9964738](https://github.com/jhoblitt/conventions-claude/commit/99647385d61f809979babfef60e82afb478552dc))
+* **github-conventions:** match breaking-change footers in any case ([8d995aa](https://github.com/jhoblitt/conventions-claude/commit/8d995aab648001463f885abd138e7288be201e1d))
+* **go-conventions:** run an exact goreleaser release in the release workflow ([64586e3](https://github.com/jhoblitt/conventions-claude/commit/64586e378bca3bc8600764e2f9e61e0bc75706cf))
+* **go-conventions:** stop govulncheck-action checking out with credentials ([55c7cc2](https://github.com/jhoblitt/conventions-claude/commit/55c7cc208a5c4e34c0e91ae2f8e3d4777ab199a0))
+
+
+## What's Changed
+* chore(deps): bump the go-dependencies group across 2 directories with 2 updates by @dependabot[bot] in https://github.com/jhoblitt/conventions-claude/pull/36
+* chore(deps): bump the github-actions group across 1 directory with 6 updates by @dependabot[bot] in https://github.com/jhoblitt/conventions-claude/pull/37
+* fix: six convention gaps found in downstream repositories by @jhoblitt in https://github.com/jhoblitt/conventions-claude/pull/45
+
+### Resolved issues
+
+* [#39](https://github.com/jhoblitt/conventions-claude/issues/39) github-conventions: breaking-footer passes breaking-change lines semantic-release matches case-insensitively
+* [#40](https://github.com/jhoblitt/conventions-claude/issues/40) go-conventions: release template floats goreleaser on ~> v2 in a job holding write and OIDC tokens
+* [#41](https://github.com/jhoblitt/conventions-claude/issues/41) github-conventions: workflow-lint template pins actionlint v1.7.7, which rejects runs.using: node24
+* [#42](https://github.com/jhoblitt/conventions-claude/issues/42) go-conventions: ci template's govulncheck step re-checks out the repository with persisted credentials
+* [#43](https://github.com/jhoblitt/conventions-claude/issues/43) go-conventions: support a Go repository that releases with semantic-release and publishes no binaries
+* [#44](https://github.com/jhoblitt/conventions-claude/issues/44) go-conventions: a minor-only go 1.27 directive makes GOTOOLCHAIN=auto builds use go1.27.0
+
 ## [1.8.4](https://github.com/jhoblitt/conventions-claude/compare/v1.8.3...v1.8.4) (2026-10-20)
 
 ### Bug Fixes
