@@ -41,7 +41,17 @@ procedure, and under its reading of `references/<file>` and
   `references/release.md`, "Images"), `no readable .goreleaser.yaml` (on the
   `image` row only; the `goreleaser` row carries that gap), `no workflow runs
   goreleaser on a v* tag` (on the `goreleaser-version` row only; the
-  `workflow` row carries that gap).
+  `workflow` row carries that gap), `semantic-release, no goreleaser config
+  or workflow` (on the `goreleaser`, `image`, `sign-sbom`, `workflow`, and
+  `goreleaser-version` rows, for a repository `references/release.md`,
+  "Without binaries", covers: the root carries a semantic-release
+  configuration, and there is neither a `.goreleaser.yaml` nor a `v*`-tag
+  workflow using goreleaser-action). A configuration is a non-null `release`
+  key in a `package.json` that parses, or any of the files cosmiconfig 9, through
+  which semantic-release loads it, searches: `.releaserc` bare or with a
+  `.json`, `.yaml`, `.yml`, `.js`, `.ts`, `.cjs`, or `.mjs` extension, the
+  same eight as `.config/releaserc*`, and `release.config` with a `.js`,
+  `.ts`, `.cjs`, or `.mjs` extension.
 - Under controller-runtime the scaffold's own `flag` and `go.uber.org/zap/zapcore`
   imports produce no `deps/<import path>` row at all — not a `skipped` one. That
   is the wiring `references/kubernetes.md` keeps; a standalone `go.uber.org/zap`

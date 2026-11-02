@@ -438,6 +438,52 @@ jobs:
 				audit.StatusSkipped, "no workflow runs goreleaser on a v* tag"),
 		)
 
+		const tagWorkflow = `on: {push: {tags: ["v*"]}}
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: goreleaser/goreleaser-action@v7
+        with:
+          version: v2.19.0
+`
+
+		DescribeTable("skips the goreleaser rows for a semantic-release repository with no goreleaser",
+			func(files map[string]string) {
+				report := auditFiles(files)
+				for _, check := range []string{"goreleaser", "image", "sign-sbom", "workflow", "goreleaser-version"} {
+					Expect(rowFor(report, "release", check)).To(SatisfyAll(
+						HaveField("Status", audit.StatusSkipped),
+						HaveField("Current", "semantic-release, no goreleaser config or workflow")), check)
+				}
+				Expect(rowFor(report, "release", "no-ldflags-x").Status).To(Equal(audit.StatusOK))
+			},
+			Entry("a .releaserc.json", map[string]string{".releaserc.json": `{"branches":["main"]}`}),
+			Entry("an extensionless .releaserc", map[string]string{".releaserc": "branches: [main]\n"}),
+			Entry("a config under .config/", map[string]string{".config/releaserc.yml": "branches: [main]\n"}),
+			Entry("a release.config.mjs", map[string]string{"release.config.mjs": "export default {}\n"}),
+			Entry("a release key in package.json", map[string]string{"package.json": `{"release":{"branches":["main"]}}`}),
+		)
+
+		DescribeTable("still measures the goreleaser rows when the repository publishes through goreleaser",
+			func(files map[string]string, row, status string) {
+				Expect(string(rowFor(auditFiles(files), "release", row).Status)).To(Equal(status))
+			},
+			Entry("a package.json with no release key",
+				map[string]string{"package.json": `{"name":"x","scripts":{}}`}, "goreleaser", "gap"),
+			Entry("a package.json that does not parse",
+				map[string]string{"package.json": `{"release":`}, "goreleaser", "gap"),
+			Entry("a package.json whose release key is null",
+				map[string]string{"package.json": `{"release":null}`}, "goreleaser", "gap"),
+			Entry("a .config that is a file, not a directory",
+				map[string]string{".config": "x\n"}, "goreleaser", "gap"),
+			Entry("semantic-release beside a .goreleaser.yaml",
+				map[string]string{".releaserc.json": "{}", ".goreleaser.yaml": "version: 2\n"}, "goreleaser", "ok"),
+			Entry("semantic-release beside a tag workflow running goreleaser",
+				map[string]string{".releaserc.json": "{}", ".github/workflows/release.yml": tagWorkflow},
+				"workflow", "ok"),
+		)
+
 		It("finds -X in the Makefile and in a workflow run block", func() {
 			row := rowFor(run("legacy-daemon"), "release", "no-ldflags-x")
 			Expect(row.Status).To(Equal(audit.StatusGap))

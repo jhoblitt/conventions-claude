@@ -2,7 +2,8 @@
 
 Owns the release contract: goreleaser v2 on `v*` tags, the build targets
 and options, archives and checksums, SBOMs, signing, the container image a
-project opts into, and the release workflow. Runs under `SKILL.md`'s
+project opts into, the release workflow, and the repository without
+binaries that the contract does not cover. Runs under `SKILL.md`'s
 precedence and routing. `templates/.goreleaser.yaml` and
 `templates/release.yml` are the forms; the version stamp they depend on is
 `references/layout.md`, "Version"; the placeholders and blocks they are
@@ -44,6 +45,21 @@ cancelled.
   template, not a placeholder (`references/layout.md`, "Template
   placeholders"). `docker_signs`: cosign keyless `sign` over the image
   manifests.
+
+## Without binaries
+
+A repository that publishes no binaries — its consumers build the main
+package from its checkout, as an action's helper is built — has nothing
+for goreleaser to archive, checksum, sign, or describe in an SBOM. It may
+release with semantic-release instead, cutting tags and GitHub releases
+from the commit history; its release workflow gates on CI by calling
+`templates/ci.yml` (`references/ci.md`, "CI"), concurrency keyed as
+github-conventions' `references/workflows.md`, "Concurrency", sets for a
+release workflow that calls CI. None of this file's
+goreleaser contract applies to it, and the audit skips those rows
+(go-converge's `references/goconv-audit.md`). A repository that does
+publish binaries builds them with goreleaser as above, whatever tool cuts
+its tags.
 
 ## Images
 

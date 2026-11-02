@@ -1,6 +1,7 @@
 package audit
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"go/parser"
@@ -11,6 +12,7 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+	"syscall"
 
 	"go.yaml.in/yaml/v3"
 	"golang.org/x/mod/modfile"
@@ -60,6 +62,8 @@ type repo struct {
 	gitignore   bool
 	claudeMD    string
 	hasVersion  bool
+
+	semanticRelease bool
 }
 
 func scan(opts Options) (*repo, error) {
@@ -208,9 +212,51 @@ func (r *repo) readSupport() error {
 	if r.claudeMD, _, err = readFile(filepath.Join(r.dir, "CLAUDE.md")); err != nil {
 		return err
 	}
+	if r.semanticRelease, err = r.readSemanticRelease(); err != nil {
+		return err
+	}
 	r.hasVersion, err = exists(filepath.Join(r.dir, "internal", "version"))
 
 	return err
+}
+
+// semanticReleaseConfigs are the files semantic-release loads its
+// configuration from: cosmiconfig 9's default async search places for the
+// module name "release", less package.json, whose release key
+// readSemanticRelease reads on its own.
+var semanticReleaseConfigs = []string{
+	".releaserc", ".releaserc.json", ".releaserc.yaml", ".releaserc.yml",
+	".releaserc.js", ".releaserc.ts", ".releaserc.cjs", ".releaserc.mjs",
+	".config/releaserc", ".config/releaserc.json", ".config/releaserc.yaml", ".config/releaserc.yml",
+	".config/releaserc.js", ".config/releaserc.ts", ".config/releaserc.cjs", ".config/releaserc.mjs",
+	"release.config.js", "release.config.ts", "release.config.cjs", "release.config.mjs",
+}
+
+// readSemanticRelease reports whether the root carries a semantic-release
+// configuration. A package.json that does not parse carries none, so the
+// release rows are measured rather than skipped on a file the audit could
+// not read.
+func (r *repo) readSemanticRelease() (bool, error) {
+	for _, name := range semanticReleaseConfigs {
+		found, err := exists(filepath.Join(r.dir, filepath.FromSlash(name)))
+		if err != nil || found {
+			return found, err
+		}
+	}
+
+	text, found, err := readFile(filepath.Join(r.dir, "package.json"))
+	if err != nil || !found {
+		return false, err
+	}
+	var pkg map[string]json.RawMessage
+	if err := json.Unmarshal([]byte(text), &pkg); err != nil {
+		r.opts.Logger.Warn("skipping unparsable file", slog.String("path", "package.json"), slog.Any("error", err))
+
+		return false, nil
+	}
+	release, ok := pkg["release"]
+
+	return ok && string(release) != "null", nil
 }
 
 // firstDocument reads the first of names that exists; a missing file yields a
@@ -423,9 +469,11 @@ func readFile(path string) (text string, found bool, err error) {
 	return string(data), true, nil
 }
 
+// exists reports whether path is there. A parent that is a file rather than a
+// directory (ENOTDIR) means the path cannot exist, not that the stat failed.
 func exists(path string) (bool, error) {
 	_, err := os.Stat(path)
-	if errors.Is(err, fs.ErrNotExist) {
+	if errors.Is(err, fs.ErrNotExist) || errors.Is(err, syscall.ENOTDIR) {
 		return false, nil
 	}
 	if err != nil {
