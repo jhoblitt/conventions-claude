@@ -6,7 +6,7 @@
       "status": "ok",
       "phase": "none",
       "current": "go 1.27",
-      "canon": "go 1.27, the minor only, and no toolchain line",
+      "canon": "go 1.27, the minor only; no toolchain line, except toolchain go1.27.N in a module its consumers build from its checkout",
       "fix": ""
     },
     {

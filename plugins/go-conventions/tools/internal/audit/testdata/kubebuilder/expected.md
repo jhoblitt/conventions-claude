@@ -1,6 +1,6 @@
 | Area | Check | Status | Phase | Current | Canon | Fix |
 | --- | --- | --- | --- | --- | --- | --- |
-| toolchain | go-directive | gap | tooling | go 1.27, toolchain go1.27.1 | go 1.27, the minor only, and no toolchain line | set go 1.27 in go.mod and drop any toolchain line |
+| toolchain | go-directive | ok | none | go 1.27, toolchain go1.27.1 | go 1.27, the minor only; no toolchain line, except toolchain go1.27.N in a module its consumers build from its checkout |  |
 | lint | config | gap | tooling | v1 schema: no version key, run.deadline, linters.disable-all | a .golangci.yml at the root, golangci-lint v2 (version: "2") | regenerate: goconv-audit --emit-golangci |
 | lint | linters | skipped | none | no v2 lint config | every linter templates/.golangci.yml enables |  |
 | lint | formatters | skipped | none | no v2 lint config | the formatters templates/.golangci.yml enables |  |
@@ -33,4 +33,4 @@
 | logging | stderr-json | skipped | none | controller-runtime | the JSON handler writes to stderr; stdout is program output |  |
 | deps | go.uber.org/zap | gap | migration | imported by: cmd/main.go | log/slog | migrate area: logging |
 
-16 gaps (15 tooling, 1 migration), 4 ok, 12 skipped
+15 gaps (14 tooling, 1 migration), 5 ok, 12 skipped

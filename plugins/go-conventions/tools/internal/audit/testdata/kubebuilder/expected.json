@@ -3,11 +3,11 @@
     {
       "area": "toolchain",
       "check": "go-directive",
-      "status": "gap",
-      "phase": "tooling",
+      "status": "ok",
+      "phase": "none",
       "current": "go 1.27, toolchain go1.27.1",
-      "canon": "go 1.27, the minor only, and no toolchain line",
-      "fix": "set go 1.27 in go.mod and drop any toolchain line"
+      "canon": "go 1.27, the minor only; no toolchain line, except toolchain go1.27.N in a module its consumers build from its checkout",
+      "fix": ""
     },
     {
       "area": "lint",
@@ -289,9 +289,9 @@
       "fix": "migrate area: logging"
     }
   ],
-  "gaps": 16,
-  "tooling": 15,
+  "gaps": 15,
+  "tooling": 14,
   "migration": 1,
-  "ok": 4,
+  "ok": 5,
   "skipped": 12
 }

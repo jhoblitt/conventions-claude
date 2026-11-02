@@ -1,6 +1,6 @@
 | Area | Check | Status | Phase | Current | Canon | Fix |
 | --- | --- | --- | --- | --- | --- | --- |
-| toolchain | go-directive | gap | tooling | go 1.25.0 | go 1.27, the minor only, and no toolchain line | set go 1.27 in go.mod and drop any toolchain line |
+| toolchain | go-directive | gap | tooling | go 1.25.0 | go 1.27, the minor only; no toolchain line, except toolchain go1.27.N in a module its consumers build from its checkout | set go 1.27 in go.mod; keep a toolchain line only as go1.27.N, in a module its consumers build from its checkout |
 | lint | config | ok | none | .golangci.yml, version: 2 | a .golangci.yml at the root, golangci-lint v2 (version: "2") |  |
 | lint | linters | gap | tooling | missing: staticcheck, errorlint, nilerr, nilnesserr, bodyclose, noctx, fatcontext, copyloopvar, recvcheck, ineffassign, unused, unparam, modernize, exptostd, intrange, perfsprint, usetesting, depguard, gomoddirectives, gocritic, revive, misspell, unconvert, gosec, ginkgolinter, sloglint | every linter templates/.golangci.yml enables | regenerate: goconv-audit --emit-golangci |
 | lint | formatters | gap | tooling | missing: gofmt, gofumpt, goimports | the formatters templates/.golangci.yml enables | regenerate: goconv-audit --emit-golangci |

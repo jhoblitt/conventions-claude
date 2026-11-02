@@ -1,6 +1,6 @@
 | Area | Check | Status | Phase | Current | Canon | Fix |
 | --- | --- | --- | --- | --- | --- | --- |
-| toolchain | go-directive | ok | none | go 1.27 | go 1.27, the minor only, and no toolchain line |  |
+| toolchain | go-directive | ok | none | go 1.27 | go 1.27, the minor only; no toolchain line, except toolchain go1.27.N in a module its consumers build from its checkout |  |
 | lint | config | gap | tooling | no .golangci.yml | a .golangci.yml at the root, golangci-lint v2 (version: "2") | regenerate: goconv-audit --emit-golangci |
 | lint | linters | skipped | none | no v2 lint config | every linter templates/.golangci.yml enables |  |
 | lint | formatters | skipped | none | no v2 lint config | the formatters templates/.golangci.yml enables |  |

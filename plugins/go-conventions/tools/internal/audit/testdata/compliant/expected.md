@@ -1,6 +1,6 @@
 | Area | Check | Status | Phase | Current | Canon | Fix |
 | --- | --- | --- | --- | --- | --- | --- |
-| toolchain | go-directive | ok | none | go 1.27 | go 1.27, the minor only, and no toolchain line |  |
+| toolchain | go-directive | ok | none | go 1.27 | go 1.27, the minor only; no toolchain line, except toolchain go1.27.N in a module its consumers build from its checkout |  |
 | lint | config | ok | none | .golangci.yml, version: 2 | a .golangci.yml at the root, golangci-lint v2 (version: "2") |  |
 | lint | linters | ok | none | enabled: govet, staticcheck, errcheck, errorlint, nilerr, nilnesserr, bodyclose, noctx, fatcontext, copyloopvar, recvcheck, ineffassign, unused, unparam, modernize, exptostd, intrange, perfsprint, usetesting, depguard, gomoddirectives, gocritic, revive, misspell, unconvert, gosec, ginkgolinter, sloglint | every linter templates/.golangci.yml enables |  |
 | lint | formatters | ok | none | enabled: gofmt, gofumpt, goimports | the formatters templates/.golangci.yml enables |  |

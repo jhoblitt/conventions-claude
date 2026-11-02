@@ -162,11 +162,25 @@ var _ = Describe("Run", func() {
 			Expect(row.Current).To(ContainSubstring("1.26.1"))
 		})
 
-		It("fails a toolchain line even on the canon directive", func() {
+		It("passes a toolchain line naming a go1.27 patch on the canon directive", func() {
 			row := rowFor(run("kubebuilder"), "toolchain", "go-directive")
-			Expect(row.Status).To(Equal(audit.StatusGap))
-			Expect(row.Current).To(ContainSubstring("toolchain"))
+			Expect(row.Status).To(Equal(audit.StatusOK))
+			Expect(row.Current).To(Equal("go 1.27, toolchain go1.27.1"))
 		})
+
+		DescribeTable("fails a toolchain line naming anything but a go1.27 patch",
+			func(toolchain string) {
+				row := rowFor(auditFiles(map[string]string{
+					"go.mod": "module example.com/x\n\ngo 1.27\n\ntoolchain " + toolchain + "\n",
+				}), "toolchain", "go-directive")
+				Expect(row.Status).To(Equal(audit.StatusGap))
+				Expect(row.Current).To(Equal("go 1.27, toolchain " + toolchain))
+			},
+			Entry("an older minor", "go1.26.5"),
+			Entry("a newer minor", "go1.28.0"),
+			Entry("a release candidate", "go1.27rc2"),
+			Entry("the default keyword", "default"),
+		)
 	})
 
 	Describe("the lint rows", func() {

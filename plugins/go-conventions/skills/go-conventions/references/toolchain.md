@@ -11,13 +11,26 @@ fix".
 
 - Go 1.27 (released 2026-08-19) is the default for a new or converged
   module.
-- `go.mod` carries `go 1.27` — the minor only, never a patch — and no
-  `toolchain` line: a patch directive forces a bump on every patch release,
-  and a `toolchain` line pins what `go` downloads.
+- `go.mod` carries `go 1.27` — the minor only, never a patch: a patch
+  directive raises the floor for every consumer and forces a bump on every
+  patch release.
+- No `toolchain` line, except in a module that consumers build from its own
+  checkout with a Go the project does not choose — an action that builds
+  its helper with the runner's preinstalled Go. There it is
+  `toolchain go1.27.N`, the latest patch. An older Go under
+  `GOTOOLCHAIN=auto` runs the toolchain the main module's `go.mod` names,
+  and `go 1.27` names go1.27.0, which carries none of the 1.27 patches'
+  security fixes. `go install m@v` is not exposed: it switches to the
+  latest patch of a supported release. The line costs two things: CI
+  builds that patch rather than the latest (the CI bullet below), and it is
+  bumped by hand on each patch release. A `toolchain` line naming anything
+  else is dropped.
 - `go mod init` writes a directive one minor below the installed toolchain
   (Go 1.26 and later); a scaffold rewrites it to `go 1.27` right after and
   drops any `toolchain` line.
-- CI builds with the directive's version (`references/ci.md`, "CI").
+- CI builds with the version `go.mod` names: the `toolchain` line's where
+  there is one, since `actions/setup-go` reads it ahead of the directive,
+  otherwise the directive's latest patch (`references/ci.md`, "CI").
 
 ## What each release changed
 

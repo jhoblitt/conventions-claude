@@ -71,8 +71,8 @@ where the pin lives — the rendering is github-conventions'
 ## CI
 
 `templates/ci.yml`, on pull requests and pushes to `main`, ubuntu only, no
-OS or Go-version matrix. The `go` directive is the one version CI builds
-with (`references/toolchain.md`, "Go version"): the `test`, `lint`, and
+OS or Go-version matrix. `go.mod` names the one version CI builds with
+(`references/toolchain.md`, "Go version"): the `test`, `lint`, and
 `checks` jobs reach it through `actions/setup-go` with
 `go-version-file: go.mod` and `check-latest: true`, and `govulncheck`,
 which has no setup-go step, passes `go-version-file` to its own action.

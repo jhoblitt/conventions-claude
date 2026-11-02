@@ -27,8 +27,8 @@ func (r *repo) rows() []Row {
 
 func (r *repo) toolchainRow() Row {
 	const (
-		canon = "go 1.27, the minor only, and no toolchain line"
-		fix   = "set go 1.27 in go.mod and drop any toolchain line"
+		canon = "go 1.27, the minor only; no toolchain line, except toolchain go1.27.N in a module its consumers build from its checkout"
+		fix   = "set go 1.27 in go.mod; keep a toolchain line only as go1.27.N, in a module its consumers build from its checkout"
 	)
 
 	current := "no go directive"
@@ -38,7 +38,7 @@ func (r *repo) toolchainRow() Row {
 	if r.toolchain != "" {
 		current += ", toolchain " + r.toolchain
 	}
-	if r.goVersion == canonGoVersion && r.toolchain == "" {
+	if r.goVersion == canonGoVersion && (r.toolchain == "" || canonToolchain.MatchString(r.toolchain)) {
 		return okRow("toolchain", "go-directive", current, canon)
 	}
 
@@ -46,6 +46,10 @@ func (r *repo) toolchainRow() Row {
 }
 
 const canonGoVersion = "1.27"
+
+// canonToolchain is a released patch of the canon minor. Which patch is the
+// latest is not knowable offline, so any of them passes.
+var canonToolchain = regexp.MustCompile(`^go1\.27\.\d+$`)
 
 // --- lint ---
 
