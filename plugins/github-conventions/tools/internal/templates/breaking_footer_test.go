@@ -116,6 +116,28 @@ var _ = Describe("the breaking-footer template", func() {
 		Expect(result.stderr).To(ContainSubstring("Either declare the break in the subject"))
 	})
 
+	DescribeTable("fails a body line the parser reads as a footer whatever its case or leading table bar",
+		func(ctx SpecContext, body, line string) {
+			repo := newGitRepo(ctx)
+			base := repo.commit(ctx, "chore: root", "")
+			head := repo.commit(ctx, "fix: drop the --foo flag", body)
+
+			result := repo.checkBreakingFooters(ctx, base, head)
+
+			Expect(result.code).To(Equal(1), "stdout: %s\nstderr: %s", result.stdout, result.stderr)
+			Expect(result.stdout).To(ContainSubstring(line))
+		},
+		Entry("prose wrapping the lowercase words onto a line",
+			"Renaming the field is internal, so this is not a\nbreaking change for anyone.",
+			"  body line 2:breaking change for anyone."),
+		Entry("a sentence-case footer",
+			"Breaking change: the --foo flag is gone.",
+			"  body line 1:Breaking change: the --foo flag is gone."),
+		Entry("a table row",
+			"| BREAKING CHANGE | the --foo flag is gone |",
+			"  body line 1:| BREAKING CHANGE | the --foo flag is gone |"),
+	)
+
 	It("passes a body footer whose subject carries the bang", func(ctx SpecContext) {
 		repo := newGitRepo(ctx)
 		base := repo.commit(ctx, "chore: root", "")
