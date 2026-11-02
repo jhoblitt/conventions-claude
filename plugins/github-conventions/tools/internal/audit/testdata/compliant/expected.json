@@ -77,7 +77,7 @@
       "check": "concurrency:codeql.yml",
       "status": "ok",
       "current": "concurrency group set",
-      "canon": "a top-level concurrency key",
+      "canon": "a top-level concurrency key; a callable workflow's group leads with its own name",
       "fix": ""
     },
     {
@@ -117,7 +117,7 @@
       "check": "concurrency:commitlint.yml",
       "status": "ok",
       "current": "concurrency group set",
-      "canon": "a top-level concurrency key",
+      "canon": "a top-level concurrency key; a callable workflow's group leads with its own name",
       "fix": ""
     },
     {
@@ -157,7 +157,7 @@
       "check": "concurrency:dependency-review.yml",
       "status": "ok",
       "current": "concurrency group set",
-      "canon": "a top-level concurrency key",
+      "canon": "a top-level concurrency key; a callable workflow's group leads with its own name",
       "fix": ""
     },
     {
@@ -197,7 +197,7 @@
       "check": "concurrency:scorecard.yml",
       "status": "ok",
       "current": "concurrency group set",
-      "canon": "a top-level concurrency key",
+      "canon": "a top-level concurrency key; a callable workflow's group leads with its own name",
       "fix": ""
     },
     {
@@ -237,7 +237,7 @@
       "check": "concurrency:workflow-lint.yml",
       "status": "ok",
       "current": "concurrency group set",
-      "canon": "a top-level concurrency key",
+      "canon": "a top-level concurrency key; a callable workflow's group leads with its own name",
       "fix": ""
     },
     {

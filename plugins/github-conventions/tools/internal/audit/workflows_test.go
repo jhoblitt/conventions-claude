@@ -147,4 +147,36 @@ jobs:
 		Entry("write-all is a gap", "permissions: write-all", audit.StatusGap, "permissions: write-all"),
 		Entry("an empty map grants nothing", "permissions: {}", audit.StatusOK, "no scopes granted"),
 	)
+
+	DescribeTable("reads whether a callable workflow's group leads with its own name",
+		func(ctx SpecContext, on, concurrency string, want audit.Status, wantCurrent string) {
+			report := audited(ctx, "called.yml", "name: called\n"+on+"\n"+concurrency+`
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: echo hi
+`)
+
+			row := rowFor(report, "workflows", "concurrency:called.yml")
+			Expect(row.Status).To(Equal(want))
+			Expect(row.Current).To(Equal(wantCurrent))
+		},
+		Entry("a callable workflow keyed on github.workflow first is a gap",
+			"on:\n  pull_request:\n  workflow_call:", "concurrency:\n  group: ${{ github.workflow }}-${{ github.ref }}",
+			audit.StatusGap, "callable (workflow_call), group led by ${{ github.workflow }}"),
+		Entry("a callable workflow led by its own name is ok",
+			"on:\n  pull_request:\n  workflow_call:", "concurrency:\n  group: ci-${{ github.workflow }}-${{ github.ref }}",
+			audit.StatusOK, "concurrency group set"),
+		Entry("a list trigger naming workflow_call",
+			"on: [pull_request, workflow_call]", "concurrency:\n  group: ${{github.workflow}}-${{ github.ref }}",
+			audit.StatusGap, "callable (workflow_call), group led by ${{ github.workflow }}"),
+		Entry("the string forms of both keys",
+			"on: workflow_call", "concurrency: ${{ github.workflow }}-${{ github.ref }}",
+			audit.StatusGap, "callable (workflow_call), group led by ${{ github.workflow }}"),
+		Entry("a workflow nothing can call keeps the canonical key",
+			"on: [push]", "concurrency:\n  group: ${{ github.workflow }}-${{ github.ref }}",
+			audit.StatusOK, "concurrency group set"),
+	)
 })

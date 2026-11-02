@@ -77,7 +77,7 @@
       "check": "concurrency:ci.yaml",
       "status": "gap",
       "current": "no top-level concurrency key",
-      "canon": "a top-level concurrency key",
+      "canon": "a top-level concurrency key; a callable workflow's group leads with its own name",
       "fix": "add a top-level concurrency group keyed on the workflow and the ref"
     },
     {
@@ -117,7 +117,7 @@
       "check": "concurrency:stale.yml",
       "status": "gap",
       "current": "no top-level concurrency key",
-      "canon": "a top-level concurrency key",
+      "canon": "a top-level concurrency key; a callable workflow's group leads with its own name",
       "fix": "add a top-level concurrency group keyed on the workflow and the ref"
     },
     {

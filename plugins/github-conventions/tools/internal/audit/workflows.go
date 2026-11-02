@@ -193,18 +193,53 @@ func (w workflow) timeoutRow() Row {
 	return okRow("workflows", check, strconv.Itoa(checked)+" job(s), all with timeout-minutes", canon)
 }
 
+// callerLed matches a group that opens with github.workflow, which in a called
+// workflow names the caller (references/workflows.md, "Concurrency").
+var callerLed = regexp.MustCompile(`^\$\{\{\s*github\.workflow\s*\}\}`)
+
 func (w workflow) concurrencyRow() Row {
 	const (
-		canon = "a top-level concurrency key"
-		fix   = "add a top-level concurrency group keyed on the workflow and the ref"
+		canon       = "a top-level concurrency key; a callable workflow's group leads with its own name"
+		fix         = "add a top-level concurrency group keyed on the workflow and the ref"
+		fixCallable = "put a literal of the workflow's own name ahead of ${{ github.workflow }} in the group"
 	)
 	check := w.check("concurrency")
 
-	if w.doc["concurrency"] == nil {
+	concurrency := w.doc["concurrency"]
+	if concurrency == nil {
 		return gapRow("workflows", check, "no top-level concurrency key", canon, fix)
+	}
+	var group string
+	switch typed := concurrency.(type) {
+	case string:
+		group = typed
+	case map[string]any:
+		if named, ok := typed["group"].(string); ok {
+			group = named
+		}
+	}
+	if w.callable() && callerLed.MatchString(group) {
+		return gapRow("workflows", check, "callable (workflow_call), group led by ${{ github.workflow }}", canon, fixCallable)
 	}
 
 	return okRow("workflows", check, "concurrency group set", canon)
+}
+
+// callable reports whether the workflow's triggers include workflow_call, in
+// any of the string, list, or map forms on: takes.
+func (w workflow) callable() bool {
+	switch on := w.doc["on"].(type) {
+	case string:
+		return on == "workflow_call"
+	case []any:
+		return slices.Contains(on, any("workflow_call"))
+	case map[string]any:
+		_, ok := on["workflow_call"]
+
+		return ok
+	}
+
+	return false
 }
 
 func (w workflow) checkoutRow() Row {
