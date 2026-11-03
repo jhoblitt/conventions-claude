@@ -35,7 +35,7 @@ Every rule has exactly one normative statement.
   Ceph canon sits on that ladder — the project-specific plugin of its first
   rung, for `ceph/ceph` and `tracker.ceph.com` work — and its routing table;
   each file under its `references/` owns one area (pull requests, CI,
-  backports, the tracker). Where a Ceph rule touches repository
+  local builds, backports, the tracker). Where a Ceph rule touches repository
   hygiene, pull-request practice, or what a bug report carries, the Ceph
   reference points at the github-conventions or code-conventions reference and
   states nothing of its own beyond Ceph's instance of it.
