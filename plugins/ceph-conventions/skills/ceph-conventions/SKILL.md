@@ -1,13 +1,14 @@
 ---
 name: ceph-conventions
-description: Use when contributing to ceph/ceph or tracker.ceph.com — opening or updating a Ceph pull request, filling its checklist, writing a Ceph commit title, a Fixes or Assisted-by trailer, or a DCO sign-off; clearing the config-diff "Check Ceph config changes" check or reading the Jenkins ceph-pr-pipeline; preparing a stable-branch backport, tracking its Redmine Backport issue, or answering the Backport Audit; filing, searching, commenting on, or editing a tracker.ceph.com issue through the Redmine API; or handling a Ceph defect that may be a security vulnerability.
+description: Use when contributing to ceph/ceph or tracker.ceph.com — opening or updating a Ceph pull request, filling its checklist, writing a Ceph commit title, a Fixes or Assisted-by trailer, or a DCO sign-off; clearing the config-diff "Check Ceph config changes" check or reading the Jenkins ceph-pr-pipeline; building Ceph from source or running its unit tests locally to check a change; preparing a stable-branch backport, tracking its Redmine Backport issue, or answering the Backport Audit; filing, searching, commenting on, or editing a tracker.ceph.com issue through the Redmine API; or handling a Ceph defect that may be a security vulnerability.
 ---
 
 # Ceph conventions
 
 The canon for how a contribution reaches `ceph/ceph` and `tracker.ceph.com`
 the house way — the pull-request workflow, the Jenkins and config-diff CI
-checks, the stable-branch backport machinery, filing and searching on the
+checks, building and unit-testing a change locally in Ceph's build
+container, the stable-branch backport machinery, filing and searching on the
 Redmine tracker, and the embargoed path a security defect takes. It sits
 on top of github-conventions, which owns repository hygiene, commit, and
 pull-request practice, and code-conventions, which owns what a bug report
@@ -44,6 +45,9 @@ carries — is inherited unchanged.
 - A commit title is `<subsystem>: <description>`, never a Conventional
   Commits subject, and AI assistance is disclosed by an `Assisted-by:`
   trailer, never a `Co-Authored-By:` — `references/pull-requests.md`.
+- Ceph is built, and its unit tests run, inside a container by
+  `src/script/build-with-container.py`, never on the host —
+  `references/building.md`.
 - A backport's cherry-pick keeps the message `git cherry-pick -x` wrote, and
   its other commits and its PR title start with the branch name —
   `references/backports.md`, "Backport commits and PR title".
@@ -68,5 +72,6 @@ above apply to every trigger.
 |---|---|
 | opening or updating a `ceph/ceph` PR, filling its checklist, writing a commit title, a `Fixes:` or `Assisted-by:` trailer, a DCO sign-off, or `Co-Authored-By:`; posting a bot command (`/config check ok`, `/audit retest`, `jenkins test`) | `references/pull-requests.md` |
 | clearing the config-diff "Check Ceph config changes" check, reading the Jenkins ceph-pr-pipeline, or watching Ceph CI | `references/ci.md` |
+| building Ceph from source or running its unit tests locally to check a change; `build-with-container.py`, `CONFIGURE_ARGS`, capping a build on a shared machine, or a build that fails for reasons outside the change | `references/building.md` |
 | preparing a stable-branch backport PR or its commits, tracking its Redmine Backport issue, or answering the Backport Audit | `references/backports.md` |
 | filing, searching, commenting on, or editing a `tracker.ceph.com` issue; judging the reproduction bar; a possible security vulnerability | `references/tracker.md` |
